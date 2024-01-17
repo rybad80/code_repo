@@ -1,0 +1,1634 @@
+<?xml version="1.0"?>
+<OtherAdverseEvents>
+ <OtherAdverseEventCategory>
+  <AE_ID>1</AE_ID>
+  <PARENT_AE_ID>0</PARENT_AE_ID>
+  <AE_TEXT>Sedation or airway related problem</AE_TEXT> 
+ <AdverseEvent>
+  <AE_ID>2</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>95</AE_CODE>
+  <AE_TEXT>Anesthesia Problem</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>3</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>1</AE_CODE>
+  <AE_TEXT>Airway obstruction</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>4</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>90</AE_CODE>
+  <AE_TEXT>Laryngospasm</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>5</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>2</AE_CODE>
+  <AE_TEXT>Apnea</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>6</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>3</AE_CODE>
+  <AE_TEXT>Aspiration</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>7</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>4</AE_CODE>
+  <AE_TEXT>Bleeding via ETT</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>8</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>5</AE_CODE>
+  <AE_TEXT>Hypotension</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>9</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>142</AE_CODE>
+  <AE_TEXT>Hypoxia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>10</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>91</AE_CODE>
+  <AE_TEXT>Post Extubation Stridor</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>11</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>6</AE_CODE>
+  <AE_TEXT>Respiratory acidosis PaCO2greater than45</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>12</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>92</AE_CODE>
+  <AE_TEXT>Respiratory Arrest</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>13</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>7</AE_CODE>
+  <AE_TEXT>Respiratory distress</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>14</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>93</AE_CODE>
+  <AE_TEXT>Unplanned Extubation</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>15</AE_ID>
+  <PARENT_AE_ID>1</PARENT_AE_ID>
+  <AE_CODE>143</AE_CODE>
+  <AE_TEXT>Other sedation or airway problem</AE_TEXT>
+ </AdverseEvent>
+ </OtherAdverseEventCategory>
+ <OtherAdverseEventCategory>
+  <AE_ID>16</AE_ID>
+  <PARENT_AE_ID>0</PARENT_AE_ID>
+  <AE_TEXT>Catheterization Related Problem</AE_TEXT> 
+ <AdverseEventSubCategory>
+  <AE_ID>17</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Allergy</AE_TEXT> 
+ <AdverseEvent>
+  <AE_ID>18</AE_ID>
+  <PARENT_AE_ID>17</PARENT_AE_ID>
+  <AE_CODE>19</AE_CODE>
+  <AE_TEXT>Allergic reaction</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory> 
+ <AdverseEventSubCategory>
+  <AE_ID>19</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Arrhythmia</AE_TEXT> 
+ <AdverseEvent>
+  <AE_ID>20</AE_ID>
+  <PARENT_AE_ID>19</PARENT_AE_ID>
+  <AE_CODE>12</AE_CODE>
+  <AE_TEXT>Atrial Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>21</AE_ID>
+  <PARENT_AE_ID>19</PARENT_AE_ID>
+  <AE_CODE>13</AE_CODE>
+  <AE_TEXT>Ventricular Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>22</AE_ID>
+  <PARENT_AE_ID>19</PARENT_AE_ID>
+  <AE_CODE>14</AE_CODE>
+  <AE_TEXT>Heart Block Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>23</AE_ID>
+  <PARENT_AE_ID>19</PARENT_AE_ID>
+  <AE_CODE>94</AE_CODE>
+  <AE_TEXT>Heart Block not Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>24</AE_ID>
+  <PARENT_AE_ID>19</PARENT_AE_ID>
+  <AE_CODE>15</AE_CODE>
+  <AE_TEXT>Asystole (cardiac arrest)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>25</AE_ID>
+  <PARENT_AE_ID>19</PARENT_AE_ID>
+  <AE_CODE>16</AE_CODE>
+  <AE_TEXT>Bradycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>26</AE_ID>
+  <PARENT_AE_ID>19</PARENT_AE_ID>
+  <AE_CODE>17</AE_CODE>
+  <AE_TEXT>Tachycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>27</AE_ID>
+  <PARENT_AE_ID>19</PARENT_AE_ID>
+  <AE_CODE>140</AE_CODE>
+  <AE_TEXT>Non-Spec ST-T Wave Change</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>28</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Gastrointestinal</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>29</AE_ID>
+  <PARENT_AE_ID>28</PARENT_AE_ID>
+  <AE_CODE>24</AE_CODE>
+  <AE_TEXT>GI bleed</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>30</AE_ID>
+  <PARENT_AE_ID>28</PARENT_AE_ID>
+  <AE_CODE>25</AE_CODE>
+  <AE_TEXT>GI infarction (NEC)</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ <AdverseEventSubCategory>
+  <AE_ID>31</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Hemodynamic</AE_TEXT> 
+ <AdverseEvent>
+  <AE_ID>32</AE_ID>
+  <PARENT_AE_ID>31</PARENT_AE_ID>
+  <AE_CODE>29</AE_CODE>
+  <AE_TEXT>Metabolic acidosis</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>33</AE_ID>
+  <PARENT_AE_ID>31</PARENT_AE_ID>
+  <AE_CODE>10</AE_CODE>
+  <AE_TEXT>Hypotension (intervention=ionotropes)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>34</AE_ID>
+  <PARENT_AE_ID>31</PARENT_AE_ID>
+  <AE_CODE>139</AE_CODE>
+  <AE_TEXT>Hypotension (intervention=volume resuscitation)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>35</AE_ID>
+  <PARENT_AE_ID>31</PARENT_AE_ID>
+  <AE_CODE>11</AE_CODE>
+  <AE_TEXT>Depressed C.O./empirically support hemodynamics (interv=ionotropes)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>36</AE_ID>
+  <PARENT_AE_ID>31</PARENT_AE_ID>
+  <AE_CODE>31</AE_CODE>
+  <AE_TEXT>Pulmonary hypertensive crisis</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>37</AE_ID>
+  <PARENT_AE_ID>31</PARENT_AE_ID>
+  <AE_CODE>144</AE_CODE>
+  <AE_TEXT>Hypercyanotic spell in cath</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>38</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Infection</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>39</AE_ID>
+  <PARENT_AE_ID>38</PARENT_AE_ID>
+  <AE_CODE>30</AE_CODE>
+  <AE_TEXT>Infection</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>40</AE_ID>
+  <PARENT_AE_ID>38</PARENT_AE_ID>
+  <AE_CODE>96</AE_CODE>
+  <AE_TEXT>Peripheral Site Infection</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>41</AE_ID>
+  <PARENT_AE_ID>38</PARENT_AE_ID>
+  <AE_CODE>97</AE_CODE>
+  <AE_TEXT>Blood Stream Infection</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>42</AE_ID>
+  <PARENT_AE_ID>38</PARENT_AE_ID>
+  <AE_CODE>98</AE_CODE>
+  <AE_TEXT>Wound Infection</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>43</AE_ID>
+  <PARENT_AE_ID>38</PARENT_AE_ID>
+  <AE_CODE>99</AE_CODE>
+  <AE_TEXT>Infective Endocarditis</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>44</AE_ID>
+  <PARENT_AE_ID>38</PARENT_AE_ID>
+  <AE_CODE>100</AE_CODE>
+  <AE_TEXT>Sepsis</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>45</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Metabolic</AE_TEXT>
+
+ <AdverseEvent>
+  <AE_ID>46</AE_ID>
+  <PARENT_AE_ID>45</PARENT_AE_ID>
+  <AE_CODE>23</AE_CODE>
+  <AE_TEXT>Fever</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>47</AE_ID>
+  <PARENT_AE_ID>45</PARENT_AE_ID>
+  <AE_CODE>101</AE_CODE>
+  <AE_TEXT>Hyperglycemia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>48</AE_ID>
+  <PARENT_AE_ID>45</PARENT_AE_ID>
+  <AE_CODE>102</AE_CODE>
+  <AE_TEXT>Hypoglycemia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>49</AE_ID>
+  <PARENT_AE_ID>45</PARENT_AE_ID>
+  <AE_CODE>28</AE_CODE>
+  <AE_TEXT>Hypothermia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>50</AE_ID>
+  <PARENT_AE_ID>45</PARENT_AE_ID>
+  <AE_CODE>145</AE_CODE>
+  <AE_TEXT>Other Metabolic</AE_TEXT>
+ </AdverseEvent>
+  </AdverseEventSubCategory>
+  
+  
+ <AdverseEventSubCategory>
+  <AE_ID>51</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Neurologic</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>52</AE_ID>
+  <PARENT_AE_ID>51</PARENT_AE_ID>
+  <AE_CODE>103</AE_CODE>
+  <AE_TEXT>Acquired CNS</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>53</AE_ID>
+  <PARENT_AE_ID>51</PARENT_AE_ID>
+  <AE_CODE>104</AE_CODE>
+  <AE_TEXT>Brain Abscess</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>54</AE_ID>
+  <PARENT_AE_ID>51</PARENT_AE_ID>
+  <AE_CODE>105</AE_CODE>
+  <AE_TEXT>CNS Embolism</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>55</AE_ID>
+  <PARENT_AE_ID>51</PARENT_AE_ID>
+  <AE_CODE>20</AE_CODE>
+  <AE_TEXT>CNS event seizure</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>56</AE_ID>
+  <PARENT_AE_ID>51</PARENT_AE_ID>
+  <AE_CODE>21</AE_CODE>
+  <AE_TEXT>CNS event stroke</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>57</AE_ID>
+  <PARENT_AE_ID>51</PARENT_AE_ID>
+  <AE_CODE>22</AE_CODE>
+  <AE_TEXT>CNS event encephalopathy</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>58</AE_ID>
+  <PARENT_AE_ID>51</PARENT_AE_ID>
+  <AE_CODE>106</AE_CODE>
+  <AE_TEXT>Other Neurologic</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ <AdverseEventSubCategory>
+  <AE_ID>59</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Renal</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>60</AE_ID>
+  <PARENT_AE_ID>59</PARENT_AE_ID>
+  <AE_CODE>32</AE_CODE>
+  <AE_TEXT>Renal insufficiency or failure</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>61</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Respiratory</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>62</AE_ID>
+  <PARENT_AE_ID>61</PARENT_AE_ID>
+  <AE_CODE>27</AE_CODE>
+  <AE_TEXT>Hypoxia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>63</AE_ID>
+  <PARENT_AE_ID>61</PARENT_AE_ID>
+  <AE_CODE>146</AE_CODE>
+  <AE_TEXT>Pulmonary Hemorrhage</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>64</AE_ID>
+  <PARENT_AE_ID>61</PARENT_AE_ID>
+  <AE_CODE>147</AE_CODE>
+  <AE_TEXT>Hemoptysis</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>65</AE_ID>
+  <PARENT_AE_ID>61</PARENT_AE_ID>
+  <AE_CODE>148</AE_CODE>
+  <AE_TEXT>Bleeding via ETT</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>66</AE_ID>
+  <PARENT_AE_ID>61</PARENT_AE_ID>
+  <AE_CODE>149</AE_CODE>
+  <AE_TEXT>Pulmonary edema</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>67</AE_ID>
+  <PARENT_AE_ID>61</PARENT_AE_ID>
+  <AE_CODE>150</AE_CODE>
+  <AE_TEXT>Coronary vasospasm</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>68</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Trauma</AE_TEXT>
+
+ <AdverseEven>
+  <AE_ID>69</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>151</AE_CODE>
+  <AE_TEXT>Air Embolus systemic</AE_TEXT>
+ </AdverseEven>
+ <AdverseEvent>
+  <AE_ID>70</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>152</AE_CODE>
+  <AE_TEXT>Air Embolus venous/PA</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>71</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>18</AE_CODE>
+  <AE_TEXT>Air Embolus</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>72</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>26</AE_CODE>
+  <AE_TEXT>Heart perforation</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>73</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>107</AE_CODE>
+  <AE_TEXT>Retroperitoneal Hematoma</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>74</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>33</AE_CODE>
+  <AE_TEXT>Thrombosis-vessel or conduit</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>75</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>153</AE_CODE>
+  <AE_TEXT>Skeletal Anomaly Other</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>76</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>108</AE_CODE>
+  <AE_TEXT>Acquired Skeletal Problem</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>77</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>154</AE_CODE>
+  <AE_TEXT>Intramyocardial contrast injection</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>78</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>128</AE_CODE>
+  <AE_TEXT>Mitral regurgitation</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>79</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>129</AE_CODE>
+  <AE_TEXT>Aortic regurgitation</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>80</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>130</AE_CODE>
+  <AE_TEXT>Pulmonary regurgitation</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>81</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>131</AE_CODE>
+  <AE_TEXT>Tricuspid regurgitation</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>82</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>134</AE_CODE>
+  <AE_TEXT>Vessel trauma</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>83</AE_ID>
+  <PARENT_AE_ID>68</PARENT_AE_ID>
+  <AE_CODE>155</AE_CODE>
+  <AE_TEXT>Other trauma</AE_TEXT>
+ </AdverseEvent>
+  </AdverseEventSubCategory>
+  
+ <AdverseEventSubCategory>
+  <AE_ID>84</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Equipment Problem</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>85</AE_ID>
+  <PARENT_AE_ID>84</PARENT_AE_ID>
+  <AE_CODE>135</AE_CODE>
+  <AE_TEXT>Broken catheter</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>86</AE_ID>
+  <PARENT_AE_ID>84</PARENT_AE_ID>
+  <AE_CODE>136</AE_CODE>
+  <AE_TEXT>Broken end hole balloon</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>87</AE_ID>
+  <PARENT_AE_ID>84</PARENT_AE_ID>
+  <AE_CODE>137</AE_CODE>
+  <AE_TEXT>Broken guide wire</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>88</AE_ID>
+  <PARENT_AE_ID>84</PARENT_AE_ID>
+  <AE_CODE>141</AE_CODE>
+  <AE_TEXT>Imaging equipment problem</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>89</AE_ID>
+  <PARENT_AE_ID>84</PARENT_AE_ID>
+  <AE_CODE>156</AE_CODE>
+  <AE_TEXT>Other equipment problem</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>90</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Other</AE_TEXT>
+
+ <AdverseEvent>
+  <AE_ID>91</AE_ID>
+  <PARENT_AE_ID>90</PARENT_AE_ID>
+  <AE_CODE>222</AE_CODE>
+  <AE_TEXT>Medication Error</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>92</AE_ID>
+  <PARENT_AE_ID>90</PARENT_AE_ID>
+  <AE_CODE>225</AE_CODE>
+  <AE_TEXT>Coronary Vasospasm</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>93</AE_ID>
+  <PARENT_AE_ID>90</PARENT_AE_ID>
+  <AE_CODE>34</AE_CODE>
+  <AE_TEXT>Other Cath related Problem</AE_TEXT>
+ </AdverseEvent>
+  </AdverseEventSubCategory>
+  
+  
+ <AdverseEventSubCategory>
+  <AE_ID>263</AE_ID>
+  <PARENT_AE_ID>16</PARENT_AE_ID>
+  <AE_TEXT>Transfusion</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>264</AE_ID>
+  <PARENT_AE_ID>263</PARENT_AE_ID>
+  <AE_CODE>8</AE_CODE>
+  <AE_TEXT>Transfusion blood loss from procedure</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>265</AE_ID>
+  <PARENT_AE_ID>263</PARENT_AE_ID>
+  <AE_CODE>9</AE_CODE>
+  <AE_TEXT>Transfusion Lw Hct or need for volume</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ </OtherAdverseEventCategory>
+ <OtherAdverseEventCategory>
+  <AE_ID>94</AE_ID>
+  <PARENT_AE_ID>0</PARENT_AE_ID>
+  <AE_TEXT>Access Related Problem</AE_TEXT>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>95</AE_ID>
+  <PARENT_AE_ID>94</PARENT_AE_ID>
+  <AE_TEXT>Access Related</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>96</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>35</AE_CODE>
+  <AE_TEXT>Pulse loss (requiring intervention)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>97</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>109</AE_CODE>
+  <AE_TEXT>Systemic Arterial Thrombosis</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>98</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>110</AE_CODE>
+  <AE_TEXT>Systemic Venous Thrombosis</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>99</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>36</AE_CODE>
+  <AE_TEXT>Local hematoma IJV (include sign/symptom and/or intervention)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>100</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>37</AE_CODE>
+  <AE_TEXT>Local hematoma Groin (include sign/symptom and/or intervention)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>101</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>38</AE_CODE>
+  <AE_TEXT>Pseudoaneurysm</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>102</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>39</AE_CODE>
+  <AE_TEXT>AV fistula groin</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>103</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>40</AE_CODE>
+  <AE_TEXT>Hemothorax</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>104</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>41</AE_CODE>
+  <AE_TEXT>Pneumothorax</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>105</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>42</AE_CODE>
+  <AE_TEXT>Retroperitoneal hematoma</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>106</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>111</AE_CODE>
+  <AE_TEXT>Bleeding with line removal</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>107</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>224</AE_CODE>
+  <AE_TEXT>Rebleed after bandages applied</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>108</AE_ID>
+  <PARENT_AE_ID>95</PARENT_AE_ID>
+  <AE_CODE>43</AE_CODE>
+  <AE_TEXT>Other access problem</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>109</AE_ID>
+  <PARENT_AE_ID>94</PARENT_AE_ID>
+  <AE_TEXT>Arrhythmia</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>110</AE_ID>
+  <PARENT_AE_ID>109</PARENT_AE_ID>
+  <AE_CODE>157</AE_CODE>
+  <AE_TEXT>Atrial Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>111</AE_ID>
+  <PARENT_AE_ID>109</PARENT_AE_ID>
+  <AE_CODE>158</AE_CODE>
+  <AE_TEXT>Ventricular Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>112</AE_ID>
+  <PARENT_AE_ID>109</PARENT_AE_ID>
+  <AE_CODE>159</AE_CODE>
+  <AE_TEXT>Heart Block Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>113</AE_ID>
+  <PARENT_AE_ID>109</PARENT_AE_ID>
+  <AE_CODE>160</AE_CODE>
+  <AE_TEXT>Heart Block not Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>114</AE_ID>
+  <PARENT_AE_ID>109</PARENT_AE_ID>
+  <AE_CODE>161</AE_CODE>
+  <AE_TEXT>Asystole (cardiac arrest)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>115</AE_ID>
+  <PARENT_AE_ID>109</PARENT_AE_ID>
+  <AE_CODE>162</AE_CODE>
+  <AE_TEXT>Bradycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>116</AE_ID>
+  <PARENT_AE_ID>109</PARENT_AE_ID>
+  <AE_CODE>163</AE_CODE>
+  <AE_TEXT>Tachycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>117</AE_ID>
+  <PARENT_AE_ID>109</PARENT_AE_ID>
+  <AE_CODE>164</AE_CODE>
+  <AE_TEXT>Non-Spec ST-T Wave Change</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ </OtherAdverseEventCategory>
+ 
+  <OtherAdverseEventCategory>
+  <AE_ID>118</AE_ID>
+  <PARENT_AE_ID>0</PARENT_AE_ID>
+  <AE_TEXT>Angioplasty Related Problem</AE_TEXT>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>119</AE_ID>
+  <PARENT_AE_ID>118</PARENT_AE_ID>
+  <AE_TEXT>Arrhythmia</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>120</AE_ID>
+  <PARENT_AE_ID>119</PARENT_AE_ID>
+  <AE_CODE>54</AE_CODE>
+  <AE_TEXT>Atrial Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>121</AE_ID>
+  <PARENT_AE_ID>119</PARENT_AE_ID>
+  <AE_CODE>55</AE_CODE>
+  <AE_TEXT>Ventricular Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>122</AE_ID>
+  <PARENT_AE_ID>119</PARENT_AE_ID>
+  <AE_CODE>112</AE_CODE>
+  <AE_TEXT>Heart Block Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>123</AE_ID>
+  <PARENT_AE_ID>119</PARENT_AE_ID>
+  <AE_CODE>113</AE_CODE>
+  <AE_TEXT>Heart Block not Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>124</AE_ID>
+  <PARENT_AE_ID>119</PARENT_AE_ID>
+  <AE_CODE>118</AE_CODE>
+  <AE_TEXT>Asystole (cardiac arrest)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>125</AE_ID>
+  <PARENT_AE_ID>119</PARENT_AE_ID>
+  <AE_CODE>119</AE_CODE>
+  <AE_TEXT>Bradycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>126</AE_ID>
+  <PARENT_AE_ID>119</PARENT_AE_ID>
+  <AE_CODE>120</AE_CODE>
+  <AE_TEXT>Tachycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>127</AE_ID>
+  <PARENT_AE_ID>119</PARENT_AE_ID>
+  <AE_CODE>165</AE_CODE>
+  <AE_TEXT>Non-Spec ST-T Wave Change</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>128</AE_ID>
+  <PARENT_AE_ID>118</PARENT_AE_ID>
+  <AE_TEXT>Balloon Malfunction</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>129</AE_ID>
+  <PARENT_AE_ID>128</PARENT_AE_ID>
+  <AE_CODE>59</AE_CODE>
+  <AE_TEXT>Balloon rupture with air embolus</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>130</AE_ID>
+  <PARENT_AE_ID>128</PARENT_AE_ID>
+  <AE_CODE>60</AE_CODE>
+  <AE_TEXT>Balloon rupture with fragmented embolization</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>131</AE_ID>
+  <PARENT_AE_ID>128</PARENT_AE_ID>
+  <AE_CODE>133</AE_CODE>
+  <AE_TEXT>Circumferential balloon rupture</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ <AdverseEventSubCategory>
+  <AE_ID>132</AE_ID>
+  <PARENT_AE_ID>118</PARENT_AE_ID>
+  <AE_TEXT>Bronchus Injury</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>133</AE_ID>
+  <PARENT_AE_ID>132</PARENT_AE_ID>
+  <AE_CODE>49</AE_CODE>
+  <AE_TEXT>Bronchus injury</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>134</AE_ID>
+  <PARENT_AE_ID>118</PARENT_AE_ID>
+  <AE_TEXT>Chest Trauma</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>135</AE_ID>
+  <PARENT_AE_ID>134</PARENT_AE_ID>
+  <AE_CODE>57</AE_CODE>
+  <AE_TEXT>Hemothorax</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>136</AE_ID>
+  <PARENT_AE_ID>134</PARENT_AE_ID>
+  <AE_CODE>58</AE_CODE>
+  <AE_TEXT>Pneumothorax</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>137</AE_ID>
+  <PARENT_AE_ID>134</PARENT_AE_ID>
+  <AE_CODE>61</AE_CODE>
+  <AE_TEXT>Heart perforation</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>138</AE_ID>
+  <PARENT_AE_ID>118</PARENT_AE_ID>
+  <AE_TEXT>Pulmonary Symptom</AE_TEXT>
+
+ <AdverseEvent>
+  <AE_ID>139</AE_ID>
+  <PARENT_AE_ID>138</PARENT_AE_ID>
+  <AE_CODE>51</AE_CODE>
+  <AE_TEXT>Pulmonary Hemorrhage</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>140</AE_ID>
+  <PARENT_AE_ID>138</PARENT_AE_ID>
+  <AE_CODE>52</AE_CODE>
+  <AE_TEXT>Hemoptysis</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>141</AE_ID>
+  <PARENT_AE_ID>138</PARENT_AE_ID>
+  <AE_CODE>53</AE_CODE>
+  <AE_TEXT>Bleeding via ETT</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>142</AE_ID>
+  <PARENT_AE_ID>138</PARENT_AE_ID>
+  <AE_CODE>132</AE_CODE>
+  <AE_TEXT>Pulmonary edema</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>143</AE_ID>
+  <PARENT_AE_ID>118</PARENT_AE_ID>
+  <AE_TEXT>Valvular Regurgitation(more than one grade greater than predilation)</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>144</AE_ID>
+  <PARENT_AE_ID>143</PARENT_AE_ID>
+  <AE_CODE>50</AE_CODE>
+  <AE_TEXT>Aortic Regurgitation</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ 
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>145</AE_ID>
+  <PARENT_AE_ID>118</PARENT_AE_ID>
+  <AE_TEXT>Vessel Injury</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>146</AE_ID>
+  <PARENT_AE_ID>145</PARENT_AE_ID>
+  <AE_CODE>44</AE_CODE>
+  <AE_TEXT>Unconfined vascular tear (extravasation increasing in size)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>147</AE_ID>
+  <PARENT_AE_ID>145</PARENT_AE_ID>
+  <AE_CODE>45</AE_CODE>
+  <AE_TEXT>Confined vascular tear (perivascular extravasation not greater than in size)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>148</AE_ID>
+  <PARENT_AE_ID>145</PARENT_AE_ID>
+  <AE_CODE>46</AE_CODE>
+  <AE_TEXT>Intravascular tear with flow obstruction</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>149</AE_ID>
+  <PARENT_AE_ID>145</PARENT_AE_ID>
+  <AE_CODE>47</AE_CODE>
+  <AE_TEXT>Vessel thrombosis</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>150</AE_ID>
+  <PARENT_AE_ID>145</PARENT_AE_ID>
+  <AE_CODE>48</AE_CODE>
+  <AE_TEXT>Vessel aneurysm (local enlargement greater than 100% adjacent PA diam)</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>151</AE_ID>
+  <PARENT_AE_ID>118</PARENT_AE_ID>
+  <AE_TEXT>Other</AE_TEXT>
+
+ <AdverseEvent>
+  <AE_ID>152</AE_ID>
+  <PARENT_AE_ID>151</PARENT_AE_ID>
+  <AE_CODE>115</AE_CODE>
+  <AE_TEXT>Other Angioplasty Related problem</AE_TEXT>
+ </AdverseEvent>
+  </AdverseEventSubCategory>
+ </OtherAdverseEventCategory>
+ 
+ <OtherAdverseEventCategory>
+  <AE_ID>153</AE_ID>
+  <PARENT_AE_ID>0</PARENT_AE_ID>
+  <AE_TEXT>Valvuloplasty Related Problem</AE_TEXT>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>154</AE_ID>
+  <PARENT_AE_ID>153</PARENT_AE_ID>
+  <AE_TEXT>Arrhythmia</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>155</AE_ID>
+  <PARENT_AE_ID>154</PARENT_AE_ID>
+  <AE_CODE>166</AE_CODE>
+  <AE_TEXT>Atrial Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>156</AE_ID>
+  <PARENT_AE_ID>154</PARENT_AE_ID>
+  <AE_CODE>167</AE_CODE>
+  <AE_TEXT>Ventricular Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>157</AE_ID>
+  <PARENT_AE_ID>154</PARENT_AE_ID>
+  <AE_CODE>168</AE_CODE>
+  <AE_TEXT>Heart Block Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>158</AE_ID>
+  <PARENT_AE_ID>154</PARENT_AE_ID>
+  <AE_CODE>169</AE_CODE>
+  <AE_TEXT>Heart Block not Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>159</AE_ID>
+  <PARENT_AE_ID>154</PARENT_AE_ID>
+  <AE_CODE>170</AE_CODE>
+  <AE_TEXT>Asystole (cardiac arrest)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>160</AE_ID>
+  <PARENT_AE_ID>154</PARENT_AE_ID>
+  <AE_CODE>171</AE_CODE>
+  <AE_TEXT>Bradycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>161</AE_ID>
+  <PARENT_AE_ID>154</PARENT_AE_ID>
+  <AE_CODE>172</AE_CODE>
+  <AE_TEXT>Tachycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>162</AE_ID>
+  <PARENT_AE_ID>154</PARENT_AE_ID>
+  <AE_CODE>173</AE_CODE>
+  <AE_TEXT>Non-Spec ST-T Wave Change</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>163</AE_ID>
+  <PARENT_AE_ID>153</PARENT_AE_ID>
+  <AE_TEXT>Balloon Malfunction</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>164</AE_ID>
+  <PARENT_AE_ID>163</PARENT_AE_ID>
+  <AE_CODE>174</AE_CODE>
+  <AE_TEXT>Balloon rupture with air embolus</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>165</AE_ID>
+  <PARENT_AE_ID>163</PARENT_AE_ID>
+  <AE_CODE>175</AE_CODE>
+  <AE_TEXT>Balloon rupture with fragmented embolization</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>166</AE_ID>
+  <PARENT_AE_ID>163</PARENT_AE_ID>
+  <AE_CODE>176</AE_CODE>
+  <AE_TEXT>Circumferential balloon rupture</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>167</AE_ID>
+  <PARENT_AE_ID>153</PARENT_AE_ID>
+  <AE_TEXT>Bronchus Injury</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>168</AE_ID>
+  <PARENT_AE_ID>167</PARENT_AE_ID>
+  <AE_CODE>177</AE_CODE>
+  <AE_TEXT>Bronchus injury</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>169</AE_ID>
+  <PARENT_AE_ID>153</PARENT_AE_ID>
+  <AE_TEXT>Chest Trauma</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>170</AE_ID>
+  <PARENT_AE_ID>169</PARENT_AE_ID>
+  <AE_CODE>178</AE_CODE>
+  <AE_TEXT>Hemothorax</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>171</AE_ID>
+  <PARENT_AE_ID>169</PARENT_AE_ID>
+  <AE_CODE>179</AE_CODE>
+  <AE_TEXT>Pneumothorax</AE_TEXT>
+ </AdverseEvent> 
+ 
+ <AdverseEvent>
+  <AE_ID>172</AE_ID>
+  <PARENT_AE_ID>169</PARENT_AE_ID>
+  <AE_CODE>180</AE_CODE>
+  <AE_TEXT>Heart perforation</AE_TEXT>
+ </AdverseEvent> 
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>173</AE_ID>
+  <PARENT_AE_ID>153</PARENT_AE_ID>
+  <AE_TEXT>Pulmonary Symptom</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>174</AE_ID>
+  <PARENT_AE_ID>173</PARENT_AE_ID>
+  <AE_CODE>181</AE_CODE>
+  <AE_TEXT>Pulmonary Hemorrhage</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>175</AE_ID>
+  <PARENT_AE_ID>173</PARENT_AE_ID>
+  <AE_CODE>182</AE_CODE>
+  <AE_TEXT>Hemoptysis</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>176</AE_ID>
+  <PARENT_AE_ID>173</PARENT_AE_ID>
+  <AE_CODE>183</AE_CODE>
+  <AE_TEXT>Bleeding via ETT</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>177</AE_ID>
+  <PARENT_AE_ID>173</PARENT_AE_ID>
+  <AE_CODE>184</AE_CODE>
+  <AE_TEXT>Pulmonary edema</AE_TEXT>
+ </AdverseEvent>
+ 
+</AdverseEventSubCategory> 
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>178</AE_ID>
+  <PARENT_AE_ID>153</PARENT_AE_ID>
+  <AE_TEXT>Valvular Regurgitation(more than one grade greater than predilation)</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>179</AE_ID>
+  <PARENT_AE_ID>178</PARENT_AE_ID>
+  <AE_CODE>185</AE_CODE>
+  <AE_TEXT>Aortic Regurgitation</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>180</AE_ID>
+  <PARENT_AE_ID>178</PARENT_AE_ID>
+  <AE_CODE>186</AE_CODE>
+  <AE_TEXT>Mitral Regurgitation</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>181</AE_ID>
+  <PARENT_AE_ID>178</PARENT_AE_ID>
+  <AE_CODE>187</AE_CODE>
+  <AE_TEXT>Pulmonary Regurgitation</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>182</AE_ID>
+  <PARENT_AE_ID>178</PARENT_AE_ID>
+  <AE_CODE>188</AE_CODE>
+  <AE_TEXT>Tricuspid Regurgitation</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>183</AE_ID>
+  <PARENT_AE_ID>153</PARENT_AE_ID>
+  <AE_TEXT>Vessel Injury</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>184</AE_ID>
+  <PARENT_AE_ID>183</PARENT_AE_ID>
+  <AE_CODE>189</AE_CODE>
+  <AE_TEXT>Unconfined vascular tear (extravasation increasing in size)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>185</AE_ID>
+  <PARENT_AE_ID>183</PARENT_AE_ID>
+  <AE_CODE>190</AE_CODE>
+  <AE_TEXT>Confined vascular tear (perivascular extravasation not greater than in size)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>186</AE_ID>
+  <PARENT_AE_ID>183</PARENT_AE_ID>
+  <AE_CODE>191</AE_CODE>
+  <AE_TEXT>Intravascular tear with flow obstruction</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>187</AE_ID>
+  <PARENT_AE_ID>183</PARENT_AE_ID>
+  <AE_CODE>192</AE_CODE>
+  <AE_TEXT>Vessel thrombosis</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>188</AE_ID>
+  <PARENT_AE_ID>183</PARENT_AE_ID>
+  <AE_CODE>193</AE_CODE>
+  <AE_TEXT>Vessel aneurysm (local enlargement greater than 100% adjacent PA diam)</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>189</AE_ID>
+  <PARENT_AE_ID>153</PARENT_AE_ID>
+  <AE_TEXT>Other</AE_TEXT>
+
+ <AdverseEvent>
+  <AE_ID>190</AE_ID>
+  <PARENT_AE_ID>189</PARENT_AE_ID>
+  <AE_CODE>194</AE_CODE>
+  <AE_TEXT>Other Valvuloplasty Related problem</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory> 
+ 
+</OtherAdverseEventCategory> 
+  
+ <OtherAdverseEventCategory>
+  <AE_ID>191</AE_ID>
+  <PARENT_AE_ID>0</PARENT_AE_ID>
+  <AE_TEXT>Stent Related Problem</AE_TEXT>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>192</AE_ID>
+  <PARENT_AE_ID>191</PARENT_AE_ID>
+  <AE_TEXT>Stent Related</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>193</AE_ID>
+  <PARENT_AE_ID>192</PARENT_AE_ID>
+  <AE_CODE>127</AE_CODE>
+  <AE_TEXT>Stent related problem</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>194</AE_ID>
+  <PARENT_AE_ID>192</PARENT_AE_ID>
+  <AE_CODE>223</AE_CODE>
+  <AE_TEXT>Stent Fragment Embolization</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>195</AE_ID>
+  <PARENT_AE_ID>191</PARENT_AE_ID>
+  <AE_TEXT>Arrhythmia</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>196</AE_ID>
+  <PARENT_AE_ID>195</PARENT_AE_ID>
+  <AE_CODE>64</AE_CODE>
+  <AE_TEXT>Atrial Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>197</AE_ID>
+  <PARENT_AE_ID>195</PARENT_AE_ID>
+  <AE_CODE>65</AE_CODE>
+  <AE_TEXT>Ventricular Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>198</AE_ID>
+  <PARENT_AE_ID>195</PARENT_AE_ID>
+  <AE_CODE>66</AE_CODE>
+  <AE_TEXT>Heart Block Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>199</AE_ID>
+  <PARENT_AE_ID>195</PARENT_AE_ID>
+  <AE_CODE>121</AE_CODE>
+  <AE_TEXT>Heart Block not Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>200</AE_ID>
+  <PARENT_AE_ID>195</PARENT_AE_ID>
+  <AE_CODE>122</AE_CODE>
+  <AE_TEXT>Asystole (cardiac arrest)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>201</AE_ID>
+  <PARENT_AE_ID>195</PARENT_AE_ID>
+  <AE_CODE>123</AE_CODE>
+  <AE_TEXT>Bradycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>202</AE_ID>
+  <PARENT_AE_ID>195</PARENT_AE_ID>
+  <AE_CODE>124</AE_CODE>
+  <AE_TEXT>Tachycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>203</AE_ID>
+  <PARENT_AE_ID>195</PARENT_AE_ID>
+  <AE_CODE>195</AE_CODE>
+  <AE_TEXT>Non-Spec ST-T Wave Change</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>204</AE_ID>
+  <PARENT_AE_ID>191</PARENT_AE_ID>
+  <AE_TEXT>Balloon Malfunction</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>205</AE_ID>
+  <PARENT_AE_ID>204</PARENT_AE_ID>
+  <AE_CODE>67</AE_CODE>
+  <AE_TEXT>Balloon rupture with air embolus</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>206</AE_ID>
+  <PARENT_AE_ID>191</PARENT_AE_ID>
+  <AE_TEXT>Other Stent Problems</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>207</AE_ID>
+  <PARENT_AE_ID>206</PARENT_AE_ID>
+  <AE_CODE>63</AE_CODE>
+  <AE_TEXT>Stent Malposition</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>208</AE_ID>
+  <PARENT_AE_ID>206</PARENT_AE_ID>
+  <AE_CODE>69</AE_CODE>
+  <AE_TEXT>Stent Embolization</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>209</AE_ID>
+  <PARENT_AE_ID>206</PARENT_AE_ID>
+  <AE_CODE>70</AE_CODE>
+  <AE_TEXT>Other stent problem</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory> 
+ </OtherAdverseEventCategory>
+ 
+ <OtherAdverseEventCategory>
+  <AE_ID>210</AE_ID>
+  <PARENT_AE_ID>0</PARENT_AE_ID>
+  <AE_TEXT>Device Related Problem</AE_TEXT>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>211</AE_ID>
+  <PARENT_AE_ID>210</PARENT_AE_ID>
+  <AE_TEXT>Device Related</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>212</AE_ID>
+  <PARENT_AE_ID>211</PARENT_AE_ID>
+  <AE_CODE>196</AE_CODE>
+  <AE_TEXT>Device thrombus</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>213</AE_ID>
+  <PARENT_AE_ID>211</PARENT_AE_ID>
+  <AE_CODE>71</AE_CODE>
+  <AE_TEXT>Device malposition</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>214</AE_ID>
+  <PARENT_AE_ID>211</PARENT_AE_ID>
+  <AE_CODE>72</AE_CODE>
+  <AE_TEXT>Device embolization</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>215</AE_ID>
+  <PARENT_AE_ID>211</PARENT_AE_ID>
+  <AE_CODE>197</AE_CODE>
+  <AE_TEXT>Device erosion</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>216</AE_ID>
+  <PARENT_AE_ID>211</PARENT_AE_ID>
+  <AE_CODE>73</AE_CODE>
+  <AE_TEXT>Other device problem</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>217</AE_ID>
+  <PARENT_AE_ID>210</PARENT_AE_ID>
+  <AE_TEXT>Arrhythmia</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>218</AE_ID>
+  <PARENT_AE_ID>217</PARENT_AE_ID>
+  <AE_CODE>198</AE_CODE>
+  <AE_TEXT>Atrial Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>219</AE_ID>
+  <PARENT_AE_ID>217</PARENT_AE_ID>
+  <AE_CODE>199</AE_CODE>
+  <AE_TEXT>Ventricular Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>220</AE_ID>
+  <PARENT_AE_ID>217</PARENT_AE_ID>
+  <AE_CODE>200</AE_CODE>
+  <AE_TEXT>Heart Block Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>221</AE_ID>
+  <PARENT_AE_ID>217</PARENT_AE_ID>
+  <AE_CODE>201</AE_CODE>
+  <AE_TEXT>Heart Block not Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>222</AE_ID>
+  <PARENT_AE_ID>217</PARENT_AE_ID>
+  <AE_CODE>202</AE_CODE>
+  <AE_TEXT>Asystole (cardiac arrest)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>223</AE_ID>
+  <PARENT_AE_ID>217</PARENT_AE_ID>
+  <AE_CODE>203</AE_CODE>
+  <AE_TEXT>Bradycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>224</AE_ID>
+  <PARENT_AE_ID>217</PARENT_AE_ID>
+  <AE_CODE>204</AE_CODE>
+  <AE_TEXT>Tachycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>225</AE_ID>
+  <PARENT_AE_ID>217</PARENT_AE_ID>
+  <AE_CODE>205</AE_CODE>
+  <AE_TEXT>Non-Spec ST-T Wave Change</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ </OtherAdverseEventCategory>
+ 
+ <OtherAdverseEventCategory>
+  <AE_ID>226</AE_ID>
+  <PARENT_AE_ID>0</PARENT_AE_ID>
+  <AE_TEXT>Coil Related Problem</AE_TEXT>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>227</AE_ID>
+  <PARENT_AE_ID>226</PARENT_AE_ID>
+  <AE_TEXT>Coil Related</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>228</AE_ID>
+  <PARENT_AE_ID>227</PARENT_AE_ID>
+  <AE_CODE>74</AE_CODE>
+  <AE_TEXT>Coil malposition</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>229</AE_ID>
+  <PARENT_AE_ID>227</PARENT_AE_ID>
+  <AE_CODE>75</AE_CODE>
+  <AE_TEXT>Coil embolization</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>230</AE_ID>
+  <PARENT_AE_ID>227</PARENT_AE_ID>
+  <AE_CODE>76</AE_CODE>
+  <AE_TEXT>Other coil problem</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>231</AE_ID>
+  <PARENT_AE_ID>226</PARENT_AE_ID>
+  <AE_TEXT>Arrhythmia</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>232</AE_ID>
+  <PARENT_AE_ID>231</PARENT_AE_ID>
+  <AE_CODE>206</AE_CODE>
+  <AE_TEXT>Atrial Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>233</AE_ID>
+  <PARENT_AE_ID>231</PARENT_AE_ID>
+  <AE_CODE>207</AE_CODE>
+  <AE_TEXT>Ventricular Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>234</AE_ID>
+  <PARENT_AE_ID>231</PARENT_AE_ID>
+  <AE_CODE>208</AE_CODE>
+  <AE_TEXT>Heart Block Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>235</AE_ID>
+  <PARENT_AE_ID>231</PARENT_AE_ID>
+  <AE_CODE>209</AE_CODE>
+  <AE_TEXT>Heart Block not Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>236</AE_ID>
+  <PARENT_AE_ID>231</PARENT_AE_ID>
+  <AE_CODE>210</AE_CODE>
+  <AE_TEXT>Asystole (cardiac arrest)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>237</AE_ID>
+  <PARENT_AE_ID>231</PARENT_AE_ID>
+  <AE_CODE>211</AE_CODE>
+  <AE_TEXT>Bradycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>238</AE_ID>
+  <PARENT_AE_ID>231</PARENT_AE_ID>
+  <AE_CODE>212</AE_CODE>
+  <AE_TEXT>Tachycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>239</AE_ID>
+  <PARENT_AE_ID>231</PARENT_AE_ID>
+  <AE_CODE>213</AE_CODE>
+  <AE_TEXT>Non-Spec ST-T Wave Change</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ </OtherAdverseEventCategory>
+ 
+ <OtherAdverseEventCategory>
+  <AE_ID>240</AE_ID>
+  <PARENT_AE_ID>0</PARENT_AE_ID>
+  <AE_TEXT>Biopsy Related Problem</AE_TEXT>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>241</AE_ID>
+  <PARENT_AE_ID>240</PARENT_AE_ID>
+  <AE_TEXT>Biopsy Related</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>242</AE_ID>
+  <PARENT_AE_ID>241</PARENT_AE_ID>
+  <AE_CODE>77</AE_CODE>
+  <AE_TEXT>Pericardial effusion</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>243</AE_ID>
+  <PARENT_AE_ID>241</PARENT_AE_ID>
+  <AE_CODE>78</AE_CODE>
+  <AE_TEXT>Tricuspid valve tear</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>244</AE_ID>
+  <PARENT_AE_ID>241</PARENT_AE_ID>
+  <AE_CODE>79</AE_CODE>
+  <AE_TEXT>VSD creation</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>245</AE_ID>
+  <PARENT_AE_ID>241</PARENT_AE_ID>
+  <AE_CODE>80</AE_CODE>
+  <AE_TEXT>Atrial Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>246</AE_ID>
+  <PARENT_AE_ID>241</PARENT_AE_ID>
+  <AE_CODE>81</AE_CODE>
+  <AE_TEXT>Ventricular Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>247</AE_ID>
+  <PARENT_AE_ID>241</PARENT_AE_ID>
+  <AE_CODE>82</AE_CODE>
+  <AE_TEXT>Heart Block</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>248</AE_ID>
+  <PARENT_AE_ID>241</PARENT_AE_ID>
+  <AE_CODE>125</AE_CODE>
+  <AE_TEXT>Coronary Fistula</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>249</AE_ID>
+  <PARENT_AE_ID>241</PARENT_AE_ID>
+  <AE_CODE>83</AE_CODE>
+  <AE_TEXT>Other Biopsy problem</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ 
+ <AdverseEventSubCategory>
+  <AE_ID>250</AE_ID>
+  <PARENT_AE_ID>240</PARENT_AE_ID>
+  <AE_TEXT>Arrhythmia</AE_TEXT>
+ 
+ <AdverseEvent>
+  <AE_ID>251</AE_ID>
+  <PARENT_AE_ID>250</PARENT_AE_ID>
+  <AE_CODE>214</AE_CODE>
+  <AE_TEXT>Atrial Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>252</AE_ID>
+  <PARENT_AE_ID>250</PARENT_AE_ID>
+  <AE_CODE>215</AE_CODE>
+  <AE_TEXT>Ventricular Arrhythmia</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>253</AE_ID>
+  <PARENT_AE_ID>250</PARENT_AE_ID>
+  <AE_CODE>216</AE_CODE>
+  <AE_TEXT>Heart Block Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>254</AE_ID>
+  <PARENT_AE_ID>250</PARENT_AE_ID>
+  <AE_CODE>217</AE_CODE>
+  <AE_TEXT>Heart Block not Resolved</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>255</AE_ID>
+  <PARENT_AE_ID>250</PARENT_AE_ID>
+  <AE_CODE>218</AE_CODE>
+  <AE_TEXT>Asystole (cardiac arrest)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>256</AE_ID>
+  <PARENT_AE_ID>250</PARENT_AE_ID>
+  <AE_CODE>219</AE_CODE>
+  <AE_TEXT>Bradycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>257</AE_ID>
+  <PARENT_AE_ID>250</PARENT_AE_ID>
+  <AE_CODE>220</AE_CODE>
+  <AE_TEXT>Tachycardia (sinus)</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>258</AE_ID>
+  <PARENT_AE_ID>250</PARENT_AE_ID>
+  <AE_CODE>221</AE_CODE>
+  <AE_TEXT>Non-Spec ST-T Wave Change</AE_TEXT>
+ </AdverseEvent>
+ </AdverseEventSubCategory>
+ </OtherAdverseEventCategory>
+ 
+ <OtherAdverseEventCategory>
+  <AE_ID>259</AE_ID>
+  <PARENT_AE_ID>0</PARENT_AE_ID>
+  <AE_TEXT>Ablation Related Problem</AE_TEXT> 
+ <AdverseEvent>
+  <AE_ID>260</AE_ID>
+  <PARENT_AE_ID>259</PARENT_AE_ID>
+  <AE_CODE>86</AE_CODE>
+  <AE_TEXT>Heart Block</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>261</AE_ID>
+  <PARENT_AE_ID>259</PARENT_AE_ID>
+  <AE_CODE>88</AE_CODE>
+  <AE_TEXT>Hypotension</AE_TEXT>
+ </AdverseEvent>
+ <AdverseEvent>
+  <AE_ID>262</AE_ID>
+  <PARENT_AE_ID>259</PARENT_AE_ID>
+  <AE_CODE>89</AE_CODE>
+  <AE_TEXT>Other ablation problem</AE_TEXT>
+ </AdverseEvent> 
+ </OtherAdverseEventCategory>
+</OtherAdverseEvents>

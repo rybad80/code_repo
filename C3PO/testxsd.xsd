@@ -1,0 +1,105 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="BCHCPOR3DataImport">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Patient">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CaseInfo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:byte" name="HospitalID"/>
+                    <xs:element type="xs:string" name="CathDate"/>
+                    <xs:element type="xs:short" name="Operator"/>
+                    <xs:element type="xs:int" name="SensisRefNum"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CaseClinicalInfo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:byte" name="PatientAge"/>
+                    <xs:element type="xs:byte" name="PatientAgeType"/>
+                    <xs:element type="xs:byte" name="PatientSex"/>
+                    <xs:element type="xs:float" name="PatientWeight"/>
+                    <xs:element type="xs:float" name="PatientHeight"/>
+                    <xs:element type="xs:string" name="PatientBSA"/>
+                    <xs:element type="xs:short" name="STSDiagCode"/>
+                    <xs:element type="xs:byte" name="PrevCathlast90dInd"/>
+                    <xs:element type="xs:byte" name="PrevSurglast90dInd"/>
+                    <xs:element type="xs:byte" name="GenSyndromeInd"/>
+                    <xs:element type="xs:byte" name="NonCardiacProbInd"/>
+                    <xs:element type="xs:string" name="NonCardiacProbValues"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CaseProcedureInfo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:float" name="FluroTime"/>
+                    <xs:element type="xs:float" name="TotalDap"/>
+                    <xs:element type="xs:string" name="SheathCathInDateTime"/>
+                    <xs:element type="xs:string" name="SheathCathOutDateTime"/>
+                    <xs:element type="xs:byte" name="BloodTransfusion"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CaseEOCAdmDisposition">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="AdmissionSource"/>
+                    <xs:element type="xs:string" name="PostCathLocation"/>
+                    <xs:element type="xs:byte" name="IsUnplannedAdmission"/>
+                    <xs:element type="xs:byte" name="AdmitGreaterThan48HrsPriorToCath"/>
+                    <xs:element type="xs:byte" name="DischargeGreaterThan48HrsPostCath"/>
+                    <xs:element type="xs:byte" name="deathlessthan72hrspostcath"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Hemodynamics">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:byte" name="SingleVentriclePhysiology"/>
+                    <xs:element type="xs:byte" name="SVEDPGreaterThanOrEqualTo18mmHg"/>
+                    <xs:element type="xs:byte" name="MVSatLessThan60Percent"/>
+                    <xs:element type="xs:byte" name="QpQsGreaterThan1Point5"/>
+                    <xs:element type="xs:byte" name="SysSatLessThan95Percent"/>
+                    <xs:element type="xs:byte" name="PASysGreaterThanOrEqualTo45mmHg"/>
+                    <xs:element type="xs:byte" name="PVRGreaterThan3WU"/>
+                    <xs:element type="xs:byte" name="SysSatLessThan78Percent"/>
+                    <xs:element type="xs:byte" name="PAMeanLessThanOrEqualTo17mmHg"/>
+                    <xs:element type="xs:byte" name="MVSatLessThan50Percent"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="AdverseEvents">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="MajorAdverseEvent">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:short" name="AeCode"/>
+                          <xs:element type="xs:string" name="AeSeriousness"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OtherAdverseEvent" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:byte" name="AeCode"/>
+                          <xs:element type="xs:string" name="AeSeriousness"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="AENotes"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element type="xs:string" name="RequiredResources"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

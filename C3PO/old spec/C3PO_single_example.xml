@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<Submission xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <HospitalName>Children's Hospital of Philadelphia</HospitalName>
+  <Patients>
+    <Patient>
+      <PatientID>CA-21245</PatientID>
+      <FirstName>M</FirstName>
+      <LastName>A</LastName>
+      <DOB>2016-07-15</DOB>
+      <Sex>2</Sex>
+      <Episodes>
+        <Episode>
+          <EpisodeID>CA-34906</EpisodeID>
+          <ArrivalDate>2016-11-14</ArrivalDate>
+          <PriorCath>false</PriorCath>
+          <MostRecentCaths xsi:nil="true" />
+          <PriorSurg>false</PriorSurg>
+          <MostRecentSurgs xsi:nil="true" />
+          <DiGeorgeSynd>0</DiGeorgeSynd>
+          <AlagilleSynd>0</AlagilleSynd>
+          <DownSynd>0</DownSynd>
+          <Heterotaxy>0</Heterotaxy>
+          <MarfanSynd>0</MarfanSynd>
+          <NoonanSynd>0</NoonanSynd>
+          <Trisomy13>0</Trisomy13>
+          <Trisomy18>0</Trisomy18>
+          <TurnerSynd>0</TurnerSynd>
+          <WilliamsBeurenSynd>0</WilliamsBeurenSynd>
+          <ChronicLungDisease>1</ChronicLungDisease>
+          <CoagDisorder>0</CoagDisorder>
+          <Hernia>0</Hernia>
+          <Diabetes>0</Diabetes>
+          <HepaticDisease>0</HepaticDisease>
+          <RenalInsuff>0</RenalInsuff>
+          <Seizures>1</Seizures>
+          <SickleCell>0</SickleCell>
+          <PriorStroke>1</PriorStroke>
+          <CathLabVisits>
+            <CathLabVisit>
+              <LabVisitID>CA-5662</LabVisitID>
+              <PreProcDiags>
+                <PreProcCardDiagID>20</PreProcCardDiagID>
+                <PreProcCardDiagID>10</PreProcCardDiagID>
+                <PreProcCardDiagID>73</PreProcCardDiagID>
+                <PreProcCardDiagID>77</PreProcCardDiagID>
+              </PreProcDiags>
+              <PhysiologicDiags xsi:nil="true" />
+              <Height>56.00</Height>
+              <Weight>4.20</Weight>
+              <PreProcProsta>false</PreProcProsta>
+              <ProcedureInformation>
+                <SpecificProcs xsi:nil="true" />
+                <ProcTypeID>502</ProcTypeID>
+                <OperLName>Rome</OperLName>
+                <OperFName>Jonathan</OperFName>
+                <OperMName xsi:nil="true" />
+                <SecOperLName xsi:nil="true" />
+                <SecOperFName xsi:nil="true" />
+                <SecOperMName xsi:nil="true" />
+                <Trainee>true</Trainee>
+                <HospStatus>1374</HospStatus>
+                <AirMngSponResp>535</AirMngSponResp>
+                <CathInsertDate>2017-01-05</CathInsertDate>
+                <CathInsertTime>13:16:00.0000000-04:00</CathInsertTime>
+                <CathOutDate>2017-01-05</CathOutDate>
+                <CathOutTime>14:01:00.0000000-04:00</CathOutTime>
+                <FluoroTime>14.3</FluoroTime>
+                <ContrastVol>13</ContrastVol>
+                <Inotrope>false</Inotrope>
+                <ECMOUse>548</ECMOUse>
+                <LVADUse>548</LVADUse>
+                <AorticValvuloplasty xsi:nil="true" />
+                <PulmonaryValvuloplasty xsi:nil="true" />
+                <PDAClosure xsi:nil="true" />
+                <ASDClosure xsi:nil="true" />
+                <CoarctationProcedure xsi:nil="true" />
+                <TPV xsi:nil="true" />
+                <AccessInfo>
+                  <Access>
+                    <AccessLoc>2874</AccessLoc>
+                  </Access>
+                </AccessInfo>
+              </ProcedureInformation>
+              <Hemodynamics>
+                <CardInd>4.8</CardInd>
+                <QpQsRatio>3.5</QpQsRatio>
+                <PulmVascRestInd>1.8</PulmVascRestInd>
+                <PulmVentSysPres>36</PulmVentSysPres>
+                <SystemVentSysPres>79.0</SystemVentSysPres>
+                <SystemVentEndDiaPres>12</SystemVentEndDiaPres>
+                <MixVenSat>55</MixVenSat>
+                <SystemicArtSat>92.0</SystemicArtSat>
+                <PulmArtSysPres>52.0</PulmArtSysPres>
+                <PulmArtMeanPres>21.0</PulmArtMeanPres>
+              </Hemodynamics>
+              <PostSubsCath>false</PostSubsCath>
+              <PostUnplanOtherSurg>false</PostUnplanOtherSurg>
+            </CathLabVisit>
+          </CathLabVisits>
+          <Discharge>
+            <DCDate>2017-10-16</DCDate>
+            <DCStatus>0</DCStatus>
+            <AEDischargeDesc xsi:nil="true" />
+          </Discharge>
+        </Episode>
+      </Episodes>
+    </Patient>
+  </Patients>
+</Submission>

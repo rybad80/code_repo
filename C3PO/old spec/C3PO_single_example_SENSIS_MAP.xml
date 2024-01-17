@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<Submission xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <HospitalName>Children's Hospital of Philadelphia</HospitalName>
+  <Patients>
+    <Patient>
+      <PatientID>CA-4989</PatientID>
+      <FirstName>E</FirstName>PATIENT.FIRNAME
+      <LastName>B</LastName>PATIENT.LASTNAME
+      <DOB>1986-06-11</DOB>PATIENT.PATBIRTH
+      <Sex>2</Sex>PATIENT.PATSEX
+      <Episodes>
+        <Episode>
+          <EpisodeID>CA-35085</EpisodeID>
+          <ArrivalDate>2017-01-03</ArrivalDate>
+          <PriorCath>true</PriorCath> HISTB.CATHHX
+          <NumPriorCath>3</NumPriorCath> HISTB.CATHNUM
+          <LastCathDate>2002-09-25</LastCathDate>HISTB.CATHDATE
+          <MostRecentCaths xsi:nil="true" />
+          <PriorSurg>true</PriorSurg>HISTB.SURGHX
+          <NumPrevCardSurg>1</NumPrevCardSurg>HISTB.SURGNUM
+          <LastCardSurgDate>1990-09-25</LastCardSurgDate>HISTB.SURGDATE
+          <MostRecentSurgs>
+            <MostRecCardSurgID>5240</MostRecCardSurgID>
+            <MostRecCardSurgID>5360</MostRecCardSurgID>
+          </MostRecentSurgs>
+          <DiGeorgeSynd>0</DiGeorgeSynd> GENCOND.IP3100
+          <AlagilleSynd>0</AlagilleSynd> GENCOND.IP3105
+          <DownSynd>0</DownSynd> GENCOND.IP3115
+          <Heterotaxy>0</Heterotaxy> GENCOND.IP3120
+          <MarfanSynd>0</MarfanSynd> GENCOND.IP3125
+          <NoonanSynd>0</NoonanSynd>  GENCOND.IP3130
+          <Trisomy13>0</Trisomy13>  GENCOND.IP3140
+          <Trisomy18>0</Trisomy18>GENCOND.IP3145
+          <TurnerSynd>0</TurnerSynd> GENCOND.IP3150
+          <WilliamsBeurenSynd>0</WilliamsBeurenSynd> GENCOND.IP3155
+          <ChronicLungDisease>0</ChronicLungDisease> IP2HRSK.IP3200 
+          <CoagDisorder>0</CoagDisorder> IP2HRSK.IP3205
+          <Hernia>0</Hernia> GENCOND.IP3110 
+          <Diabetes>0</Diabetes> IP2HRSK.IP3220
+          <HepaticDisease>0</HepaticDisease> IP2HRSK.IP3225
+          <RenalInsuff>0</RenalInsuff> IP2HRSK.IP3230 
+          <Seizures>0</Seizures> IP2HRSK.IP3235
+          <SickleCell>0</SickleCell> IP2HRSK.IP3240
+          <PriorStroke>0</PriorStroke> IP2HRSK.IP3250
+          <CathLabVisits>
+            <CathLabVisit>
+              <LabVisitID>CA-5654</LabVisitID>
+              <PreProcDiags> PRDG.IP4000
+                <PreProcCardDiagID>990</PreProcCardDiagID> PRDG.IP4000
+                <PreProcCardDiagID>1090</PreProcCardDiagID> PRDG.IP4000
+              </PreProcDiags>
+              <PhysiologicDiags xsi:nil="true" />
+              <Height>173.00</Height>PD.HEIGHT
+              <Weight>74.10</Weight>PD.WEIGHT
+              <PreProcProsta>false</PreProcProsta> APTVER3.PROSTA
+              <ProcedureInformation>
+                <SpecificProcs xsi:nil="true" />
+                <ProcTypeID>502</ProcTypeID>
+                <OperLName>Glatz</OperLName> PHYS.DOPER
+                <OperFName>Andrew</OperFName> PHYS.DOPER
+                <OperMName xsi:nil="true" />
+                 <SecOperLName xsi:nil="true" /> PHYS.IOPER
+                <SecOperFName xsi:nil="true" /> PHYS.IOPER
+                <SecOperMName xsi:nil="true" />
+                <Trainee>true</Trainee>PHYS.FELLOW
+                <CathInsertDate>2017-01-03</CathInsertDate>MIN(ASR.SHTIME)
+                <CathInsertTime>11:17:00.0000000-04:00</CathInsertTime>MIN(ASR.SHTIME)
+                <CathOutDate>2017-01-03</CathOutDate>POCT.PREND
+                <CathOutTime>12:27:00.0000000-04:00</CathOutTime>POCT.PREND
+                <FluoroTime>10.1</FluoroTime> XRAYBSUM.FLTIME
+                <ContrastVol>161</ContrastVol>SUM(ANGIO.COST)
+                <Inotrope>false</Inotrope>APTVER3.IP5160
+                <ECMOUse>548</ECMOUse>APTVER3.IP5170
+                <LVADUse>548</LVADUse>APTVER3.IP5175
+                <AorticValvuloplasty xsi:nil="true" />
+                <PulmonaryValvuloplasty xsi:nil="true" />
+                <PDAClosure xsi:nil="true" />
+                <ASDClosure xsi:nil="true" />
+                <CoarctationProcedure xsi:nil="true" />
+                <TPV xsi:nil="true" />
+                <AccessInfo>
+                  <Access>
+                    <AccessLoc>2874</AccessLoc>
+                  </Access>
+                  <Access>
+                    <AccessLoc>2871</AccessLoc>
+                  </Access>
+                </AccessInfo>
+              </ProcedureInformation>
+              <Hemodynamics>
+                <CardInd>3.5</CardInd>HEMODYN.CI
+                <QpQsRatio>1.0</QpQsRatio>HEMODYN.QPQS
+                <PulmVascRestInd>0.6</PulmVascRestInd>HEMODYN.PVR
+                <PulmVentSysPres>27</PulmVentSysPres>HEMODYN.RV
+                <SystemVentSysPres>150.0</SystemVentSysPres>HEMODYN.LVS
+                <SystemVentEndDiaPres>16</SystemVentEndDiaPres>HEMODYN.LVD
+                <MixVenSat>76</MixVenSat>HEMODYN.MVSTAT
+                <SystemicArtSat>97.0</SystemicArtSat>HEMODYN.SASAT
+                <PulmArtSysPres>24.0</PulmArtSysPres>HEMODYN.MPAS
+                <PulmArtMeanPres>18.0</PulmArtMeanPres>HEMODYN.MPAM
+                <SystemSysBP>150</SystemSysBP>HEMODYN.AOS
+                <SystemDiaBP>70</SystemDiaBP>HEMODYN.AOD
+                <SystemMeanBP>96</SystemMeanBP>HEMODYN.AOM
+              </Hemodynamics>
+              <PostSubsCath>false</PostSubsCath>
+              <PostUnplanOtherSurg>false</PostUnplanOtherSurg>
+            </CathLabVisit>
+          </CathLabVisits>
+          <Discharge>
+            <DCDate>2017-01-03</DCDate>DISCH.DDATE
+            <DCStatus>0</DCStatus>DISCH.DSTATUS
+            <AEDischargeDesc xsi:nil="true" />DISCH.DDESC
+          </Discharge>
+        </Episode>
+      </Episodes>
+  
+</Submission>
