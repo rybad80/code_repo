@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: stg_myc_convo
+  - name: stg_myc_message
+  - name: stg_myc_ib_message
+  - name: stg_myc_ib_thread
+  - name: stg_myc_msg_ib_fwd_items
+  - name: stg_myc_msg_ib_routing
+  - name: myc_message_detail
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [myc_msg_detail_key]
+    columns:
+      - name: myc_msg_detail_key
+  - name: myc_message_forwarding
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [myc_ib_fwd_primary_key]
+  - name: myc_message_routing
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [myc_ib_routing_primary_key]
+  - name: myc_message_quick_actions
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [myc_quick_action_key]
+    columns:
+      - name: myc_quick_action_key
+  - name: myc_message_summary
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [myc_message_convo_key]
+    columns:
+      - name: myc_message_convo_key
+        

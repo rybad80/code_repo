@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: coda_pregnancy_outcome
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [id, estimated_date_of_delivery]
+          tags: ['failing']
+    columns:
+     - name: id
+       tests:
+        - not_null
+     - name: estimated_date_of_delivery
+       tests:
+        - not_null
+  - name: coda_ventilation_assitance_hfov
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mrn]
+    columns:
+     - name: mrn
+       tests:
+        - not_null
+     - name: vitals_time
+       tests:
+        - not_null
+  - name: coda_moberg_vitals
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mrn, vital_sign_datetime]
+          warn_if: ">0"
+          error_if: ">1"
+    columns:
+     - name: mrn
+       tests:
+        - not_null
+     - name: vital_sign_datetime
+       tests:
+        - not_null:
+            warn_if: ">0"
+            error_if: ">1"
+  - name: coda_surgery_location
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mrn, card_instance_id]
+          warn_if: ">0"
+          error_if: ">2"
+    columns:
+     - name: mrn
+       tests:
+        - not_null
+     - name: card_instance_id
+       tests:
+        - not_null
+  - name: coda_fetal_ultrasound
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [accession_id]
+    columns:
+     - name: mrn
+       tests:
+        - not_null
+     - name: accession_id
+       tests:
+        - not_null

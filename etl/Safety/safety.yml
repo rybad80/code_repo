@@ -1,0 +1,7 @@
+version: 2
+
+models:  
+  - name: all_kaps_incidents
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [file_id]

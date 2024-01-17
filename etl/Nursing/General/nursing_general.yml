@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: department_cost_center_pp_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pp_end_dt_key, department_id, cost_center_id]
+    columns:
+      - name: pp_end_dt_key
+        description: PK
+      - name: department_id
+        description: PK
+      - name: cost_center_id
+        description: PK
+  - name: nursing_redcap_detail
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_project_id, record_id, mstr_redcap_quest_key, record_value, field_row_number]
+    columns:
+      - name: redcap_project_id
+        description: PK
+      - name: record_id
+        description: PK
+      - name: mstr_redcap_quest_key
+        description: PK
+      - name: record_value
+        description: PK
+      - name: field_row_number
+        description: PK

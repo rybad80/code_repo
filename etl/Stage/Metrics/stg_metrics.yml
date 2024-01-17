@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stg_metrics_pfex_communication
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key]
+  - name: stg_metrics_pfex_ltr
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key]
+  - name: stg_metrics_pfex_staff_worked_together
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key]
+  - name: stg_charge_hb
+    columns:
+      - name: pat_key
+        tests:
+          - relationships:
+              to: source('cdw','patient')
+              field: pat_key
+  - name: stg_charge_pb
+    columns:
+      - name: pat_key
+        tests:
+          - relationships:
+              to: source('cdw','patient')
+              field: pat_key

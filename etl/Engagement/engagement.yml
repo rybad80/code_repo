@@ -1,0 +1,126 @@
+version: 2
+
+models:
+  - name: employee_survey_demographic
+    columns:
+      - name: survey_year
+        tests:
+          - not_null
+      - name: work_location
+      - name: survey_year
+      - name: cost_center
+      - name: work_location
+      - name: primary_responsibilities_category
+      - name: job_classification
+      - name: employment_status
+      - name: clinical_division
+      - name: job_position
+      - name: job_title
+      - name: shift
+      - name: hire_year
+      - name: length_of_service
+      - name: generation
+      - name: birth_year
+      - name: age
+      - name: gender_identity
+      - name: identify_as_transgender
+      - name: legacy_race
+      - name: race
+      - name: ethnicity
+      - name: plan_to_leave_chop_in_the_next_2_years
+      - name: reason_to_plan_to_leave_chop_in_the_next_2_years
+      - name: direct_patient_care_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: registered_nurse_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: remote_worker_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: contact_id
+      - name: email
+      - name: name
+      - name: first_name
+      - name: last_name
+      - name: nurse_manager_name
+      - name: question
+        tests:
+          - not_null
+      - name: score
+  - name: provider_survey_demographic
+    columns:
+      - name: survey_year
+        tests:
+          - not_null
+      - name: cost_center
+      - name: work_setting
+      - name: work_location
+      - name: primary_responsibilities_category
+      - name: board_certification
+      - name: primary_affiliated_division
+      - name: clinical_areas
+      - name: department
+      - name: chop_provider_role
+      - name: business_relationship
+      - name: provider_affiliate_relationship
+      - name: years_of_affiliation
+      - name: years_of_practice
+      - name: generation
+      - name: gender_identity
+      - name: identify_as_transgender
+      - name: legacy_race
+      - name: race
+      - name: ethnicity
+      - name: penn_faculty
+      - name: academic_track
+      - name: academic_rank
+      - name: likely_to_retire_move_out_of_your_current_region_or_go_back_to_school_full_time_in_the_next_3_years
+      - name: provide_ed_care_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: hospitalist_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: contact_id
+      - name: email
+      - name: name
+      - name: first_name
+      - name: last_name
+      - name: manager_first_name
+      - name: manager_last_name
+      - name: manager_id
+      - name: department_chair
+      - name: question
+        tests:
+          - not_null
+      - name: score
+  - name: employee_survey_hierarchy
+    columns:
+      - name: survey_year
+        tests:
+          - not_null
+      - name: cost_center_hierarchy
+      - name: manager_hierarchy
+      - name: nurse_hierarchy
+      - name: primary_hierarchy
+      - name: question
+        tests:
+          - not_null
+      - name: score
+  - name: provider_survey_hierarchy
+    columns:
+      - name: survey_year
+        tests:
+          - not_null
+      - name: location_hierarchy
+      - name: specialty_hierarchy
+      - name: app_division_hierarchy
+      - name: app_manager_hierarchy
+      - name: cost_center_hierarchy
+      - name: division_cost_center_hierarchy
+      - name: manager_hierarchy
+      - name: question
+        tests:
+          - not_null
+      - name: score

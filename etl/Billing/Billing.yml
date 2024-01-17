@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: billing_denied_days
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [denial_key]
+    columns:
+      - name: HSP_ACCT_KEY
+        tests:
+          - not_null
+      - name: VISIT_KEY
+        tests:
+          - not_null
+      - name: CSN
+        tests:
+          - dbt_chop_utils.number_of_characters:
+              min_length: 10
+              max_length: 14
+      - name: DATE_DENIED
+        tests:
+          - not_null
+      - name: APPEALED_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: OVERTURNED_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: BDC_DENIED_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: REFERRAL_DENIED_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: BDC_OVERTURNED_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: REFERRAL_OVERTURNED_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: PEER_TO_PEER_APPEALED_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: PEER_TO_PEER_OVERTURNED_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: BDC_DENIAL_CLOSED_DATE
+      - name: REFERRAL_DENIAL_CLOSED_DATE
+      

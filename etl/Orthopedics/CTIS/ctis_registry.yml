@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: ctis_registry
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key]
+    columns:
+      - name: pat_key
+        tests:
+          - unique
+          - not_null
+      - name: ctis_category
+        tests:
+          - accepted_values:
+              values:
+                - Congenital
+                - Neuromuscular
+                - Idiopathic
+                - Syndromic
+              quote: true

@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: cardiac_mri
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cardiac_study_id]
+          tags: ['failing']
+    columns:
+      - name: cardiac_study_id

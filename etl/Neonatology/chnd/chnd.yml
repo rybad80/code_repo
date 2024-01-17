@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: chnd_respiratory
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [chnd_resp_key]
+  - name: chnd_medications
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [chnd_medication_key]
+  - name: fact_neo_nicu_supplemental_gases
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [nicu_supp_gas_key]
+  - name: neo_chnd_adt
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [chnd_adt_key]
+  - name: neo_chnd_patient
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [chnd_pat_key]
+  - name: neo_chnd_episode
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [eoc_id]
+  - name: stg_nicu_chnd_timestamps
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+  - name: stg_nicu_chnd_flowsheets
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+  - name: stg_nicu_chnd_procedures
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+  - name: stg_nicu_chnd_medications
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+  - name: stg_nicu_chnd_blood
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+  - name: nicu_chnd_surgery_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+    columns:
+      - name: visit_key
+        tests:
+          - not_null

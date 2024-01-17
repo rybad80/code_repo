@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: usnews_billing
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [submission_year, question_number, tx_id, diagnosis_seq_num, source_summary, metric_id]
+    columns:
+      - name: submission_year
+  - name: usnews_clinical
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [submission_year, division, question_number, csn, icd10_code, diagnosis_name, visit_diagnosis_ind, visit_diagnosis_seq_num]
+    columns:
+      - name: submission_year
+  - name: usnews_code_list
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [submission_start_year, question_number, code_type, code]
+          tags: ['failing']
+    columns:
+      - name: question_number
+  - name: usnews_metadata_calendar
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [submission_year, question_number, code, code_type, metric_id]
+    columns:
+      - name: question_number
+  - name: usnews_detail
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key, metric_id, metric_date, submission_year, cpt_code]
+          warn_if: ">0"
+          error_if: ">1"
+    columns:
+      - name: primary_key
+        tests:
+          - not_null:
+              severity: warn
+      - name: metric_id
+        tests:
+          - not_null:
+              severity: warn
+      - name: metric_date
+        tests:
+          - not_null:
+              severity: warn
+      - name: submission_year
+        tests:
+          - not_null:
+              severity: warn
+      - name: cpt_code
+        tests:
+          - not_null:
+              severity: warn

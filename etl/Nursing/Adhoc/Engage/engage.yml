@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: nursing_metric_engagement
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [engagement_metric_key]
+    columns:
+      - name: engagement_metric_key
+        description: PK

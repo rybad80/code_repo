@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: ortho_note_all_edits
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [note_visit_key]
+    columns:
+      - name: note_visit_key
+        tests:
+          - unique
+          - not_null
+      - name: version_author_name
+        tests:
+          - not_null
+      - name: version_author_category
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - Other
+                - APP
+                - Physician
+                - Scribe
+              quote: true
+      - name: version_provider_type
+        tests:
+          - not_null
+      - name: version_author_service_name
+        tests:
+          - not_null

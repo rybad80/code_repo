@@ -1,0 +1,235 @@
+version: 2
+
+models:
+  - name: finance_company_days_in_ar_level
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [company_id,metric_date_key]
+          warn_if: ">0"
+          error_if: ">531"
+    columns:
+      - name: company_id
+  - name: finance_company_fiscal_period_status
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [company_id,fiscal_end_dt_key]
+    columns:
+      - name: company_id
+  - name: finance_company_level
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [company_id]
+    columns:
+      - name: company_id
+  - name: finance_pathology_and_lab_charges
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_cntr_id, calendar_month, calendar_year, procedure_code, procedure_hb_description, transaction_ip_op_class, hospital_research_indicator, hospital_research_study_name]
+  - name: finance_patient_days_actual
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [hsp_acct_key,post_date,cost_center_name, patient_day_type]
+    columns:
+      - name: post_date
+        tests:
+          - dbt_chop_utils.date_in_past
+      - name: patient_day_type
+        tests:
+          - accepted_values:
+              values: ['IP Patient Days', 'Observation Patient Days']
+      - name: cost_center_site_id
+        tests:
+          - accepted_values:
+              values: ['CS_001']
+              tags: ['failing']
+  - name: finance_patient_days_daily_cost_center
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [post_date,cost_center_ledger_id, patient_day_type]
+    columns:
+      - name: patient_day_type
+        tests:
+          - accepted_values:
+              values: ['IP Patient Days', 'Observation Patient Days']
+      - name: cost_center_site_id
+        tests:
+          - accepted_values:
+              values: ['CS_001', 'CS_025', 'CS_054']
+  - name: finance_patient_days_month_cost_center
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [post_date_month,cost_center_ledger_id, patient_day_type]
+    columns:
+      - name: patient_day_type
+        tests:
+          - accepted_values:
+              values: ['IP Patient Days', 'Observation Patient Days']
+  - name: finance_charges_actual
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [post_date, cost_center_id, revenue_category_id, cost_center_site_id, payor_id]
+    columns:
+      - name: post_date
+  - name: finance_company_days_in_ar
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [company_id,metric_date_key]
+          warn_if: ">0"
+          error_if: ">585"
+    columns:
+      - name: metric_date_key
+  - name: finance_sc_visit_actual
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [post_date, cost_center_id, cost_center_site_id, primary_diagnosis_code, statistic_name, division]
+          tags: ['failing']
+    columns:
+      - name: post_date
+  - name: finance_sc_visit_daily_cost_center
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [post_date, cost_center_id, cost_center_site_id, specialty_care_visit_type]
+    columns:
+      - name: post_date
+  - name: finance_sc_visit_month_cost_center
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [post_date_month, cost_center_id, cost_center_site_id, specialty_care_visit_type]
+    columns:
+      - name: post_date_month
+  - name: stg_finance_month_cost_center_budget
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [post_date_month, metric_name, cost_center_site_id, cost_center_code]
+    columns:
+      - name: post_date
+  - name: stg_finance_daily_cost_center_budget
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [post_date, metric_name, cost_center_site_id, cost_center_code]
+    columns:
+      - name: post_date
+  - name: finance_cash_collection_hb
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [report_group, cash_month, pat_acct_class]
+    columns:
+      - name: report_group
+  - name: finance_cash_collection_pb
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cash_collection_pb_key]
+    columns:
+      - name: cash_collection_pb_key
+  - name: finance_credit_balance_pb
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [credit_balance_pb_key]
+    columns:
+      - name: cash_collection_pb_key
+  - name: finance_denials_hb
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [bdc_seq_num, bdc_id]
+    columns:
+      - name: bdc_seq_num
+  - name: finance_monthly_balances_hb
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [hospital_account_id, payor_id, bucket_id, balance_month]
+    columns:
+      - name: hospital_account_id
+  - name: finance_open_ar_hb
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [bucket_id, ar_date]
+    columns:
+      - name: bucket_id
+  - name: finance_open_ar_pb
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [open_ar_pb_key]
+    columns:
+      - name: open_ar_pb_key
+  - name: financial_clearance_encounter
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [csn]
+    columns:
+      - name: csn
+  - name: finance_encounter_benefits_collected
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [csn]
+    columns:
+      - name: csn
+  - name: finance_encounter_referral_authorized
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [csn]
+    columns:
+      - name: csn
+  - name: finance_encounter_employee_authorization
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [csn]
+    columns:
+      - name: worker_id
+        tests:
+          - relationships:
+              to: ref('worker')
+              field: worker_id
+  - name: fact_journal_lines
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [journal_entry_line_wid]
+    columns:
+      - name: journal_entry_line_wid
+  - name: fact_plan_lines
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [plan_entry_line_wid]
+    columns:
+      - name: plan_entry_line_wid
+  - name: fact_plans
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [integration_id]
+    columns:
+      - name: integration_id
+  - name: fact_payroll_accounting_lines
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [journal_entry_line_wid]
+    columns:
+      - name: journal_entry_line_wid
+  - name: fact_customer_invoices
+    test:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cust_inv_line_wid]
+    columns:
+      - name: cust_inv_line_wid
+  - name: fact_gl_summary
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [gl_summary_key]
+  - name: fact_payroll_allocation_agg
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [payroll_allocation_key]
+  - name: finance_hb_pb_days_in_ar
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [company_reference_id, hb_pb_ind, fiscal_period_end_dt, rolling_month_range]
+  - name: workday_cost_center_hierarchy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_hierarchy_key]
+    columns:
+      - name: cost_center_hierarchy_key
+  - name: workday_cost_center_hierarchy_levels
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_hierarchy_key]
+    columns:
+      - name: cost_center_hierarchy_key

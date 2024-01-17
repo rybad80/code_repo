@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: fact_blood_bank_transfusion
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [blood_bank_transfusion_key]
+          warn_if: ">0"
+          error_if: ">1"
+    columns:
+    - name: integration_id
+      tests:
+        - unique:
+            warn_if: ">0"
+            error_if: ">1"
+    - name: patient_key
+      tests:
+        - relationships:
+            to: ref('dim_blood_bank_patient')
+            field: patient_key
+  - name: blood_bank_transfusion_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [blood_bank_transfusion_key]
+          warn_if: ">0"
+          error_if: ">1"
+    columns:
+    - name: integration_id
+      tests:
+        - unique:
+            warn_if: ">0"
+            error_if: ">1"
+    - name: patient_key
+      tests:
+        - relationships:
+            to: ref('dim_blood_bank_patient')
+            field: patient_key

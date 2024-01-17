@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: note_edit_metadata_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [note_visit_key]
+          warn_if: ">0"
+          error_if: ">235"
+    columns:
+      - name: pat_key
+        tests:
+          - relationships:
+              to: ref('stg_patient')
+              field: pat_key
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('stg_encounter')
+              field: visit_key
+      - name: version_author_emp_key
+        tests:
+          - relationships:
+              to: source('cdw','employee')
+              field: emp_key
+      - name: final_author_emp_key
+        tests:
+          - relationships:
+              to: source('cdw','employee')
+              field: emp_key

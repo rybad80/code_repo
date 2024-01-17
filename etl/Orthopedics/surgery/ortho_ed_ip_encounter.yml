@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: ortho_ed_ip_encounter
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+        tests:
+          - unique
+          - not_null
+      - name: n_ortho_notes
+      - name: ed_consult_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: n_surgeries
+      - name: pat_key
+        tests:
+          - not_null

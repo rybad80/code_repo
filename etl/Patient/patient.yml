@@ -1,0 +1,118 @@
+version: 2
+
+models:  
+  - name: patient_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [patient_key]
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key]
+    columns:  
+      - name: patient_name
+        tests:
+          - not_null
+      - name: mrn
+      - name: pat_id
+      - name: dob
+        tests:
+          - not_null:
+              severity: warn
+      - name: sex
+        tests:
+          - accepted_values:
+              values: [M, F, U, I]
+              quote: true
+      - name: pat_gender_identity
+      - name: pat_sex_assigned_at_birth
+      - name: current_age
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0
+              max_value: 200
+              severity: warn
+      - name: gestational_age_complete_weeks
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0
+              max_value: 51
+          - dbt_chop_utils.not_null_when:
+              expression: gestational_age_remainder_days is not null and gestational_age_remainder_days != 0
+      - name: gestational_age_remainder_days
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0
+              max_value: 7
+              severity: warn
+      - name: birth_weight_kg
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0
+              max_value: 20
+              severity: warn
+      - name: mailing_address_line1
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: mailing_address_line2 is not null
+              severity: warn
+      - name: race
+        tests:
+          - accepted_values:
+              values:
+                - 'American Indian or Alaska Native'
+                - 'Asian'
+                - 'Asked but unknown'
+                - 'Black or African American'
+                - 'Choose not to disclose'
+                - 'Indian'
+                - 'Multi-Racial'
+                - 'Native Hawaiian or Other Pacific Islander'
+                - 'Other'
+                - 'Refused'
+                - 'Unknown'
+                - 'White'
+              quote: true
+      - name: race_ethnicity
+        tests:
+          - accepted_values:
+              values:
+                - 'American Indian/eskimo/alaska'
+                - 'American Indian or Alaska Native'
+                - 'Asian'
+                - 'Asked but unknown'
+                - 'Choose not to disclose'
+                - 'Hispanic or Latino'
+                - 'Hispanic Or Latino Black'
+                - 'Hispanic Or Latino Other'
+                - 'Hispanic Or Latino White'
+                - 'Multi-Racial'
+                - 'Native Hawaiian or Other Pacific Islander'
+                - 'Non-hispanic Or Non-latino'
+                - 'Non-Hispanic Black'
+                - 'Non-Hispanic White'
+                - 'Not Hispanic Or Latino'
+                - 'Other'
+                - 'Refused'
+                - 'Unknown'
+              quote: true
+      - name: deceased_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: death_date
+      - name: current_record_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null     
+      - name: mychop_activation_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: mychop_declined_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: preferred_name
+        tests:
+          - not_null
+  - name: patient_sexual_orientation
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [patient_sexual_orientation_key]

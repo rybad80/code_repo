@@ -1,0 +1,217 @@
+version: 2
+
+models:
+  - name: ops_completed_or_cases
+    tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [log_key]
+        warn_if: ">0"
+        error_if: ">5"
+    columns:
+      - name: surgery_date
+        tests:
+          - dbt_chop_utils.date_in_past:
+              warn_if: ">0"
+              error_if: ">1"
+      - name: visit_key
+      - name: location_group
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - ASC
+                - Cardiac
+                - KOPH OR
+                - Main OR
+                - NICU
+                - PACU
+                - PICU
+              quote: true
+      - name: location_name
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - BRANDYWINE VALLEY DAY SURGERY
+                - BUCKS DAY SURGERY
+                - CARDIAC OPERATIVE IMAGING COMPLEX
+                - KING OF PRUSSIA DAY SURGERY
+                - KING OF PRUSSIA HOSPITAL
+                - PERIOP COMPLEX
+                - VOORHEES DAY SURGERY
+              quote: true
+      - name: add_on_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: ops_completed_visits_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: days
+          interval: 2
+          warn_if: ">0"
+          error_if: ">8913"
+    columns:
+      - name: visit_key
+        tests:
+          - unique
+          - not_null
+      - name: encounter_type
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - Appointment
+                - Hospital Encounter
+                - Office Visit
+                - Outpatient
+                - Sunday Office Visit
+              quote: true
+      - name: patient_class
+        tests:
+          - not_null
+      - name: weekend_visit_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: hospital_admit_type
+        tests:
+          - accepted_values:
+              values:
+                - ELECTIVE
+                - EMERGENT
+                - INFORMATION NOT AVAILABLE
+                - NEWBORN
+                - TRAUMA CENTER
+                - URGENT
+              quote: true
+      - name: oversight_subcommittee_desc
+        tests:
+          - not_null:
+              tags: ['failing']
+          - accepted_values:
+              values:
+                - Amb Specialty
+                - Cardiac
+                - IP Spec Medical - Elective
+                - IP Spec Medical - Emergent
+                - Periop - ASC
+                - Periop - KOPH
+                - Periop - Main
+                - Periop - Main OR
+                - Primary Care
+                - Radiology
+                - Urgent Care
+              quote: true
+      - name: primary_care_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: periop_main_or_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: periop_asc_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cardiac_case_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: radiology_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: amb_specialty_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: inpatient_specialty_elective_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: inpatient_specialty_emergent_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: primary_care_visit_type
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - Other Visit
+                - Well Visit
+                - Sick Visit
+              quote: true
+  - name: ops_scheduled_or_cases
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]  
+          tags: ['failing']
+    columns:
+      - name: inpatient_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: ops_scheduled_visits_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: days
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: encounter_type
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - Hospital Encounter
+                - Appointment
+                - Office Visit
+              quote: true
+      - name: patient_class
+        tests:
+          - not_null
+      - name: oversight_subcommittee_desc
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - Amb Specialty
+                - Cardiac
+                - IP Spec Medical - Elective
+                - Periop - ASC
+                - Periop - KOPH
+                - Periop - Main OR
+                - Primary Care
+                - Radiology
+              quote: true
+      - name: primary_care_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cardiac_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: periop_main_or_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: periop_asc_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: radiology_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: amb_specialty_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: inpatient_specialty_elective_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: hospital_admit_type
+        tests:
+          - accepted_values:
+              values:
+                - ELECTIVE
+                - EMERGENT
+                - URGENT
+              quote: true
+              tags: ['failing']
+      - name: inpatient_ind
+        tests:
+          - dbt_chop_utils.is_indicator

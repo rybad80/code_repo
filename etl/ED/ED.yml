@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: ed_encounter_cohort_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, cohort]
+    columns:
+      - name: visit_key
+  - name: ed_encounter_cohort_wide
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('ed_encounter_cohort_long')
+              field: visit_key
+  - name: ed_encounter_metric_descriptive
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: ed_encounter_metric_flow_timestamp
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: ed_encounter_metric_medication
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: ed_encounter_metric_pathway
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: ed_encounter_metric_smart_data_element
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: ed_encounter_metric_additional_transform
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+  - name: ed_encounter_cohort_metadata
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cohort]
+  - name: ed_encounter_metric_flowsheet
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]

@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: worker_time_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_id, cost_center_site_id, time_subset, time_month, worker_id, job_group_id]
+          warn_if: ">0"
+          error_if: ">25"
+    columns:
+      - name: cost_center_id
+        description: PK
+      - name: cost_center_site_id
+        description: PK
+      - name: time_subset
+        description: PK
+      - name: time_month
+        description: PK
+      - name: worker_id
+        description: PK
+      - name: job_group_id
+        description: PK

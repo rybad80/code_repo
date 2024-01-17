@@ -1,0 +1,33 @@
+version: 2
+models:
+  - name: pediatric_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]        
+    columns:
+      - name: patient_name    
+      - name: mrn
+      - name: pat_key
+        tests: 
+          - not_null
+      - name: any_cohort_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: diabetes_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: bp_under_3_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: elect_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: rheumatology_jadas_scores
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [jia_id]        
+    columns:
+      - name: jia_id    
+        tests: 
+          - not_null

@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: servicenow_infoserv_task
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [task_number]

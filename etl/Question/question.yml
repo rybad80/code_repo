@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: question_patient_answered
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, encounter_seq_num, question_answer_id, question_answer_seq_num]
+      - dbt_chop_utils.recency:
+          column_name: answer_date
+          datepart: days
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('stg_encounter')
+              field: visit_key
+      - name: pat_key
+        tests:
+          - relationships:
+              to: ref('stg_patient')
+              field: pat_key
+      - name: survey_status
+        tests:
+          - accepted_values:
+              values:
+                [
+                  'ALLOW REVIEW OF SUBMITTED ANSWER',
+                  'COMPLETED',
+                  'COMPLETED BY HYPERSPACE USER',
+                  'INCOMPLETE',
+                  'PENDED',
+                ]
+              quote: true
+      - name: survey_complete_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: questionnaire_patient_assigned
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [qnr_assigned_key]
+          tags: ['failing']
+    columns:
+      - name: qnr_assigned_key
+        tests:
+          - unique:
+              tags: ['failing']
+          - not_null 
+  - name: questionnaire_provider_reviewed 
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+          tags: ['failing']
+    columns:
+      - name: visit_key 

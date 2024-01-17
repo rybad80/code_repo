@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: procedure_order_result_clinical
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [procedure_order_result_key]
+    columns:
+      - name: proc_ord_key
+  - name: procedure_order_clinical
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [proc_ord_key]
+    columns:
+      - name: proc_ord_key
+  - name: procedure_order_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [proc_key, pat_key, billing_service_date_key, visit_key, billing_service_provider_key, billing_department_key]
+          warn_if: ">0"
+          error_if: ">10"
+    columns:
+      - name: proc_key
+  - name: procedure_billing
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [tx_id, diagnosis_seq_num]
+    columns:
+      - name: mrn
+        tests:
+            - not_null
+      - name: tx_id
+        tests: 
+            - not_null
+      - name: service_date
+        tests: 
+            - not_null
+  - name: procedure_order_result_blood_gas
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [proc_ord_key]
+    columns:
+      - name: proc_ord_key
+  - name: procedure_order_result_cbc
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [proc_ord_key]
+    columns:
+      - name: proc_ord_key
+  - name: procedure_order_result_liver_function
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [proc_ord_key]
+    columns:
+      - name: proc_ord_key
+  - name: procedure_order_result_coda_labs
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [proc_ord_key]
+    columns:
+      - name: proc_ord_key
+  - name: procedure_order_result_culture_susceptibility
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [procedure_order_result_key, susceptibility_seq_num]
+    columns:
+      - name: proc_ord_key
+      

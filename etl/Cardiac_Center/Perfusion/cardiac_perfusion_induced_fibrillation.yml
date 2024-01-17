@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: cardiac_perfusion_induced_fibrillation
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: patient_name
+        tests:
+          - not_null    
+      - name: dob
+        tests:
+          - dbt_chop_utils.date_in_past
+          - not_null
+      - name: mrn
+        tests:
+          - not_null    
+          - dbt_chop_utils.number_of_characters:
+              min_length: 8
+              condition: MRN not in ('INVALID')            
+      - name: csn
+        tests:
+          - dbt_chop_utils.number_of_characters:
+              min_length: 14

@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: surgery_department_or_case_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_key]
+          tags: ['failing']
+    columns:
+      - name: or_key
+  - name: surgery_department_or_case_completed
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_key]
+          tags: ['failing']  
+    columns:
+      - name: or_key
+  - name: surgery_department_or_case_procedure
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_key]
+          tags: ['failing']
+    columns:
+      - name: or_key

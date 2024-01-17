@@ -1,0 +1,113 @@
+version: 2
+
+models:
+  - name: position_control_job_filled
+    tests:
+      - dbt_chop_utils.is_primary_key:
+         column_names: [application_id]
+    columns:
+      - name: application_id
+  - name: nursing_management_chain
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+          warn_if: ">0"
+          error_if: ">9"
+    columns:
+      - name: worker_id
+        description: PK
+  - name: nursing_position_control_pay_period
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id, start_on_unit_job, full_name, pp_start_dt]
+          tags: ['failing']
+    columns:
+      - name: worker_id
+        description: PK
+      - name: start_on_unit_job
+        description: PK
+      - name: full_name
+        description: PK
+      - name: pp_start_dt
+        description: PK
+  - name: nursing_position_control_period_unit_metric
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id, job_code, full_name, company_cost_center_and_site, tag, pp_end_dt]
+          tags: ['failing']
+    columns:
+      - name: worker_id
+        description: PK
+      - name: job_code
+        description: PK
+      - name: full_name
+        description: PK
+      - name: company_cost_center_and_site
+        description: PK
+      - name: tag
+        description: PK
+      - name: pp_end_dt
+        description: PK
+  - name: nccs_kronos_safety_obs_hours_cost_center_period
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_id, job_role_rollup, pay_period_end_dt_key]
+    columns:
+      - name: cost_center_id
+        description: PK
+      - name: job_role_rollup
+        description: PK
+      - name: pay_period_end_dt_key
+        description: PK
+  - name: nccs_kronos_extra_pay_hours
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id, cost_center_id, pay_period_end_dt_key, job_organization_id, timereport_paycode]
+    columns:
+      - name: cost_center_id
+        description: PK
+      - name: worker_id
+        description: PK
+      - name: pay_period_end_dt_key
+        description: PK
+      - name: job_organization_id
+        description: PK
+      - name: timereport_paycode
+        description: PK
+  - name: nccs_kronos_safety_obs_hours_role_cost_center_period
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id, cost_center_id, job_role_grouper, pp_end_dt_key, overtime_ind, timejob_abbreviation]
+    columns:
+      - name: worker_id
+        description: PK
+      - name: cost_center_id
+        description: PK
+      - name: job_role_grouper
+        description: PK
+      - name: pp_end_dt_key
+        description: PK
+      - name: overtime_ind
+        description: PK
+      - name: timejob_abbreviation
+        description: PK
+  - name: job_group_levels_nursing
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_group_id]
+    columns:
+      - name: job_group_id
+  - name: job_code_nursing_key_groups
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_code]
+    columns:
+      - name: job_code
+        description: PK
+  - name: nursing_cost_center_attributes
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_id]
+    columns:
+      - name: cost_center_id
+        description: PK

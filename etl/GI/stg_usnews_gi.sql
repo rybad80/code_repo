@@ -1,0 +1,20 @@
+select
+    stg_usnews_gi_count.domain,
+    stg_usnews_gi_count.subdomain,
+    stg_usnews_gi_count.primary_key,
+    stg_usnews_gi_count.metric_date,
+    stg_usnews_gi_count.num,
+    stg_usnews_gi_count.metric_name,
+    stg_usnews_gi_count.metric_id,
+    stg_usnews_gi_count.submission_year,
+    stg_usnews_gi_count.patient_name,
+    stg_usnews_gi_count.mrn,
+    stg_usnews_gi_count.dob,
+    stg_usnews_gi_count.index_date,
+    stg_usnews_gi_count.question_number,
+    stg_usnews_gi_count.division,
+    stg_usnews_gi_count.cpt_code,
+    stg_usnews_gi_count.procedure_name,
+    stg_usnews_gi_count.visit_key
+from
+    {{ref('stg_usnews_gi_count')}} as stg_usnews_gi_count

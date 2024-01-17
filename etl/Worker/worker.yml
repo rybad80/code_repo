@@ -1,0 +1,156 @@
+version: 2
+
+models:
+  - name: upcoming_hr_position_filled
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [application_id]
+    columns:
+      - name: application_id
+  - name: stg_worker_contact_list
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_contact_id]
+          tags: ['failing']
+    columns:
+      - name: worker_contact_id
+  - name: stg_subordinate_worker_row
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id,superior_lvl]
+          warn_if: ">0"
+          error_if: ">6"
+    columns:
+      - name: worker_id
+      - name: superior_lvl
+  - name: stg_worker_employment_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_wid]
+    columns:
+      - name: worker_wid
+  - name: stg_worker_job_position_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_position_id]
+          warn_if: ">0"
+          error_if: ">13"
+    columns:
+      - name: worker_position_id
+  - name: stg_worker_management_attributes
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [wd_worker_id]
+          warn_if: ">0"
+          error_if: ">9"
+    columns:
+      - name: wd_worker_id
+  - name: stg_worker_management_chain
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+          warn_if: ">0"
+          error_if: ">9"
+    columns:
+      - name: worker_id
+  - name: stg_worker_management_level
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [wd_worker_id]
+          warn_if: ">0"
+          error_if: ">9"
+    columns:
+      - name: worker_id
+  - name: worker_contact_home
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+          tags: ['failing']
+    columns:
+      - name: worker_id
+  - name: worker_contact_work
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+          tags: ['failing']
+    columns:
+      - name: worker_id
+  - name: worker
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+          warn_if: ">0"
+          error_if: ">9"
+    columns:
+      - name: worker_id
+  - name: worker_sensitive
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+          warn_if: ">0"
+          error_if: ">9"
+    columns:
+      - name: worker_id
+  - name: worker_language
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id, language_name]
+          tags: ['failing']
+    columns:
+      - name: worker_id
+  - name: worker_education
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id, degree_id, education_start_year, school_name, major]
+          tags: ['failing']
+    columns:
+      - name: worker_id
+  - name: worker_certification
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id, certification_name, certification_start_date, certification_number]
+          tags: ['failing']
+    columns:
+      - name: worker_id
+  - name: worker_management_chain_navigation
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+          warn_if: ">0"
+          error_if: ">9"
+    columns:
+      - name: worker_id
+  - name: worker_management_chain
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+          warn_if: ">0"
+          error_if: ">9"
+    columns:
+      - name: worker_id
+  - name: worker_subordinate_superior
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id,superior_worker_id,superior_lvl]
+          warn_if: ">0"
+          error_if: ">54"
+    columns:
+      - name: worker_id
+      - name: superior_worker_id
+      - name: superior_lvl
+  - name: nursing_worker
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+          warn_if: ">0"
+          error_if: ">12"
+    columns:
+      - name: worker_id
+  - name: worker_employment_protected
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_wid]
+          warn_if: ">0"
+          error_if: ">12"
+    columns:
+      - name: worker_wid

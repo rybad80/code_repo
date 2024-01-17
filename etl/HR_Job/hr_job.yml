@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: job_group_levels
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_group_id]
+    columns:
+      - name: job_group_id
+  - name: job_code_job_group_link
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_code, job_group_id]
+    columns:
+      - name: job_code
+        description: PK
+      - name: job_group_id
+        description: PK
+  - name: job_code_group_determination_option
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_code, job_group_id]
+    columns:
+      - name: job_code
+        description: PK
+      - name: job_group-id
+        description: PK
+  - name: job_code_groups_determination_explanation
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_code]
+    columns:
+      - name: job_code
+        description: PK
+  - name: worker_job_reference
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+    columns:
+      - name: worker_id
+        description: PK
+  - name: job_code_profile
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_code]
+    columns:
+      - name: job_code
+        description: PK

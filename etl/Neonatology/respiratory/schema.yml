@@ -1,0 +1,74 @@
+version: 2
+
+models:
+ - name: neo_nicu_respiratory_category
+   tests:
+     - dbt_chop_utils.is_primary_key:
+         column_names: [visit_key, recorded_date]
+   columns:
+     - name: respiratory_support_category
+       tests:
+         - not_null
+         - accepted_values:
+            values:
+              - 'BiPAP'
+              - 'CONV'
+              - 'CPAP'
+              - 'HFJV'
+              - 'HFNC > 2LPM'
+              - 'HFOV'
+              - 'HFOV and HFJV?'
+              - 'Hood'
+              - 'NC <= 2LPM'
+              - 'NIPPV'
+              - 'Other'
+     - name: respiratory_support_type
+       tests:
+         - not_null
+         - accepted_values:
+            values: ['invasive', 'non-invasive']
+ - name: neo_nicu_respiratory_history
+   tests:
+     - dbt_chop_utils.is_primary_key:
+         column_names: [visit_key, resp_support_start_datetime]
+   columns:
+     - name: resp_support_start_datetime
+       tests:
+         - dbt_chop_utils.date_in_past
+     - name: resp_support_stop_datetime
+       tests:
+         - not_null
+         - dbt_chop_utils.date_in_past
+         - dbt_chop_utils.is_greater_or_equal_to:
+            expression: "resp_support_start_datetime"
+     - name: resp_support_duration_hours
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 25000
+            tags: ['failing']
+ - name: neo_nicu_respiratory_summary
+   tests:
+     - dbt_chop_utils.is_primary_key:
+         column_names: [visit_key]
+   columns:
+     - name: last_high_fio2_datetime
+       tests:
+         - dbt_chop_utils.fill_rate:
+             min_percent_not_null: 40
+     - name: invasive_support_days
+       tests:
+         - dbt_chop_utils.within_range:
+             min_value: 0
+             max_value: 2000
+     - name: non_invasive_support_days
+       tests:
+         - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 500
+            tags: ['failing']
+     - name: total_support_days
+       tests:
+         - dbt_chop_utils.within_range:
+             min_value: 0
+             max_value: 2000

@@ -1,0 +1,1909 @@
+version: 2
+
+sources:
+  - name: cdw
+    database: "{{ env_var('CDW_DB', 'CDWUAT')}}"
+    schema: CDW
+
+    freshness:
+      error_after: {count: "{{42 if target.name == 'ci' else 18}}", period: hour}
+      filter: days_between(upd_dt, current_timestamp) < 2
+    loaded_at_field: "upd_dt - (select TZOFFSET from _VT_PG_TIME_OFFSET)"
+
+    tables:
+      - name: access_intake_cont_call_type
+        freshness: null
+      - name: access_intake_cont_call_type_period
+        freshness: null
+      - name: account
+      - name: allergen
+        freshness: null
+      - name: available_block
+      - name: anesthesia_encounter_link
+      - name: benefit_plan
+        meta:
+          critical: true
+      - name: budget
+        freshness: null
+        meta:
+          critical: true
+      - name: bugsy_custom_infection_classes
+        freshness: null
+      - name: call_communication_tracking
+      - name: call_reference_patient
+      - name: cdw_dictionary
+        freshness: null
+      - name: clinical_concept
+      - name: cath_study
+        freshness: null
+      - name: cath_study_adverse_events
+        freshness: null
+      - name: cath_study_procedure_performed
+        freshness: null
+      - name: company
+        freshness: null
+        meta:
+          critical: true
+      - name: cost_center
+        meta:
+          critical: true
+      - name: coverage
+        meta:
+          critical: true
+      - name: coverage_member_hist
+      - name: census_tract
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: department
+      - name: department_geographical_spatial_info
+        freshness: null
+      - name: diagnosis
+        meta:
+          unscheduled: true
+      - name: diagnosis_group
+      - name: diagnosis_clinical_concept_snomed
+        freshness: null
+      - name: dim_appt_block
+        freshness: null
+      - name: dim_bpa_locator_trigger
+        freshness: null
+      - name: dim_call_center_group
+        freshness: null
+      - name: dim_call_commn_type
+        freshness: null
+      - name: dim_call_outcome
+        freshness: null
+      - name: dim_call_type
+        freshness: null
+      - name: dim_episode_status
+        freshness: null
+      - name: dim_hospital_infection
+        freshness: null
+      - name: dim_hospital_patient_service
+        freshness: null
+      - name: dim_ip_note_type
+        freshness: null
+      - name: dim_note_action
+        freshness: null
+      - name: dim_note_status
+        freshness: null
+      - name: dim_note_sensitivity
+        freshness: null
+      - name: dim_medication_administration_result
+        freshness: null
+      - name: dim_or_audit_action
+        freshness: null
+      - name: dim_or_cancel_reason
+        freshness: null
+      - name: dim_owning_area
+        freshness: null
+      - name: dim_patient_class
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: dim_patient_isolation
+        freshness: null
+      - name: dim_patient_mychart_info_status
+        freshness: null
+      - name: dim_provider_type
+        freshness: null
+      - name: dim_registry_status
+        freshness: null
+      - name: dim_result_flag
+        freshness: null
+      - name: dim_routing_method
+        freshness: null
+      - name: dim_state
+        freshness: null
+      - name: dim_transplant_class
+        freshness: null
+      - name: dim_transplant_protocol
+        freshness: null
+      - name: dim_unit_type
+        freshness: null
+      - name: dim_visit_cncl_rsn
+        freshness: null
+      - name: dim_workqueue_tab_status
+        freshness: null
+      - name: document_info
+      - name: echo_fetal_study
+        freshness: null
+      - name: echo_fetal_study_arteries
+        freshness: null
+      - name: echo_fetal_study_atria
+        freshness: null
+      - name: echo_fetal_study_cardiovasc
+        freshness: null
+      - name: echo_fetal_study_combined_cardiac
+        freshness: null
+      - name: echo_fetal_study_conotruncus
+        freshness: null
+      - name: echo_fetal_study_demographics
+        freshness: null
+      - name: echo_fetal_study_fetal_doppler
+        freshness: null
+      - name: echo_fetal_study_fetus
+        freshness: null
+      - name: echo_fetal_study_inlets
+        freshness: null
+      - name: echo_fetal_study_outlets
+        freshness: null
+      - name: echo_fetal_study_pregnancy
+        freshness: null
+      - name: echo_fetal_study_veins
+        freshness: null
+      - name: echo_fetal_study_ventricles
+        freshness: null
+      - name: echo_study
+        freshness: null
+      - name: echo_study_aorta_calcs
+        freshness: null
+      - name: echo_study_aortic_valve_calcs
+        freshness: null
+      - name: echo_study_arteries
+        freshness: null
+      - name: echo_study_atria
+        freshness: null
+      - name: echo_study_demographics
+        freshness: null
+      - name: echo_study_inlets
+        freshness: null
+      - name: echo_study_left_ventricle_calcs
+        freshness: null
+      - name: echo_study_lvot_calcs
+        freshness: null
+      - name: echo_study_mitral_calcs
+        freshness: null
+      - name: echo_study_other
+        freshness: null
+      - name: echo_study_outlets
+        freshness: null
+      - name: echo_study_pda_calcs
+        freshness: null
+      - name: echo_study_pulmonary_arteries_calcs
+        freshness: null
+      - name: echo_study_pulmonary_valve_calcs
+        freshness: null
+      - name: echo_study_quality_improvement
+        freshness: null
+      - name: echo_study_right_ventricle_calcs
+        freshness: null
+      - name: echo_study_rvot_calcs
+        freshness: null
+      - name: echo_study_surgeries
+        freshness: null
+      - name: echo_study_tricuspid_calcs
+        freshness: null
+      - name: echo_study_ventricles
+        freshness: null
+      - name: ekg_study
+        freshness: null
+      - name: employee
+        freshness: null
+        meta:
+          critical: true
+      - name: epic_grouper_item
+        freshness: null
+      - name: epic_grouper_department
+        freshness: null
+      - name: epic_grouper_diagnosis
+        freshness: null
+      - name: epic_grouper_medication
+        freshness: null
+      - name: epic_grouper_procedure
+        freshness: null
+      - name: ed_area
+      - name: fact_ar_history
+        freshness: null
+      - name: fact_ar_history_hb
+        freshness: null
+      - name: fact_reimbursement
+        freshness: null
+        meta:
+          unscheduled: true # this actually runs at ~5p but setting to unscheduled for CI source dep check purposes
+      - name: fact_financial_statistic_finance_pat_days
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: fact_ip_harm_monthly_dept_grp
+      - name: fact_ip_harm_monthly
+      - name: fact_ip_ssi
+      - name: fact_or_log
+      - name: fact_transaction
+        freshness: null
+      - name: fact_transaction_hb
+      - name: fastrack_home_care_stats
+        freshness: null
+      - name: financial_class
+        meta:
+          critical: true
+      - name: flowsheet
+      - name: flowsheet_group
+      - name: flowsheet_template_group
+      - name: flowsheet_lda_group
+      - name: flowsheet_measure
+      - name: flowsheet_record
+      - name: flowsheet_template
+      - name: form_answer
+      - name: hospital_account
+      - name: hospital_account_diag_icd
+      - name: hospital_account_drg
+      - name: hospital_account_visit
+      - name: hospital_infection_patient_info
+      - name: hospital_isolation
+      - name: hospital_procedure_order
+      - name: immunization
+      - name: infection_surveillance
+      - name: infection_surveillance_class
+      - name: infection_surveillance_micro
+      - name: infection_surveillance_visit
+      - name: location
+        freshness: null
+      - name: liability_bucket
+      - name: liability_bucket_account_xref
+      - name: kaps_claim_file
+      - name: kaps_event_location
+      - name: kaps_event_person_affected
+      - name: kaps_event_outcome
+      - name: kaps_feedback_cases
+        freshness: null
+      - name: kaps_feedback_category
+        freshness: null
+      - name: kaps_feedback_follow_up
+        freshness: null
+      - name: kaps_feedback_issue
+        freshness: null
+      - name: kaps_feedback_subject
+        freshness: null
+      - name: kaps_file_state
+        freshness: null
+      - name: kaps_master_module
+        freshness: null
+      - name: kaps_feedback_sub_category
+        freshness: null
+      - name: kaps_feedback_target
+        freshness: null
+      - name: kaps_feedback_theme
+        freshness: null
+      - name: kaps_feedback_user_defined_field
+        freshness: null
+      - name: kaps_incident_1
+      - name: kaps_master_user
+        freshness: null
+      - name: manager
+        freshness: null
+        meta:
+          critical: true
+      - name: master_bed
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_charge_edit_rule
+        freshness: null
+      - name: master_date
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_detail_type
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_diagnosis
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_event_type
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_form
+        meta:
+          unscheduled: true
+      - name: master_frequency
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_geography
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_modifier
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_pay_periods
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_question
+        freshness: null
+        meta:
+          unscheduled: true
+          critical: true
+      - name: master_reason_for_visit
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_redcap_element_answr
+        meta:
+          unscheduled: true
+      - name: master_redcap_project
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_redcap_question
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_redcap_survey_response
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_remittance
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_result_organism
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_room
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_statistic
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_time
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: master_visit_type
+        meta:
+          unscheduled: true
+      - name: medication_order
+      - name: medication
+      - name: medication_administration
+      - name: mychart_user_access
+      - name: note_history
+      - name: note_info
+      - name: note_smart_text_id
+      - name: note_smart_phrase
+      - name: note_visit_info
+      - name: note_text
+      - name: nurse_triage_ptcl
+        freshness: null
+      - name: oncore_diagnosis
+        freshness: null
+      - name: or_case
+      - name: or_case_all_procedures
+      - name: or_implant
+        freshness: null
+      - name: or_case_all_surgeons
+      - name: or_case_audit_history
+      - name: or_case_order
+      - name: or_implant_description
+        freshness: null
+      - name: or_log
+      - name: or_log_all_procedures
+      - name: or_log_case_times
+      - name: or_log_implants
+        freshness: null
+      - name: or_log_implant_explanted
+        freshness: null
+      - name: or_log_implant_implanted
+        freshness: null
+      - name: or_log_implant_wasted
+        freshness: null
+      - name: or_log_staff
+      - name: or_log_surgeons
+      - name: or_procedure
+        freshness: null
+      - name: or_procedure_cpt
+      - name: or_supply
+      - name: or_utilization_block
+      - name: dim_or_adj_turnovr_rsn
+        freshness: null
+      - name: or_case_room_turnover
+      - name: or_log_delay_comments
+        freshness: null
+      - name: or_log_delay_reasons
+        freshness: null
+      - name: or_log_delays
+        freshness: null
+      - name: or_xref
+      - name: order_question
+      - name: order_status_hist
+      - name: order_xref
+      - name: organ
+      - name: patient
+      - name: patient_address_hist
+      - name: patient_allergy
+        freshness: null
+        meta:
+          critical: true
+      - name: patient_care_team_edit_history
+      - name: patient_coverage_filing_order
+        freshness: null
+      - name: patient_immunization
+      - name: patient_lda
+      - name: patient_list
+      - name: patient_list_info
+        freshness: null
+      - name: patient_match
+      - name: patient_mychart_info
+      - name: patient_problem_list
+      - name: patient_race_ethnicity
+      - name: patient_staff_note
+      - name: patient_geographical_spatial_info
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: payor
+        meta:
+          critical: true
+      - name: payor_group
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: place_of_service
+      - name: protocol
+      - name: provider
+        meta:
+          critical: true
+      - name: provider_addr
+        meta:
+          critical: true
+      - name: provider_availability
+      - name: provider_dept
+        freshness: null
+      - name: provider_specialty
+        meta:
+          critical: true
+      - name: provider_unavailable_day
+        freshness: null
+      - name: provider_unavailable_time
+      - name: procedure
+      - name: procedure_group
+      - name: procedure_order
+      - name: procedure_order_appointment
+      - name: procedure_order_diagnosis
+      - name: procedure_order_narrative
+      - name: procedure_order_parent_info
+      - name: procedure_order_result
+      - name: procedure_order_result_comment
+      - name: procedure_order_susceptibility
+      - name: radiology_event
+      - name: radiology_reading
+      - name: redcap_detail
+        freshness: null
+      - name: referral
+      - name: referral_source
+        meta:
+          critical: true
+      - name: registry_configuration
+      - name: registry_data_membership
+      - name: registry_data_info
+      - name: registry_metric_history
+      - name: registry_membership_history
+        freshness: null
+      - name: registry_centr_demographics
+        freshness: null
+      - name: registry_hospital
+        freshness: null
+      - name: registry_hospital_visit
+        freshness: null
+      - name: registry_impact_cath_data
+        freshness: null
+      - name: registry_pac3_encounter
+        freshness: null
+      - name: registry_patient_anatomy
+        freshness: null
+      - name: registry_patient_chrom_ab
+        freshness: null
+      - name: registry_patient_ncaa
+        freshness: null
+      - name: registry_patient_syndrome
+        freshness: null
+      - name: registry_pc4_arrhythmia
+        freshness: null
+      - name: registry_pc4_encounter
+        freshness: null
+      - name: registry_pc4_complications
+        freshness: null
+      - name: registry_pc4_infection
+        freshness: null
+      - name: registry_pc4_mechanical_support
+        freshness: null
+      - name: registry_pc4_operative
+        freshness: null
+      - name: registry_pc4_risk_surgical
+        freshness: null
+      - name: registry_pc4_therapy
+        freshness: null
+      - name: registry_sts_followup
+        freshness: null
+      - name: registry_sts_procedure
+        freshness: null
+      - name: registry_sts_provider
+        freshness: null
+      - name: registry_sts_surgery
+        freshness: null
+      - name: registry_sts_surgery_complication
+        freshness: null
+      - name: registry_sts_surgery_procedure
+        freshness: null
+      - name: registry_sts_surgery_perfusion
+        freshness: null
+      - name: registry_patient_mortality
+        freshness: null
+      - name: registry_pc4_cardiac_arrest
+        freshness: null
+      - name: registry_quality_info
+      - name: registry_tumor_oncology
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: registry_wellness_over_2ys_hx
+        freshness: null
+      - name: result_component
+      - name: series_answer
+        freshness: null
+      - name: series_info
+        freshness: null
+      - name: service_area
+      - name: smart_data_element_info
+      - name: smart_data_element_previous_value
+      - name: smart_data_element_previous_value_list
+      - name: smart_data_element_value
+      - name: smart_list
+      - name: smart_text
+      - name: smart_phrase
+      - name: snomed_concept
+        freshness: null
+      - name: survey_data
+        meta:
+          critical: true
+      - name: transplant_info
+        freshness: null
+      - name: transplant_class
+      - name: transplant_protocol
+      - name: transplant_organs
+      - name: treatment_plan_order
+      - name: visit
+      - name: visit_appointment
+      - name: visit_appointment_change
+      - name: visit_addl_info
+      - name: visit_event
+      - name: visit_diagnosis
+        meta:
+          critical: true
+      - name: visit_ed_event
+      - name: visit_ed_area
+      - name: visit_ed_extended
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: visit_follow_up_disp
+      - name: visit_form
+      - name: visit_procedure_question
+      - name: visit_provider_hist
+      - name: visit_reason
+      - name: visit_treatment
+      - name: visit_stay_info
+      - name: visit_stay_info_rows
+      - name: visit_stay_info_rows_order
+      - name: _v_database
+        freshness: null
+      - name: _v_group
+        freshness: null
+      - name: _v_vector_idx
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: _v_objects
+        freshness: null
+      - name: _v_relobjclasses
+        freshness: null
+      - name: _v_sys_columns
+        freshness: null
+      - name: _v_user
+        freshness: null
+      - name: _t_object
+        freshness: null
+      - name: _t_grpobj_priv
+        freshness: null
+      - name: _t_usrobj_priv
+        freshness: null
+      - name: workqueue_schedule_order
+      - name: workqueue_info
+      - name: workqueue_schedule_order_item
+      - name: medication_order_signed
+      - name: procedure_order_signed
+      - name: research_study
+  - name: cdw_analytics
+    database: "{{ env_var('CDW_DB', 'CDWUAT')}}"
+    schema: CDW_ANALYTICS
+    tables:
+      - name: fact_department_rollup
+      - name: fact_department_rollup_summary
+      - name: fact_edqi
+      - name: fact_financial_statistic
+      - name: fact_financial_statistic_op_spec_visit
+      - name: master_access_intake_new_patient_appt_visit_type
+        meta:
+          unscheduled: true
+      - name: master_call_center_group_category
+        meta:
+          unscheduled: true
+      - name: master_call_type_scheduling
+        meta:
+          unscheduled: true
+  - name: cdw.cdw_analytics
+    database: '{{ env_var("CDW_DB", "CDWUAT") }}'
+    schema: CDW_ANALYTICS
+    tables:
+      - name: metrics_hai
+      - name: fact_ip_lda_central_line
+  - name: workday
+    database: "{{ env_var('CDW_DB', 'CDWUAT')}}"
+    schema: WORKDAY
+    tables:
+      - name: workday_cost_center
+      - name: workday_cost_center_site
+      - name: workday_ledger_account
+      - name: workday_payor
+      - name: workday_revenue_category
+      - name: workday_spend_category
+      - name: worker_contact_list
+      - name: workday_cost_center_hierarchy
+      - name: workday_cost_center_hierarchy_levels
+      - name: workday_cost_center_hierarchy_xref
+  - name: workday_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: ADMIN #WORKDAY - for future reference
+    tables:
+      - name: company
+        freshness: null
+      - name: company_hierarchy
+      - name: company_hierarchy_levels
+      - name: company_company_hierarchy
+      - name: cost_center
+      - name: cost_center_site
+      - name: cr_workday_certifications
+      - name: cr_workday_education
+      - name: cr_workday_job_requisitions
+      - name: cr_workday_language_skills
+      - name: cr_workday_neo
+      - name: enroll_info
+      - name: fund
+      - name: glcode
+      - name: grants
+      - name: inventory_balances
+      - name: inventory_par_location_items
+      - name: job_family
+      - name: job_family_group
+      - name: job_position
+      - name: job_profile
+      - name: job_profile_report
+      - name: journal_source
+      - name: cost_center_hierarchy
+      - name: workday_purchase_orders
+      - name: workday_purchase_orders_lines
+      - name: workday_supplier_contract
+      - name: workday_supplier_invoices
+      - name: workday_supplier_invoices_lines
+      - name: ledger_account
+      - name: ledger_account_ledger_account_summary
+      - name: ledger_account_summary_levels
+      - name: ledger_period_close_status
+        meta:
+          critical: true
+      - name: ledger_period_close_status_history
+        meta:
+          critical: true
+      - name: location
+      - name: location_address
+      - name: payment_terms
+      - name: project
+      - name: project_project_hierarchy
+      - name: project_hierarchy_levels
+      - name: program
+      - name: provider
+      - name: purchase_item
+      - name: purchase_item_item_tags
+        meta:
+          critical: true
+      - name: purchase_item_supplier_item_data
+      - name: revenue_category_hierarchy_levels
+      - name: revenue_category_revenue_category_hierarchy
+      - name: rsh_research_info
+      - name: scm_inventory_balance
+      - name: scm_purchase_item_master_substitutes
+      - name: spend_category
+      - name: spend_category_hierarchy_levels
+      - name: spend_category_spend_category_hierarchy
+      - name: supervisory_department
+      - name: supplier
+      - name: supplier_items_pricing_history
+        meta:
+          critical: true
+      - name: worker
+      - name: worker_address
+      - name: worker_email
+      - name: worker_employment
+      - name: worker_job
+      - name: worker_organization
+      - name: worker_phone
+      - name: workday_customer_invoices
+      - name: workday_grant_details
+      - name: workday_journal_lines
+      - name: workday_journal_lines_beginning_balance
+      - name: workday_journal_lines_compare
+      - name: workday_payroll_accounting_lines
+      - name: workday_payroll_accounting_lines_obligations
+      - name: workday_plan_line_awards
+      - name: workday_plan_lines
+      - name: workday_plans
+      - name: cost_center_cost_center_hierarchy
+      - name: cost_center_hierarchy_levels
+      - name: pay_group
+      - name: payor
+      - name: revenue_category
+      - name: payor_payor_hierarchy
+      - name: payor_hierarchy
+      - name: cost_center_site_cost_center_site_hierarchy
+      - name: cost_center_site_hierarchy_levels
+      - name: workday_project
+      - name: workday_location_hierarchy
+      - name: workday_grant_hierarchy
+      - name: workday_grant_costshare
+      - name: expense_item
+  - name: business_objects_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: business_objects
+    tables:
+      - name: business_objects_ads_event
+      - name: business_objects_ads_event_type_str
+      - name: business_objects_ads_object_type_str
+  - name: ccis_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: CCIS
+    tables:
+      - name: centripetus_cases
+      - name: centripetus_complications
+      - name: centripetus_diagnosis
+      - name: centripetus_hospitalizationfactors
+      - name: centripetus_pc4compnecbell
+      - name: centripetus_pc4compstroke
+      - name: centripetus_emrlinkid
+      - name: centripetus_vdiagnosislist
+      - name: muse_tsttests
+      - name: muse_cfgstatements
+      - name: muse_quenormaldiscard
+      - name: muse_tstdiagnosisdetails
+      - name: muse_tstecgmeasmatrix
+      - name: muse_tstpatientdemographics
+      - name: muse_tstrestingecgmeasurement
+      - name: muse_tsttestdemographics
+      - name: sensis_act
+      - name: sensis_angio
+      - name: sensis_aovdata
+      - name: sensis_aptver2
+      - name: sensis_aptver3
+      - name: sensis_asdata
+      - name: sensis_asdefct
+      - name: sensis_bg
+      - name: sensis_asr
+      - name: sensis_brthinf
+      - name: sensis_coadata
+      - name: sensis_coadfect
+      - name: sensis_ct
+      - name: sensis_dbalteq
+      - name: sensis_dices1te
+      - name: sensis_dicip3161
+      - name: sensis_dicip4000
+      - name: sensis_dicip5075
+      - name: sensis_dicpnname
+      - name: sensis_dicshesiz
+      - name: sensis_gencond
+      - name: sensis_imarwy
+      - name: sensis_dicip4045
+      - name: sensis_ip2cart
+      - name: sensis_ip2dvce
+      - name: sensis_ip2hrsk
+      - name: sensis_ip2int
+      - name: sensis_ip2ppt
+      - name: sensis_ip2rvot
+      - name: sensis_ipdevce
+      - name: sensis_ipdindic
+      - name: sensis_ipppas
+      - name: sensis_ippoevnt
+      - name: sensis_ippeven2
+      - name: sensis_ipprdef
+      - name: sensis_ipvent1
+      - name: sensis_ipvent2
+      - name: sensis_hemodyn
+      - name: sensis_me
+      - name: sensis_pedpr
+      - name: sensis_pedpp
+      - name: sensis_pd
+      - name: sensis_phys
+      - name: sensis_pn
+      - name: sensis_poct
+      - name: sensis_precg
+      - name: sensis_prepcon
+      - name: sensis_prdg
+      - name: sensis_prmeds
+      - name: sensis_pvdata
+      - name: sensis_sbalteq
+      - name: sensis_study
+      - name: sensis_tpv2ind
+      - name: sensis_xray
+      - name: sensis_xraybsum
+      - name: sensis_za
+      - name: syngo_echo_measurementtype
+      - name: syngo_echo_measurementvalue
+      - name: syngo_echo_observationvalue
+      - name: syngo_echo_observationname
+      - name: syngo_echo_observationfieldmap
+      - name: syngo_echo_dosr_study
+      - name: syngo_echo_report
+      - name: syngo_echo_study
+  - name: cdc_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: CDC
+    tables:
+      - name: social_vulnerability_index
+        meta:
+          unscheduled: true
+  - name: clarity_ods
+    freshness:
+      error_after: {count: "{{42 if target.name == 'ci' else 18}}", period: hour}
+      filter: days_between(upd_dt, current_timestamp) < 2
+    loaded_at_field: "upd_dt - (select TZOFFSET from _VT_PG_TIME_OFFSET)"
+    database: |
+      {%- if  target.type == "netezza" -%} {{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}
+      {%- elif target.type == "snowflake"  -%} {{ env_var('ENVIRONMENT', 'UAT')}}
+      {%- endif -%}
+    schema: |
+      {%- if  target.type == "netezza" -%} CLARITY
+      {%- elif target.type == "snowflake"  -%} LAKE_CLARITY
+      {%- endif -%}
+    tables:
+      - name: account
+      - name: acuity_rule_score
+      - name: all_categories
+      - name: all_objects
+        freshness: null
+      - name: an_staff
+      - name: an_hgm_record_info
+        frehsness: null
+      - name: an_hsb_link_info
+      - name: appt_req_appt_links
+      - name: arpb_transactions
+      - name: assocd_lda
+      - name: availability
+      - name: avail_block
+      - name: bdc_info
+      - name: bdc_rac_appeal_info
+      - name: bed_metric_grouper
+      - name: bed_plan_hx
+      - name: cal_comm_tracking
+      - name: cl_icd_px
+      - name: cal_reference_crm
+      - name: cl_bev
+      - name: cl_bev_events
+      - name: cl_chrg_edit_rule
+      - name: cl_prl_ss
+      - name: cl_qanswer
+      - name: cl_qanswer_qa
+      - name: cl_qanswer_qnr_progress
+        freshness: null
+      - name: cl_qform
+      - name: cl_qquest
+      - name: cl_qquest_ovtm
+      - name: cl_rsn_for_visit
+      - name: cl_ub_rev_code
+      - name: clarity_adt
+      - name: clarity_bed
+      - name: clarity_component
+      - name: clarity_concept
+      - name: clarity_dep
+      - name: clarity_dep_2
+        meta:
+          critical: true
+      - name: clarity_dep_3
+      - name: clarity_dep_4
+      - name: clarity_drg
+      - name: clarity_eap
+      - name: clarity_eap_ot
+      - name: clarity_ecl
+      - name: clarity_edg
+      - name: clarity_emp
+      - name: clarity_epm
+        freshness: null
+      - name: clarity_epg
+      - name: clarity_epp
+      - name: clarity_fc
+      - name: clarity_hip
+        freshness: null
+      - name: clarity_hm_topic
+      - name: clarity_immunzatn
+      - name: clarity_llb
+      - name: clarity_loc
+      - name: clarity_lpp
+        freshness: null
+      - name: clarity_medication
+      - name: clarity_organism
+      - name: clarity_pos
+      - name: clarity_rmc
+      - name: clarity_rom
+      - name: clarity_ser
+      - name: clarity_ser_2
+      - name: clarity_ser_ext_id
+      - name: clarity_ser_spec
+      - name: clarity_tbl
+      - name: clarity_tbl_2
+      - name: clarity_tdl_tran
+        freshness: null
+      - name: container_type
+        freshness: null
+      - name: coverage
+      - name: cur_abst_quesr_answers
+      - name: cust_serv_atchment
+      - name: cust_service
+      - name: cust_service_transfer
+      - name: date_dimension
+      - name: dba_tables
+        freshness: null
+      - name: delivery_liv_sts
+      - name: doc_information
+      - name: docs_rcvd
+      - name: docs_rcvd_rslt_comps
+      - name: docs_rcvd_rslts
+      - name: ed_event_tmpl_info
+      - name: ed_iev_event_info
+      - name: ed_iev_pat_info
+      - name: edg_current_icd9
+      - name: edg_current_icd10
+      - name: edp_proc_cat_info
+      - name: elem_val_prev
+      - name: elem_val_prev_val
+      - name: emr_system_defs
+      - name: enc_dx_edit_trail
+      - name: episode
+      - name: episode_def
+      - name: episode_link
+      - name: ept_care_teams
+      - name: ept_sel_smartsets
+      - name: ept_team_audit
+      - name: f_an_record_summary
+      - name: ethnic_background
+      - name: fol_info
+      - name: fol_reason_code
+      - name: follow_up_topics
+      - name: front_end_pmt_coll_hx
+      - name: goal
+      - name: goal_contact
+      - name: grouper_compiled_rec_list
+        freshness: null
+      - name: hsp_account
+      - name: hl_asgn_info_audit
+      - name: hl_req_info
+      - name: hm_plan_info
+      - name: hsp_acct_extinj_cd
+      - name: hsp_acct_admit_dx
+      - name: hsp_acct_cpt_codes
+      - name: hsp_acct_dx_list
+      - name: hsp_acct_mult_drgs
+      - name: hsp_acct_pat_csn
+      - name: hsp_acct_px_list
+      - name: hsp_admit_diag
+      - name: hsp_bdc_appeal_dates
+      - name: hsp_bdc_denial_data
+      - name: hsp_bdc_denied_dates
+      - name: hsp_bdc_payor
+      - name: hsp_bkt_snapshot
+      - name: hsp_bucket
+      - name: ib_command_audit
+      - name: ib_commands
+        freshness: null
+      - name: ib_forward_items
+      - name: ib_message_threa_1
+      - name: ib_message_threa_2
+      - name: ib_message_thread
+      - name: ib_messages
+      - name: ib_messages_2
+      - name: ib_receiver
+      - name: ib_threads
+      - name: identity_id_type
+      - name: identity_ser_id
+      - name: imm_admin
+      - name: immune
+      - name: infections
+      - name: inv_basic_info
+      - name: inv_clm_ln_addl
+      - name: inv_num_tx_pieces
+      - name: ip_flo_gp_data
+      - name: ip_flo_lda_types
+      - name: ip_flowsheet_rows
+      - name: ip_flwsht_meas
+      - name: ip_flwsht_rec
+      - name: ip_frequency
+      - name: ip_lda_noaddsingle
+      - name: lab_profile
+        freshness: null
+      - name: lab_section
+      - name: lpq_prompt_txt
+      - name: mar_admin_info
+      - name: mar_custom_actions
+        meta:
+          critical: true
+      - name: meds_rev_hx
+      - name: method_db_main
+        freshness: null
+      - name: myc_appt_qnr_data
+      - name: myc_convo
+      - name: myc_convo_abt_cust_svc
+      - name: myc_convo_abt_med_advice
+      - name: myc_convo_msgs
+      - name: myc_mesg
+      - name: myc_mesg_audit
+      - name: myc_mesg_frst_last
+      - name: myc_patient
+      - name: note_enc_info
+      - name: note_smartlist_ids
+      - name: note_smarttext_ids
+      - name: names
+      - name: ob_hsb_delivery
+      - name: ob_hx_hsb
+      - name: ob_total
+      - name: or_grp
+      - name: or_imp
+      - name: or_pklst
+      - name: or_pklst_sup_list
+      - name: or_proc
+        freshness: null
+      - name: or_proc_audit_trl
+        freshness: null
+      - name: or_proc_authloc
+        freshness: null
+      - name: or_proc_instr
+        freshness: null
+      - name: or_proc_mod_eaf_index
+        freshness: null
+      - name: or_proc_mod_orp_index
+        freshness: null
+      - name: or_ser_surg_srvc
+      - name: or_sply
+        freshness: null
+      - name: or_sply_loc_info
+        freshness: null
+      - name: or_sply_ovtm
+        freshness: null
+      - name: or_tank
+        freshness: null
+      - name: or_tank_auth_loc
+        freshness: null
+      - name: or_util_block
+      - name: ord_blood_admin
+      - name: ord_prflst_trk
+      - name: ord_spec_quest
+      - name: order_impression
+      - name: order_med
+      - name: order_med_3
+      - name: order_med_4
+      - name: order_med_sig
+      - name: order_medinfo
+      - name: order_metrics
+      - name: order_narrative
+      - name: order_proc
+      - name: order_proc_2
+      - name: order_rad_acc_num
+        freshness: null
+      - name: order_results
+      - name: order_status
+      - name: other_communctn
+      - name: ovc_db_main
+      - name: ovc_events
+      - name: ovc_specimens
+      - name: pt_goals_info
+      - name: pat_call_disp
+        freshness: null
+      - name: pat_cvg_file_order
+      - name: pat_enc
+      - name: pat_enc_2
+      - name: pat_enc_3
+      - name: pat_enc_4
+      - name: pat_enc_appt
+      - name: pat_enc_appt_notes
+      - name: pat_enc_call_prpts
+      - name: pat_enc_disp
+      - name: pat_enc_dx
+      - name: pat_enc_es_aud_act
+      - name: pat_enc_hsp
+      - name: pat_enc_letters
+      - name: pat_enc_rsn_visit
+      - name: pat_enc_form_ans
+      - name: pat_merge_history
+      - name: pat_vis_notif_cncts
+      - name: pend_action
+      - name: problem_list
+      - name: patient_race
+      - name: pat_sexual_orientation
+      - name: hno_info
+      - name: hno_info_2
+      - name: hno_note_text
+      - name: pat_address
+        meta:
+          critical: true
+      - name: pat_myc_prxy_acss
+      - name: pat_myc_stat_hx
+      - name: pat_addr_chng_hx
+      - name: pat_or_adm_link
+      - name: pat_rel_email_addr
+      - name: pat_rel_phone_num
+      - name: pat_relationships
+      - name: pat_relationship_list
+      - name: pat_temp_st_addr
+      - name: patient
+      - name: patient_2
+      - name: patient_3
+      - name: patient_4
+      - name: patient_alg_upd_hx
+      - name: patient_fyi_flags
+      - name: patient_hmt_status
+      - name: patient_myc
+      - name: patient_oth_staddr
+      - name: patient_type
+      - name: pmt_eob_info_i
+      - name: pmt_eob_info_ii
+      - name: qm_gen_info
+      - name: poc_info
+      - name: poc_version_info
+      - name: provteam_rec_info
+      - name: referral
+      - name: referral_cvg
+      - name: referral_hist
+      - name: referral_order_id
+      - name: referral_wq
+      - name: referral_wq_items
+      - name: referral_wq_usr_hx
+      - name: reg_bypassed_warnings
+      - name: reg_data_hx_membership
+      - name: reg_data_metrics
+      - name: reg_hx
+      - name: reg_workflow_prod
+      - name: registry_config
+      - name: registry_data_info
+      - name: res_components
+      - name: res_db_main
+      - name: res_vld_audit
+      - name: rfl_cvg_den_appeal
+      - name: rfl_cvg_den_dispos
+      - name: rfl_cvg_den_end
+      - name: rfl_cvg_den_rsn_c
+      - name: rfl_cvg_den_start
+      - name: rqg_db_main
+      - name: rx_med_mix_compon
+      - name: rx_med_three
+      - name: rx_med_two
+      - name: rx_phr
+      - name: series_answer_id
+      - name: series_log_info
+      - name: smrtdta_elem_data
+      - name: smrtdta_elem_value
+      - name: social_hx
+      - name: spec_db_main
+      - name: spec_test_ctnr_rm
+      - name: spec_test_rel
+      - name: tc_request_status_hx
+      - name: test_components
+        freshness: null
+      - name: test_mstr_db_main
+        freshness: null
+      - name: test_sections_rm
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: tre_rc_def
+        freshness: null
+      - name: tre_rc_def_cat
+        freshness: null
+      - name: tre_rc_param
+        freshness: null
+      - name: verification
+      - name: x_clarity_extract_info
+      - name: x_primary_dept_id_c
+        freshness: null
+      - name: zc_active_order
+      - name: zc_acuity_level
+      - name: zc_admin_route
+      - name: zc_bkt_sts_ha
+        freshness: null
+      - name: zc_bkt_type_ha
+        freshness: null
+      - name: zc_call_type
+        freshness: null
+      - name: zc_care_plan_info
+      - name: zc_center
+        freshness: null
+      - name: zc_chkin_indicator
+      - name: zc_claim_type_ha
+        freshness: null
+      - name: zc_close_reason_ha
+        freshness: null
+      - name: zc_cm_metric_grouper
+        freshness: null
+      - name: zc_comm_type
+        freshness: null
+      - name: zc_country
+      - name: zc_county
+      - name: zc_data_type
+      - name: zc_dep_rpt_grp_10
+      - name: zc_dep_rpt_grp_15
+      - name: zc_dep_rpt_grp_31
+        freshness: null
+      - name: zc_dep_rpt_grp_33
+        freshness: null
+      - name: zc_denied_reason
+        freshness: null
+      - name: zc_dea_class_code
+      - name: zc_dx_poa
+      - name: zc_eap_rpt_grp_10
+      - name: zc_e_pres_dea_code
+      - name: zc_echkin_step_stat
+      - name: zc_ed_disposition
+        freshness: null
+      - name: zc_epi_status
+      - name: zc_epm_rpt_grp_10
+      - name: zc_ethnic_bkgrnd
+      - name: zc_event_track_reasn
+        freshness: null
+      - name: zc_form
+      - name: zc_gender_identity
+        freshness: null
+      - name: zc_hmt_due_status
+      - name: zc_how_handled
+        freshness: null
+      - name: zc_interim_type_ha
+        freshness: null
+      - name: zc_ip_cp_igo_160
+        freshness: null
+      - name: zc_lab_call_topic
+        freshness: null
+      - name: zc_lab_corr_type
+        freshness: null
+      - name: zc_language
+        freshness: null
+      - name: zc_lines_group
+      - name: zc_loc_rpt_grp_6
+      - name: zc_loc_type
+        freshness: null
+      - name: zc_mar_rslt
+      - name: zc_mdcre_b_clm_flg
+      - name: zc_med_unit
+      - name: zc_mfg
+      - name: zc_msg_priority
+        freshness: null
+      - name: zc_msg_type
+        freshness: null
+      - name: zc_myc_msg_typ
+        freshness: null
+      - name: zc_myc_prxy_relatn
+      - name: zc_ncs_topic
+      - name: zc_ob_hx_is_living
+        freshness: null
+      - name: zc_or_anstaff_type
+      - name: zc_or_instr_type
+        freshness: null
+      - name: zc_or_service
+      - name: zc_or_type_of_item
+        freshness: null
+      - name: zc_ordering_mode
+      - name: zc_order_class
+      - name: zc_order_priority
+        freshness: null
+      - name: zc_order_status
+      - name: zc_pat_appt_qnr_src
+      - name: zc_pat_appt_qnr_stat
+      - name: zc_pat_class
+      - name: zc_pat_relation
+      - name: zc_pat_service
+      - name: zc_patient_race
+      - name: zc_sexual_orientation
+      - name: zc_patient_status
+      - name: zc_pba_rec_stat
+      - name: zc_ped_delivr_meth
+        freshness: null
+      - name: zc_pharm_class
+      - name: zc_pharm_subclass
+      - name: zc_phone_disp
+        freshness: null
+      - name: zc_pos_rpt_grp_9
+        freshness: null
+      - name: zc_pos_rpt_grp_10
+        freshness: null
+      - name: zc_qf_status
+      - name: zc_rac_rslt_rsn
+        freshness: null
+      - name: zc_reason_for_canc
+        freshness: null
+      - name: zc_rc_age_units
+        freshness: null
+      - name: zc_rc_inc_exc_endp
+        freshness: null
+      - name: zc_reg_granularity
+        freshness: null
+      - name: zc_registry_category
+        freshness: null
+      - name: zc_registry_type
+        freshness: null
+      - name: zc_res_unvld_rsn
+        freshness: null
+      - name: zc_res_val_status
+        freshness: null
+      - name: zc_rfl_status
+        freshness: null
+      - name: zc_root_cause
+        freshness: null
+      - name: zc_roster_identifier
+        freshness: null
+      - name: zc_rsn_non_coll_amt
+        freshness: null
+      - name: zc_simple_generic
+      - name: zc_snapshot_number
+      - name: zc_sex
+      - name: zc_sex_asgn_at_birth
+        freshness: null
+      - name: zc_spec_source
+        freshness: null
+      - name: zc_specimen_type
+        freshness: null
+      - name: zc_specialty
+      - name: zc_spoc_type
+      - name: zc_srs_action
+        freshness: null
+      - name: zc_stat
+      - name: zc_state
+      - name: zc_table_type
+      - name: zc_tc_cancel_rsn
+      - name: zc_tc_request_status
+      - name: zc_tc_transfer_type
+      - name: zc_team_action
+        freshness: null
+      - name: zc_thera_class
+      - name: zc_woff_adj_sts_ha
+        freshness: null
+      - name: zc_or_unit_issue
+  - name: neo_velos_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT') }}"
+    schema: neo_velos
+    tables:
+      - name: neo_velos_allpatientdemographics
+        meta:
+          unscheduled: true
+      - name: neo_velos_dischargefromnicu
+        meta:
+          unscheduled: true
+      - name: neo_velos_dischargetransferdetails
+        meta:
+          unscheduled: true
+      - name: neo_velos_eoc
+        meta:
+          unscheduled: true
+      - name: neo_velos_homeorfostercare
+        meta:
+          unscheduled: true
+      - name: neo_velos_mpp
+        meta:
+          unscheduled: true
+      - name: neo_velos_transportandadmission
+        meta:
+          unscheduled: true
+  - name: metadata_universe_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT') }}"
+    schema: METADATA_UNIVERSE
+    tables:
+      - name: metadata_universe_column_source
+      - name: metadata_universe_data_source
+      - name: metadata_universe_data_source_type
+      - name: metadata_universe_entity
+      - name: metadata_universe_entity_column
+  - name: ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: ADMIN
+    tables:
+      - name: amn_stratus_interpreter_call_details
+      - name: alert
+      - name: alt_com_action
+      - name: chopradiationcourse
+      - name: chopradiationcoursedose
+      - name: bed_charge_table
+        meta:
+          critical: true
+      - name: cart_infusions
+      - name: donor_selections
+      - name: employee_registration_email
+      - name: emp_symptom_tracker_history
+      - name: emp_symptom_tracker
+      - name: cr_service_line_dashboard_internal_mobility
+        meta:
+          unscheduled: true
+      - name: cr_service_line_db_rolling_turnover_all_areas
+        meta:
+          unscheduled: true
+      - name: ctc_handoff
+      - name: icd10_diagnosis_hierarchy_2022
+        meta:
+          unscheduled: true
+      - name: initial_insurance_approvals
+      - name: lsa_interpreter_call_details
+      - name: patient_geospatial_temp
+      - name: patient_address_geocode
+      - name: referral_entities
+      - name: rv_protocol_pi_staff
+      - name: rv_sip_protocol
+      - name: st_entity_record_relations
+      - name: sv_pcl_accrual_summary
+      - name: sv_pcl_status
+      - name: sv_pcl_mgmt_mgmtgroup
+      - name: sv_protocol
+      - name: sv_subject
+      - name: raw_equity_coi2_index
+        meta:
+          unscheduled: true
+      - name: raw_equity_coi2_factors
+        meta:
+          unscheduled: true
+      - name: transplants
+      - name: urm_brain_tumors_link
+      - name: urm_diagnosis_link
+      - name: urm_patientinfov4_linking
+      - name: usnews_survey_response
+      - name: vw_pubmed_chop_nih
+      - name: near4kids_course
+      - name: near4kids_encounter
+      - name: _v_objects
+        freshness: null
+      - name: emp_survey_demographic_2019
+        meta:
+          unscheduled: true
+      - name: emp_survey_demographic_2020
+        meta:
+          unscheduled: true
+      - name: emp_survey_demographic_2021
+        meta:
+          unscheduled: true
+      - name: emp_survey_demographic_2022_exempt
+        meta:
+          unscheduled: true
+      - name: emp_survey_demographic_2022_non_exempt
+        meta:
+          unscheduled: true
+      - name: prov_survey_demographic_2019
+        meta:
+          unscheduled: true
+      - name: prov_survey_demographic_2020
+        meta:
+          unscheduled: true
+      - name: prov_survey_demographic_2021
+        meta:
+          unscheduled: true
+      - name: prov_survey_demographic_2022
+        meta:
+          unscheduled: true
+      - name: emp_survey_hierarchy_2019
+        meta:
+          unscheduled: true
+      - name: emp_survey_hierarchy_2020
+        meta:
+          unscheduled: true
+      - name: emp_survey_hierarchy_2021
+        meta:
+          unscheduled: true
+      - name: emp_survey_hierarchy_2022_1
+        meta:
+          unscheduled: true
+      - name: emp_survey_hierarchy_2022_2
+        meta:
+          unscheduled: true
+      - name: prov_survey_hierarchy_2019
+        meta:
+          unscheduled: true
+      - name: prov_survey_hierarchy_2020
+        meta:
+          unscheduled: true
+      - name: prov_survey_hierarchy_2021
+        meta:
+          unscheduled: true
+      - name: pg_survey_cahps
+      - name: pg_survey_responses
+      - name: pg_survey_comments
+      - name: pg_survey_demographics
+      - name: pg_survey_metadata
+      - name: pg_survey_questions
+        meta:
+          unscheduled: true
+      - name: prov_survey_hierarchy_2022
+        meta:
+          unscheduled: true
+  - name: servicenow_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: SERVICENOW
+    tables:
+      - name: servicenow_sys_user_group
+      - name: servicenow_task
+      - name: servicenow_sys_user
+  - name: successfactors_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: SUCCESSFACTORS
+    tables:
+      - name: successfactors_picklistoption
+  - name: ods_redcap_porter
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: REDCAP_PORTER
+    tables:
+      - name: redcap_data
+      - name: redcap_data2
+      - name: redcap_metadata
+      - name: redcap_projects
+      - name: redcap_surveys
+      - name: redcap_events_metadata
+      - name: redcap_events_arms
+      - name: redcap_surveys_participants
+      - name: redcap_surveys_response
+  - name: qliksense_log_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: qliksense_log
+    tables:
+      - name: qliksense_log_session_engine
+  - name: qliksense_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: qliksense
+    tables:
+      - name: qliksense_qsr_apps
+      - name: qliksense_qsr_reload_tasks
+      - name: qliksense_qsr_streams
+      - name: qliksense_qsr_stream_tags
+      - name: qliksense_qsr_tags
+      - name: qliksense_qsr_tag_apps
+      - name: qliksense_qsr_users
+  - name: ods_redcap_research
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: REDCAP_RESEARCH
+    tables:
+      - name: cardiac_valve_center
+      - name: near4neos_course
+      - name: near4neos_encounter
+      - name: near4transport_course
+      - name: near4transport_encounter
+      - name: redcap_bh_fte_form
+      - name: redcap_ventlib_local
+  - name: readyornot_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: READYORNOT
+    tables:
+      - name: readyornot_automart_tables_today
+        meta:
+          dep_check_ignore: true
+      - name: readyornot_uat_automart_tables_today
+      - name: readyornot_critical_tables
+      - name: readyornot_critical_workflows
+      - name: readyornot_infa_sessions_run_history
+      - name: readyornot_infa_sessions_today
+      - name: readyornot_table_status
+      - name: readyornot_table_status_history
+  - name: rstudio_connect_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: RSTUDIO_CONNECT
+    tables:
+      - name: rstudio_connect_app_environment_variables
+      - name: rstudio_connect_apps
+      - name: rstudio_connect_git
+      - name: rstudio_connect_permissions
+      - name: rstudio_connect_rmd_and_static_hits
+      - name: rstudio_connect_schedule
+      - name: rstudio_connect_shiny_app_usage
+      - name: rstudio_connect_users
+      - name: rstudio_connect_vanities
+  - name: salesforce_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: SALESFORCE
+    tables:
+      - name: appointment__c
+      - name: chop_intake__c
+      - name: salesforce_account
+      - name: salesforce_contact
+      - name: salesforce_opportunity
+      - name: salesforce_task
+      - name: salesforce_user
+
+  - name: salesforce_hc_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: SALESFORCE_HC
+    tables:
+      - name: salesforce_hc_account
+      - name: salesforce_hc_case
+      - name: salesforce_hc_contact
+      - name: salesforce_hc_opportunity
+      - name: salesforce_hc_task
+      - name: salesforce_hc_user
+
+  - name: vps_phl_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: VPS_PHL
+    tables:
+      - name: vps_phl_admissions
+      - name: vps_phl_diagnosis
+      - name: vps_phl_discharge_donation
+      - name: vps_phl_int_procs
+      - name: vps_phl_int_procs_elements
+      - name: vps_phl_pim3
+      - name: vps_phl_prism3
+      - name: vps_phl_referrals_info
+  - name: vps_koph_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: VPS_KOPH
+    tables:
+      - name: vps_koph_admissions
+      - name: vps_koph_diagnosis
+      - name: vps_koph_discharge_donation
+      - name: vps_koph_int_procs
+      - name: vps_koph_int_procs_elements
+      - name: vps_koph_pim3
+      - name: vps_koph_prism3
+      - name: vps_koph_referrals_info
+  - name: manual_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: chqa_manual
+    tables:
+      - name: admin_department
+        meta:
+          unscheduled: true
+      - name: admin_patient
+        meta:
+          unscheduled: true
+      - name: admin_provider
+        meta:
+          unscheduled: true
+      - name: clarity_deleted_patient
+        meta:
+          unscheduled: true
+      - name: radonc_referrals
+        meta:
+          unscheduled: true
+      - name: qlikview_usage
+        meta:
+          unscheduled: true
+      - name: temporary_sl_statistics
+        meta:
+          unscheduled: true
+      - name: transport_call_log
+        meta:
+          unscheduled: true
+      - name: zip_market_mapping
+        meta:
+          unscheduled: true
+      - name: care_network_pc_finance_operate_income
+        meta:
+          unscheduled: true
+      - name: care_network_pc_finance_visit_actual
+        meta:
+          unscheduled: true
+      - name: glean_network_registries_bjc
+        meta:
+          unscheduled: true
+      - name: glean_network_registries_nem
+        meta:
+          unscheduled: true
+      - name: idx_department
+        meta:
+          unscheduled: true
+      - name: idx_patient
+        meta:
+          unscheduled: true
+      - name: idx_provider
+        meta:
+          unscheduled: true
+      - name: idx_visit_diagnosis
+        meta:
+          unscheduled: true
+      - name: idx_visit_event
+        meta:
+          unscheduled: true
+      - name: municipal_subdivision_xwalk
+        meta:
+          unscheduled: true
+      - name: neo_abstractor_portal_meds
+        meta:
+          unscheduled: true
+      - name: orm_or_supply
+        meta:
+          unscheduled: true
+      - name: orm_provider
+        meta:
+          unscheduled: true
+      - name: scm_department
+        meta:
+          unscheduled: true
+      - name: scm_provider
+        meta:
+          unscheduled: true
+      - name: urology_usnews_calendar
+        meta:
+          unscheduled: true
+      - name: urology_usnews_chart_review
+        meta:
+          unscheduled: true
+      - name: wellsoft_visit_diagnosis
+        meta:
+          unscheduled: true
+  - name: kronos_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: KRONOS
+    tables:
+      - name: kronos_wfctotal
+      - name: wtkemployee
+      - name: kronos_person
+      - name: paycode
+      - name: laboracct
+      - name: wfcjoborg
+      - name: kronos_timesheetitem
+      - name: kronos_punchevent
+      - name: kronos_wfcjob
+  - name: manual_ods_nccs
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: nccs_manual
+    tables:
+      - name: nursing_position_control_segment
+        meta:
+          unscheduled: true
+  - name: manual
+    database: CHOP_ANALYTICS
+    schema: BLOCKS_CLINICAL
+    tables:
+      - name: stg_outbreak_covid_employee_manual
+        meta:
+          unscheduled: true
+      - name: _v_objects
+        freshness: null
+        meta:
+          unscheduled: true
+      - name: _v_sys_columns
+        freshness: null
+  - name: histdb
+    database: HISTDB
+    schema: HISTUSR
+    quoting:
+      identifier: true
+    tables:
+      - name: hist_column_access
+        identifier: $hist_column_access_3
+      - name: hist_plan_prolog
+        identifier: $hist_plan_prolog_3
+      - name: hist_query_epilog
+        identifier: $hist_query_epilog_3
+      - name: hist_query_overflow
+        identifier: $hist_query_overflow_3
+      - name: hist_query_prolog
+        identifier: $hist_query_prolog_3
+      - name: hist_session_epilog
+        identifier: $hist_session_epilog_3
+      - name: hist_session_prolog
+        identifier: $hist_session_prolog_3
+      - name: hist_table_access
+        identifier: $hist_table_access_3
+  - name: coda_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: CODA
+    tables:
+      - name: coda_cards
+      - name: coda_card_instances
+      - name: coda_data_points
+      - name: coda_patients
+      - name: coda_responses
+      - name: coda_variables
+      - name: coda_validated_data_points
+      - name: coda_card_instance_key_values
+  - name: qgenda_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: QGENDA
+    tables:
+      - name: qgenda_request
+      - name: qgenda_task
+      - name: qgenda_task_tags
+      - name: scheduleentry
+      - name: scheduleentry_stafftags
+      - name: scheduleentry_tasktags
+      - name: staffmember
+      - name: staffmember_tags
+  - name: manual_ods_cfdt
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: cfdt_manual
+    tables:
+      - name: moberg_vitals
+  - name: powerscribe_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: POWERSCRIBE
+    tables:
+      - name: powerscribe_usfetalcoda
+  - name: marketing_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: MARKETING_ODS
+    tables:
+      - name: marketing_ci_sick_season_survey_fy24_wave1
+      - name: marketing_ci_sick_season_survey_fy24_q3
+  - name: hdms_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: HDMS
+    tables:
+      - name: hdms_ds_ar_transactiondetails
+      - name: hdms_ds_tables_payers
+      - name: hdms_ds_clm_claimlinedetails
+      - name: hdms_ds_patient_demographics
+  - name: fastrack_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: FASTRACK
+    tables:
+      - name: doctorm
+        meta:
+          critical: true
+      - name: patientm
+      - name: pat_diag
+  - name: safetrace_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: SAFETRACE
+    tables:
+      - name: safetrace_activity
+      - name: safetrace_activity_object_key
+      - name: safetrace_external_order_number
+      - name: safetrace_order_product_inventory
+      - name: safetrace_orders
+      - name: safetrace_patient
+      - name: safetrace_patient_medical_record
+      - name: safetrace_product_ext
+        freshness: null
+      - name: safetrace_product_inventory
+      - name: safetrace_provider
+      - name: safetrace_provider_member
+      - name: safetrace_standard_product_class_ext
+        freshness: null
+      - name: safetrace_test_ext
+        freshness: null
+      - name: safetrace_test_interpretation
+      - name: safetrace_test_outcome
+      - name: safetrace_test_outcome_interpretation
+  - name: lake_netezza
+    database: "{{ env_var('ENVIRONMENT', 'UAT')}}"
+    schema: lake_netezza
+    tables:
+      - name: encounter_all
+  - name: lake_comprehend_medical
+    database: "{{ env_var('ENVIRONMENT', 'UAT')}}"
+    schema: lake_comprehend_medical
+    tables:
+      - name: nlp_procedure_notes_results

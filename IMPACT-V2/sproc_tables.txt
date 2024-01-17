@@ -1,0 +1,1376 @@
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathAorticValvuloplastyInflationCounterExport]
+@AorticValvuloplastyID int
+AS
+--Declare @AorticValvuloplastyID int
+--SET @AorticValvuloplastyID  = 1
+SELECT [InflationCounterID]
+		,AV.AVProcInd --AV - Primary Procedure Indication
+		,AV.AVMorphology --AV - Aortic Valve Morphology
+		,AV.AVPreInsuff --AV - Pre-Procedure Valve Insufficiency
+		,AV.AVDiameter --AV - Aortic Valve Diameter
+		,AV.AVPrePkSystGrad --AV - Pre-Procedure Peak Systolic Gradient
+		,[Sort] AVBallCounter
+		,dbo.GetACCHarvestCode(AVI.BallTech)  AVBallTechnique      
+		,AVI.SingDevID  AVBall1DevID
+		,dbo.GetACCHarvestCode(AVI.SingBallStab) AVBallStab
+		,AVI.SingBallPressure   AVBallPressure
+		,dbo.GetACCHarvestCode(AVI.SingBallOutcome)	AVBallOutcome
+		,AVI.DoubDevID2	      AVBall2DevID
+		,PostDilSysGrad
+		,dbo.GetACCHarvestCode(PostDilRegurg) PostDilRegurg
+	FROM CathAorticValvuloplasty AV 
+	INNER JOIN CathInflationCounter  AVI ON AV.CathID  = AVI.CathID
+	INNER JOIN CathData ON AVI.CathID = CathData.CathID 
+	Where AVI.CathProcID = 2006 AND AV.AorticValvuloplastyID = @AorticValvuloplastyID 
+	AND (CathData.ExcludeFromHarvest IS NULL OR CathData.ExcludeFromHarvest = 0)
+	ORDER By AVI.Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathASDClosureExport]
+	@CathId int
+AS
+--DECLARE @CathId int
+--SET @CathId  = 1
+
+SELECT 
+	ASDClosureID 
+	,dbo.GetACCHarvestCode(ASDProcInd) ASDProcInd
+	,ASDSeptLengthNA
+	,ASDSeptLength 
+	,dbo.GetACCHarvestCode(ASDAneurysm) ASDAneurysm 
+	,dbo.GetACCHarvestCode(ASDMultiFen) ASDMultiFen 
+FROM 
+CathASDClosure CASDC INNER JOIN CathData ON CASDC.CathID = CathData.CathID
+  WHERE CASDC.CathID = @CathId AND (CathData.ExcludeFromHarvest IS NULL OR CathData.ExcludeFromHarvest = 0)
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathASDDefectExport]
+@ASDClosureID int
+AS
+--Declare @ASDClosureID int
+--SET @ASDClosureID  = 57
+
+SELECT
+	 CASDDef.ASDClosureID
+	,CASDDef.Sort  AS ASDDefectCounter--ASD - Defect Counter
+	,CASDDef.ASDSize  
+	,dbo.GetACCHarvestCode(CASDDef.ASDBallSizPerf) ASDBallSizPerf--ASD - Balloon Sizing Performed
+	,dbo.GetACCHarvestCode(CASDDef.ASDStretchDiameter) ASDStretchDiameter --ASD - Stretched Diameter Performed
+	,CASDDef.ASDStretchDiameterSize  --ASD - Stretched Diameter Size
+	,dbo.GetACCHarvestCode(CASDDef.ASDStopFlowTech) ASDStopFlowTech --ASD - Stop Flow Technique Performed
+	,CASDDef.ASDStopFlowTechSize --ASD - Stop Flow Technique Size
+	,dbo.GetACCHarvestCode(CASDDef.ASDRimMeas) ASDRimMeas --ASD - Rim Measurement Performed
+	,CASDDef.ASDIVCRimLength --ASD - IVC Rim Length
+	,CASDDef.ASDAortRimLength --ASD - Aortic Rim Length
+	,CASDDef.ASDPostRimLength -- ASD - Posterior Rim Length
+	,dbo.GetACCHarvestCode(CASDDef.ASDResShunt) ASDResShunt --ASD - Residual Shunt Size
+	,dbo.GetACCHarvestCode(CASDDef.ASDMultiFenestrated) ASDMultiFenestrated --ASD - Residual Shunt Size
+	FROM dbo.CathASDDefect CASDDef 
+	INNER JOIN CathASDClosure ON CASDDef.ASDClosureID = CathASDClosure.ASDClosureID 
+	INNER JOIN CathData ON CathASDClosure.CathID = CathData.CathID
+	WHERE CASDDef.ASDClosureID = @ASDClosureID AND (CathData.ExcludeFromHarvest IS NULL OR CathData.ExcludeFromHarvest = 0)
+	ORDER BY CASDDef.Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathCoarcProcDeviceExport]
+@CoarcProcID int
+AS
+--Declare @CoarcProcID int
+--SET @CoarcProcID = 1
+
+SELECT
+	CPD.Sort CoarctationDeviceCounter--Coarctation - Device Counter 
+	,CPD.CoarcDevID --Coarctation - Device ID
+	,CASE WHEN LU.DeviceType = 'Balloon' THEN '1' WHEN LU.DeviceType = 'Stent' THEN '2' END CoarcDevType --Coarctation - Device Type
+	,dbo.GetACCHarvestCode(CPD.CoarcBallPurp) CoarcBallPurp --Coarctation - Balloon Purpose
+	,CPD.CoarcBallPressure --Coarctation - Balloon Max Inflation Pressure
+	,dbo.GetACCHarvestCode(CPD.CoarcBallOutcome) CoarcBallOutcome 	--Coarctation - Balloon Outcome
+	,dbo.GetACCHarvestCode(CPD.CoarcStentOutcome) CoarcStentOutcome --Coarctation - Stent Outcome
+	,CPD.CoarcPostInStentDiameter --Coarctation - Post-Procedure In Stent Diameter
+	,dbo.GetACCHarvestCode(CPD.CoarcPostInStentDiamAssessed) CoarcPostInStentDiamAssessed
+FROM CathCoarcProcDevice CPD INNER JOIN CathCoarcProc ON CPD.CoarcProcID = CathCoarcProc.CoarcProcID
+	INNER JOIN CathData ON CathCoarcProc.CathID = CathData.CathID
+	INNER JOIN CathDeviceMaster_LU LU ON CPD.CoarcDevID = LU.DeviceID
+WHERE CPD.CoarcProcID = @CoarcProcID AND (CathData.ExcludeFromHarvest IS NULL OR CathData.ExcludeFromHarvest = 0)
+ORDER BY CPD.Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathCoarcProcExport]
+	@CathId int
+AS
+--Declare @CathId int
+--SET @CathId  = 1
+
+SELECT
+		 CP.CoarcProcID 
+		,dbo.GetACCHarvestCode(CP.CoarcProcInd) CoarcProcInd --Coarctation - Primary Procedure Indication
+		,CP.CoarcPreDiameter --Coarctation - Pre-Procedure Diameter
+		,CP.CoarcPrePkSysGrad --Coarctation - Pre-Procedure Peak Systolic Gradient
+		,CP.CoarcPrePkSysGradNA CoarcPrePkSysGradNA
+		,CP.CoarcPostDiameter --Coarctation - Post-Procedure Diameter
+		,CP.CoarcPreDiameterNA CoarcPreDiameterNA --Coarctation - Post-Procedure Diameter
+		,CP.CoarcPostDiameterNA CoarcPostDiameterNA
+		,CP.CoarcPostPkSysGrad --Coarctation - Post-Procedure Peak Systolic Gradient
+		,CP.CoarcPostPkSysGradNA CoarcPostPkSysGradNA
+		,dbo.GetACCHarvestCode(CP.CoarcNature) CoarcNature
+		,dbo.GetACCHarvestCode(CP.CoarcPriorTreat) CoarcPriorTreat
+		,dbo.GetACCHarvestCode(CP.CoarcAddlAortObs) CoarcAddlAortObs
+		,dbo.GetACCHarvestCode(CP.CoarcAorticArchInter) CoarcAorticArchInter
+		,CoarcPreSysGradient
+		,CoarcPostSysGradient
+FROM CathCoarcProc CP INNER JOIN CathData ON CP.CathID = CathData.CathID
+WHERE CP.CathID = @CathID AND (CathData.ExcludeFromHarvest IS NULL OR CathData.ExcludeFromHarvest = 0)
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathDataExport]
+@CreateDateTime DateTime
+	,@TransmissionNumber int
+	,@DischargeDate1 DateTime
+	,@DischargeDate2 DateTime
+AS
+--Declare @CreateDateTime DateTime
+--Declare @TransmissionNumber int
+--,@DischargeDate1 DateTime
+--	,@DischargeDate2 DateTime
+--SET @CreateDateTime = GETDATE()
+--SET @TransmissionNumber = 1
+--SET @DischargeDate1 = '04/01/2011'
+--SET @DischargeDate2 = '08/01/2011'
+SELECT TOP 10
+	--H.HospitalID
+	--,H.HospName  
+	--,H.HospNPI 
+	--,D.DataVrsn 
+	--,CD.RegistryVer
+	--,@CreateDateTime CreateDateTime 
+	--,@TransmissionNumber TransmissionNumber 
+	--,Auxiliary 0  Add to the Export form/table
+	D.PatID AS NCDRPatientID
+	,D.PatLName LastName
+	,D.PatFName FirstName
+	,D.PatMName MidName
+	,D.SSN 
+--SSN N/A  Add to demographics
+--Other ID
+,D.DOB 
+,D.Gender Sex
+,D.RaceCaucasian RaceWhite 
+,D.RaceBlack 
+,D.RaceAsian 
+,D.RaceNativeAm RaceAmIndian
+,D.RaceNativePacific RaceNatHaw
+,D.RaceHispanic HispOrig
+--,D.Aux1  Auxiliary 1 Add to the demographics table
+--D.Aux2  Auxiliary 2 Add to the demographics table
+, Hn.AdmitDt ArrivalDate--Arrival Date
+,D.PatZip  ZipCode-- Add to hospitalization table
+,D.ZipCodeNA -- remove from demographics and add to Hospitalization
+--,I.InsuranceName  
+,hn.PayorCom  InsPrivate--Insurance Payors - Private Health Insurance
+,hn.PayorGovMcare InsMedicare--Insurance Payors - Medicare
+,hn.PayorGovMcaid InsMedicaid--Insurance Payors - Medicaid
+,hn.PayorGovMil InsMilitary--Insurance Payors - Military Health Care
+,hn.PayorGovState InsState--Insurance Payors - State-Specific Plan (Non Medicaid)
+,hn.PayorGovIHS InsIHS--Insurance Payors - Indian Health Service
+,hn.PayorNonUS InsNonUS--Insurance Payors - Non-US Insurance
+,hn.PayorNS InsNone--Insurance Payors - None
+, Hn.HICNumber HIC--Health Insurance Claim Number (HIC)
+--IntlPatient --International Patient   Create field in the Demographics
+,D.Country CountryResidence--Country of Residence
+,hn.PriorCath --Prior Cardiac Catheterization
+,hn.NumPriorCath --Number of Prior Cardiac Catheterizations
+,hn.LastCathDate --Date of Last Catheterization
+--Most Recent Catheterization Procedure ID (1 to many section [CathPriorCathProc])
+,D.Premature PreBirth --Premature Birth
+,D.BirthWtKg BirthWeight--Birth Weight
+,D.GestAgeWeeks GestAge--Gestational Age
+,hn.PriorSurg --Prior Cardiac Surgery
+,hn.NumPrevCardSurg --Number of Prior Cardiac Surgeries
+,hn.LastCardSurgDate --Date of Last Cardiac Surgery
+--Most Recent Cardiac Surgery ID (1 to many section [CathPriorSurgProc])
+,(Select TOP 1 CASE WHEN NCAA = null THEN 0 ELSE 1 END AS NCAA_ACC FROM NCAA WHERE NCAA.PatID = D.PatID AND NCAA = 218) AS DiGeorgeSynd--22q11 Deletion (DiGeorge Syndrome) 
+,(Select TOP 1 CASE WHEN NCAA = null THEN 0 ELSE 1 END AS NCAA_ACC FROM NCAA WHERE NCAA.PatID = D.PatID AND NCAA = 217) AS AlagilleSynd--Alagille Syndrome
+,(Select TOP 1 CASE WHEN NCAA = null THEN 0 ELSE 1 END AS NCAA_ACC FROM NCAA WHERE NCAA.PatID = D.PatID AND NCAA = 217) AS Hernia--Congenital Diaphragmatic Hernia
+--Down Syndrome
+--Heterotaxy
+--Marfan Syndrome
+--Noonan Syndrome
+--Rubella
+--Trisomy-13
+--Trisomy-18
+--Turner Syndrome
+--Williams-Beuren Syndrome
+--Chronic Lung Disease
+--Coagulation Disorder
+--Hypercoagulable State
+--Hypocoagulable State
+--Diabetes Mellitus
+--Hepatic Disease
+--Renal Insufficiency
+--Seizure Disorder
+--Sickle Cell Anemia
+--Single Ventricle
+--Stroke
+--Auxiliary 3  Add to the hospitalization table
+--Auxiliary 4  Add to the hospitalization table
+--Pre-Procedure Diagnosis Code
+,CD.Height  --Height
+,CD.Weight --Weight
+,CD.PreProcHgb --Pre-Procedure Hemoglobin
+,CD.PreProcCreat --Pre-Procedure Creatinine
+,CD.PreProcCreatND -- Pre-Procedure Creatinine Not Drawn
+,CD.PreProcO2 --Pre-Procedure O2 Saturation
+,CD.NEC --Necrotizing Enterocolitis
+,CD.SVDefect -- Single Ventricle
+,CD.Sepsis --Sepsis
+,CD.Preg --Pregnant
+,CD.PreProcMed -- Pre-Procedure Medications
+,CD.PreProcAntiarr --Pre-Procedure Antiarrhythmics
+,CD.PreProcAnticoag --Pre-Procedure Anticoagulants
+,CD.PreProcAntihyp --Pre-Procedure Antihypertensives
+,CD.PreProcAntiplatelet --Pre-Procedure Antiplatelets
+,CD.PreProcBB --Pre-Procedure Beta Blockers
+,CD.PreProcDiuretic --Pre-Procedure Diuretics
+,CD.PreProcProsta --Pre-Procedure Prostaglandins
+,CD.PreProcVaso --Pre-Procedure Vasodilators
+,CD.PreProcSinus --Pre-Procedure Sinus Rhythm
+,CD.PreProcAET --Pre-Procedure Atrial Ectopic Tachycardia (AET)
+,CD.PreProcSVT --Pre-Procedure Supraventricular Tachycardia (SVT)
+,CD.PreProcAfib --Pre-Procedure AFib/Flutter
+,CD.PreProcJunct --Pre-Procedure Junctional Rhythm
+,CD.PreProcIdio --Pre-Procedure Idioventricular Rhythm
+,CD.PreProcAVB2 --Pre-Procedure Second Degree AV Block
+,CD.PreProcAVB3 --Pre-Procedure Third Degree AV Block
+,CD.PreProcPaced --Pre-Procedure Paced
+,CD.Aux5 --Auxiliary 5  
+,CD.Aux6 --Auxiliary 6
+,CD.ProcDxCath --Procedure - Diagnostic Cath
+,CD.ProcASD --Procedure - Atrial Septal Defect (ASD) Closure
+,CD.ProcCoarc  --Procedure - Aortic Coarctation Procedure
+,CD.ProcAorticValv --Procedure - Aortic Valvuloplasty
+,CD.ProcPulmonaryValv --Procedure - Pulmonary Valvuloplasty
+,CD.ProcPDA --Procedure - PDA Closure
+,CD.ProcProxPAStent --Procedure - Proximal PA Stenting
+,CD.PreProcOthRhythym -- Pre-Procedure Other Rhythm
+,CD.ProcEPAblation -- Procedure - Electrophysiology Ablation Procedure
+,CD.ProcTPVR -- Procedure - Transcatheter Pulmonary Valve Replacement (TPVR)
+,CD.SpecificProcID --Specific Procedure ID
+,CD.HospStatus --Hospital Status
+,CD.ProcStatus --Procedure Status
+,(SELECT [LASTNAME] FROM Contacts WHERE ContactID = CD.OperatorID) as OperLName--Operator Last Name contacts table 
+,(SELECT [FirstName] FROM Contacts WHERE ContactID = CD.OperatorID) as OperFName--Operator First Name  
+,(SELECT [MiddleName] FROM Contacts WHERE ContactID = CD.OperatorID) as OperMName--Operator Middle Name  
+,(SELECT [SurgNPI]  FROM Contacts WHERE ContactID = CD.OperatorID) as OperNPI--Operator NPI  
+,CD.Trainee  ParticipatingTrainee 
+,CD.SecondParticipating SecondParticipating
+-----------------------
+,CD.ProcStartDate 
+,CD.ProcStartTime 
+,CD.AnesPresent --Anesthesiologist Present
+,CD.AnesCalledIn --Anesthesiologist Called In
+,CD.Sedation -		-Sedation
+,CD.AirMng --Airway Management - Spontaneous Respirations with or without O2
+,CD.AirMngLMA --Airway Management - Laryngeal mask airway
+,CD.AirMngTrach --Airway Management - Tracheostomy
+,CD.AirMngBagMask --Airway Management - Bag mask ventilation
+,CD.AirMngCPAP --Airway Management - CPAP (Continuous Positive Airway Pressure)
+,CD.AirMngElecIntub --Airway Management - Elective Intubation at Start
+,CD.AirMngPrevIntub --Airway Management - Previously Intubated
+,CD.AccessLoc --Access Location
+,CD.VenAccess --Venous Access Site
+,CD.VenLargSheath --Venous Sheath Size
+,CD.VenClosureMethodCounter --Venous Closure Method Counter
+--Venous Closure Method(s) (1 to many table) [CathVenousClosureMethod]
+,CD.VenClosureMethodND--Venous Closure Method Not Documented
+,CD.ArtAccess --Arterial Access Site
+,CD.ArtLargSheath --Arterial Sheath Size
+,CD.ArtClosureMethodCounter --Arterial Closure Method Counter
+--Arterial Closure Method(s) (1 to many table) [CathArterialClosureMethod]
+,CD.ArtClosureMethodND --Arterial Closure Method Not Documented
+,CD.FluoroTime --Fluoroscopy Time
+,CD.ContrastVol --Contrast Volume
+,CD.SysHeparin --Systemic Heparinization
+,CD.ACTMonitor --Activated Clotting Time Monitored
+,CD.ACTPeak --Activated Clotting Time Peak
+,CD.Inotrope --Inotrope
+,CD.InotropeUse --Inotrope Use
+,CD.IABPUse 
+,CD.PlaneUsed
+,CD.FluoroDoseKerm
+,CD.FluoroDoseKerm_Units 
+,CD.FluoroDoseDAP 
+,CD.ECMOUse --Extracorporeal Membrane Oxygenation (ECMO) Use
+,CD.LVADUse --Left Ventricular Assist Device (LVAD) Use
+,CH.SystemicArtSat  --Systemic Arterial Saturation
+,CH.MixVenSat --Mixed Venous Saturation
+,CH.SystemVentSysPres --Systemic Ventricular Systolic Pressure
+,CH.SystemVentEndDiaPres --Systemic Ventricle End Diastolic Pressure
+,CH.SystemSysBP --Systemic Systolic Blood Pressure
+,CH.SystemDiaBP --Systemic Diastolic Blood Pressure
+,CH.SystemMeanBP --Systemic Mean Blood Pressure
+,CH.PulmArtSysPres --Pulmonary Artery Systolic Pressure
+,CH.PulmArtMeanPres --Pulmonary Artery Mean Pressure
+,CH.PulmVentSysPres --Pulmonary Ventricular Systolic Pressure
+,CH.PulmVascRestInd --Pulmonary Vascular Resistance Index
+,CH.CardInd --Cardiac Index
+,CH.QpQsRatio --Qp/Qs Ratio
+,Case CASDDef.Sort  
+				WHEN 1 Then CASDC.ASDProcInd END ASDProcInd --ASD - Primary Procedure Indication
+,Case CASDDef.Sort  
+				WHEN 1 Then CASDC.ASDSeptLength END ASDSeptLength--ASD - Total Septal Length
+--ASD - Atrial Septal Aneurysm Present
+,Case CASDDef.Sort  
+				WHEN 1 Then CASDC.ASDMultiFen END ASDMultiFen --ASD - Multi-Fenestrated
+,CASDDef.Sort  AS ASDDefectCounter--ASD - Defect Counter
+,CASDDef.ASDSize  
+,CASDDef.ASDBallSizPerf --ASD - Balloon Sizing Performed
+,CASDDef.ASDStretchDiameter --ASD - Stretched Diameter Performed
+,CASDDef.ASDStretchDiameterSize  --ASD - Stretched Diameter Size
+,CASDDef.ASDStopFlowTech --ASD - Stop Flow Technique Performed
+,CASDDef.ASDStopFlowTechSize --ASD - Stop Flow Technique Size
+,CASDDef.ASDRimMeas --ASD - Rim Measurement Performed
+,CASDDef.ASDIVCRimLength --ASD - IVC Rim Length
+,CASDDef.ASDAortRimLength --ASD - Aortic Rim Length
+,CASDDef.ASDDefTreat --ASD - Defect Treated
+,CASDDef.ASDNoTreatReason --ASD - Reason Not Treated
+,CASDDef.ASDResShunt --ASD - Residual Shunt Size
+,CASDDev.Sort ASDDeviceCounter--ASD - Device Counter
+,CASDDev.ASDDevID --ASD - Device ID
+--ASD - Defect Counter Assocation (1 ASD Defect to Many ASD Assn) [CathASDDeviceAssn]
+,CASDDev.ASDDevOutcome --ASD - Device Outcome
+,CP.CoarcProcInd --Coarctation - Primary Procedure Indication
+,CP.CoarcPreDiameter --Coarctation - Pre-Procedure Diameter
+,CP.CoarcPrePkSysGrad --Coarctation - Pre-Procedure Peak Systolic Gradient
+,CP.CoarcDefectTreated --Coarctation - Defect Treated
+,CP.CoarcPostDiameter --Coarctation - Post-Procedure Diameter
+,CP.CoarcPostPkSysGrad --Coarctation - Post-Procedure Peak Systolic Gradient
+,CPD.Sort CoarctationDeviceCounter--Coarctation - Device Counter
+,CPD.CoarcDevID --Coarctation -  Device ID
+,CPD.CoarcDevType --Coarctation - Device Type
+,CPD.CoarcBallPurp --Coarctation - Balloon Purpose
+,CPD.CoarcBallPressure --Coarctation - Balloon Max Inflation Pressure
+,CPD.CoarcBallOutcome --Coarctation - Balloon Outcome
+,CPD.CoarcStentOutcome --Coarctation - Stent Outcome
+,CPD.CoarcPostInStentDiameter --Coarctation - Post-Procedure In Stent Diameter
+,AV.AVProcInd --AV - Primary Procedure Indication
+,AV.AVMorphology --AV - Aortic Valve Morphology
+,AV.AVPreInsuff --AV - Pre-Procedure Valve Insufficiency
+,AV.AVDiameter --AV - Aortic Valve Diameter
+,AV.AVPrePkSystGrad --AV - Pre-Procedure Peak Systolic Gradient
+,AV.AVDefectTreated --AV - Defect Treated
+,AVIC.Sort AVInflationCounter--AV - Inflation Counter
+,AVIC.BallTech AVBallTech --AV - Balloon Technique
+,AVIC.SingDevID AVSingDevID --AV - Single Balloon Device ID
+,AVIC.SingBallStab AVSingBallStab --AV - Single Balloon Stabilization
+,AVIC.SingBallPressure AVSingBallPressure --AV - Single Balloon Max Inflation Pressure
+,AVIC.SingBallOutcome AVSingBallOutcome --AV - Single Balloon Device Outcome
+,AVIC.SingBallPostPkSysGrad AVSingBallPostPkSysGrad --AV - Single Balloon Post-Procedure Peak Systolic Gradient
+,AVIC.SingBallPostInsuff AVSingBallPostInsuff --AV - Single Balloon Post-Procedure Aortic Valve Insufficiency
+,AVIC.DoubDevID1 AVDoubDevID1 --AV - Double Balloon Device ID Balloon 1
+,AVIC.DoubBallStab1 AVDoubBallStab1 --AV - Double Balloon Stabilization Balloon 1
+,AVIC.DoubBallPressure1 AVDoubBallPressure1 --AV - Double Balloon Max Inflation Pressure Balloon 1
+,AVIC.DoubBallOutcome1 AVDoubBallOutcome1 --AV - Double Balloon Device Outcome Balloon 1
+,AVIC.DoubDevID2 AVDoubDevID2 --AV - Double Balloon Device ID Balloon 2
+,AVIC.DoubBallStab2 AVDoubBallStab2 --AV - Double Balloon Stabilization Balloon 2
+,AVIC.DoubBallPressure2 AVDoubBallPressure2 --AV - Double Balloon Max Inflation Pressure Balloon 2
+,AVIC.DoubBallOutcome2 AVDoubBallOutcome2 --AV - Double Balloon Device Outcome Balloon 2
+,AVIC.DoubBallPostPkSysGrad AVDoubBallPostPkSysGrad --AV - Double Balloon Post-Procedure Peak Systolic Gradient
+,AVIC.DoubBallPostInsuff AVDoubBallPostInsuff --AV - Double Balloon Post-Procedure Aortic Valve Insufficiency
+,PV.PVProcInd --PV - Primary Procedure Indication
+,PV.PVMorphology --PV - Pulmonary Valve Morphology
+,PV.PVSubStenosis --PV - Subpulmonary Stenosis Present
+,PV.PVDiameter --PV - Pulmonary Valve Diameter
+,PV.PVPrePkSysGrad --PV - Pre-Procedure Peak Systolic Gradient
+,PV.PVDefectTreated --PV - Defect Treated
+,PVIC.Sort PVInflationCounter--PV - Inflation Counter
+,PVIC.BallTech PVTech --PV - Balloon Technique
+,PVIC.SingDevID PVSingDevID --PV - Single Balloon Device ID
+,PVIC.SingBallStab PVSingBallStab --PV - Single Balloon Stabilization
+,PVIC.SingBallPressure PVSingBallPressure --PV - Single Balloon Max Inflation Pressure
+,PVIC.SingBallOutcome PVSingBallOutcome --PV - Single Balloon Device Outcome
+,PVIC.SingBallPostInsuff PVSingBallPostPkSysGrad --PV - Single Balloon Post-Procedure Peak Systolic Gradient
+,PVIC.SingBallPostInsuff PVSingBallPostInsuff --PV - Single Balloon Post-Procedure Pulmonary Valve Insufficiency
+,PVIC.DoubDevID1 PVDoubDevID1 --PV - Double Balloon Device ID Balloon 1
+,PVIC.DoubBallStab1 PVDoubBallStab1 --PV - Double Balloon Stabilization Balloon 1
+,PVIC.DoubBallPressure1 PVDoubBallPressure1 --PV - Double Balloon Max Inflation Pressure Balloon 1
+,PVIC.DoubBallOutcome2 PVDoubBalOutcome1 --PV - Double Balloon Device Outcome Balloon 1
+,PVIC.DoubDevID2 PVDoubDevID2 --PV - Double Balloon Device ID Balloon 2
+,PVIC.DoubBallStab2 PVDoubBallStab2 --PV - Double Balloon Stabilization Balloon 2
+,PVIC.DoubBallPressure2 PVDoubBallPressure2 --PV - Double Balloon Max Inflation Pressure Balloon 2
+,PVIC.DoubBallOutcome2 PVDoubBallOutcome2 --PV - Double Balloon Device Outcome Balloon 2
+,PVIC.DoubBallPostPkSysGrad PVDoubBallPostPkSysGrad --PV - Double Balloon Post-Procedure Peak Systolic Gradient
+,PVIC.DoubBallPostInsuff PVDoubBallPostInsuff --PV - Double Balloon Post-Procedure Pulmonary Valve Insufficiency
+,PDA.PDAProcInd --PDA - Primary Procedure Indication
+,PDA.PDADiameterAortSide --PDA - Diameter Aortic Side
+,PDA.PDAMinLumDiameter --PDA - Minimum Lumenal Diameter
+,PDA.PDALength --PDA - Length
+,PDA.PDAClass --PDA - Classification
+,PDA.PDADefectTreated --PDA - Defect Treated
+,PDA.PDAPAObst --PDA - Pulmonary Artery Obstruction
+,PDA.PDAAortObst --PDA - Aortic Obstruction
+,PDA.PDAResShunt --PDA - Residual Shunt Size
+,PDACD.Sort PDADeviceCounter--PDA - Device Counter
+,PDACD.DeviceID AS PDADeviceID --PDA - Device ID
+,PDACD.PDADevOutcome --PDA - Device Outcome
+,PAS.PASProcInd --PA Stenting - Primary Indication
+,PASDev.Sort StentingDefectCounter--PA Stenting - Defect Counter
+,PASDef.PASDefectLoc --PA Stenting - Defect Location
+,PASDef.PASOstialStenosis --PA Stenting - Ostial Stenosis Present
+,PASDef.PASDisObstruction --PA Stenting - Distal Obstruction Present
+,PASDef.PASSideJail --PA Stenting - Sidebranch Jailing
+,PASDef.PASSideJailIntended  --PA Stenting - Sidebranch Jailing Intended
+,PASDef.PASSideJailArtery --PA Stenting - Sidebranch Jailing Artery
+,PASDef.PASDSideJailDecFlow --PA Stenting - Sidebranch Jailing Decreased Flow
+,PASDef.PASPreProxSysPress  --PA Stenting - Pre-Procedure Proximal Systolic Pressure
+,PASDef.PASPreDistSysPress --PA Stenting - Pre-Procedure Distal Systolic Pressure
+,PASDef.PASPreProxMeanPress --PA Stenting - Pre-Procedure Proximal Mean Pressure
+,PASDef.PASPreDistMeanPress --PA Stenting - Pre-Procedure Distal Mean Pressure
+,PASDef.PASPreProxDiameter --PA Stenting - Pre-Procedure Proximal Diameter
+,PASDef.PASPreDistDiameter --PA Stenting - Pre-Procedure Distal Diameter
+,PASDef.PASPreMinDiameter --PA Stenting - Pre-Procedure PA Vessel Diameter Minimum
+,PASDef.PASDefectTreated --PA Stenting - Defect Treated 
+,PASDef.PASPostProxSysPress --PA Stenting - Post-Procedure Proximal Systolic Pressure
+,PASDef.PASPostDistSysPress --PA Stenting - Post-Procedure Distal Systolic Pressure
+,PASDef.PASPostProxMeanPress --PA Stenting - Post-Procedure Proximal Mean Pressure
+,PASDef.PASPostDistMeanPress --PA Stenting - Post-Procedure Distal Mean Pressure
+,PASDef.PASPostProxDiameter --PA Stenting - Post-Procedure Proximal Diameter
+,PASDef.PASPostDistDiameter --PA Stenting - Post-Procedure Distal Diameter
+,PASDef.PASPostMinDiameter --PA Stenting - Post-Procedure PA Vessel Diameter in Stent Minimum
+,PASDev.Sort PAStentingDeviceCounter--PA Stenting - Device Counter
+,PASDev.DeviceID AS [PA Stenting DeviceID] --PA Stenting - Device ID
+--PA Stenting - Defect Counter Association
+,PASDev.PASDevOutcome --PA Stenting - Device Outcome
+,CE.CArrest --Cardiac Arrest
+,CE.PostArrhyth --Arrhythmia
+,CE.PostArrhythMed --Arrhythmia Requiring Antiarrhythmic Medication
+,CE.PostArrhythCardiovers --Arrhythmia Requiring Cardioversion
+,CE.PostArrhythTempPM--Arrhythmia Requiring Temporary Pacemaker
+,CE.PostArrhythPermPM --Arrhythmia Requiring Permanent Pacemaker
+,CE.PostNewRegurge --New Heart Valve Regurgitation
+,CE.PostTamponade --Tamponade
+,CE.PostAirEmbolus --Air Embolus
+,CE.PostEmbStroke --Embolic Stroke
+,CE.PostDevMalposThrom --Device Malposition or Thrombus (Requiring surgery)
+,CE.PostDevEmbol --Device Embolization (Requiring device retrieval)
+,CE.PostDevRetrievePCT --Device Embolization Retrieved via Catheterization
+,CE.PostDevRetrieveSurg --Device Embolization Retrieved via Surgery
+,CE.PostDialysis --New Requirement for Dialysis
+,CE.PostIntubation --Airway Event Requiring Intubation
+,CE.PostECMO --Event Requiring ECMO
+,CE.PostLVAD --Event Requiring LVAD
+,CE.PostBleed --Bleeding Event
+,CE.PostBleedAccessSite --Bleeding Event at Access Site
+,CE.PostBleedHematoma --Hematoma at Access Site
+,CE.PostBleedHemaSize --Hematoma Size
+,CE.PostRetroBleed --Retroperitoneal Bleeding
+,CE.PostGIBleed --Gastrointestinal Bleeding
+,CE.PostGUBleed --Genital-Urinary Bleeding
+,CE.PostOtherBleed --Other Bleeding
+,CE.PostTransfusion --RBC/Whole Blood Transfusion
+,CE.HgbPriorTransfusion --Hemoglobin Prior to Transfusion
+,CE.PostOtherVasComp --Other Vascular Complications Requiring Treatment
+,CE.PostOtherEvents --Other Events
+--Other Events ID
+,CE.PostPlanCardiacSurg --Planned Cardiac Surgery
+,CE.PostUnplanCardSurg --Unplanned Cardiac Surgery
+,CE.PostUnplanVasSurg --Unplanned Vascular Surgery
+,CE.PostUnplanOtherSurg --Unplanned Other Surgery
+,CE.PostOtherSurgCathComp --Other Surgery Due to Cath Complication
+,CE.PostSubsCath --Subsequent Cardiac Cath
+,Hn.DischDt --Discharge Date
+--Discharge Status
+--Death in Lab
+--Primary Cause of Death     
+--INTO #t
+  FROM Demographics D
+  INNER JOIN Hospitalization Hn ON D.PatID = Hn.PatID 
+  INNER JOIN CathData CD ON Hn.HospitalizationID = CD.HospID 
+  INNER JOIN Hospital H ON Hn.HospName  = H.HospitalID  
+  INNER JOIN Insurance I ON Hn.HospitalizationID = I.HospitalizationID 
+  LEFT OUTER JOIN CathHemodynamics CH ON CD.CathID = CH.CathID  
+  LEFT OUTER JOIN CathASDClosure CASDC ON CD.CathID = CASDC.CathID  
+  LEFT OUTER JOIN CathASDDefect  CASDDef ON CASDC.ASDClosureID = CASDDef.ASDClosureID   
+  LEFT OUTER JOIN CathASDDevice  CASDDev ON CASDC.ASDClosureID = CASDDev.ASDClosureID 
+  LEFT OUTER JOIN CathASDDeviceAssn  CASDDevA ON CASDDev.DeviceID = CASDDevA.DeviceID 
+  LEFT OUTER JOIN CathCoarcProc CP ON CD.CathID = CP.CathID 
+  LEFT OUTER JOIN CathCoarcProcDevice CPD ON CP.CoarcProcID = CPD.CoarcProcID 
+  LEFT OUTER JOIN CathAorticValvuloplasty AV ON CD.CathID = AV.CathID 
+  LEFT OUTER JOIN (SELECT * FROM CathInflationCounter CAIC WHERE CathProcID = 2006) AVIC ON CD.CathID = AVIC.CathID 
+  LEFT OUTER JOIN CathPulmonaryValvuloplasty PV ON CD.CathID = PV.CathID 
+LEFT OUTER JOIN (SELECT * FROM CathInflationCounter CAIC WHERE CathProcID = 2007) PVIC ON CD.CathID = PVIC.CathID
+  LEFT OUTER JOIN CathPDAClosure PDA ON PDA.CathID = CD.CathID 
+  LEFT OUTER JOIN CathPDAClosureDevice PDACD ON PDA.PDAClosureID = PDACD.PDAClosureID 
+  LEFT OUTER JOIN CathPAStent PAS on CD.CathID = PAS.CathID 
+  LEFT OUTER JOIN CathPAStentDefect PASDef ON PAS.PAStentID = PASDef.PAStentID 
+  LEFT OUTER JOIN CathPAStentDevice PASDev ON PASDev.PAStentID = PASDef.PAStentID 
+  LEFT OUTER JOIN CathPAStentDeviceAssn PASDevAn ON PASDev.DeviceID = PASDevAn.DeviceID 
+  LEFT OUTER JOIN CathEvents CE ON CD.CathID = CE.CathID 
+  --LEFT OUTER JOIN PreOpData PreOp ON D.PatID = PreOp.PatID 
+  LEFT OUTER JOIN CathVenousClosureMethod VCM ON CD.CathID = VCM.CathID 
+  LEFT OUTER JOIN CathArterialClosureMethod ACM ON CD.CathID = ACM.CathID 
+  WHERE Hn.DischDt between @DischargeDate1 AND @DischargeDate2 AND (CD.ExcludeFromHarvest IS NULL OR CD.ExcludeFromHarvest = 0)
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathDischargeExport]
+	@HospitalizationID int
+AS 
+--Declare @HospitalizationId int
+--SET @HospitalizationId = 22228
+
+SELECT DischDt DCDate
+	,dbo.GetACCHarvestCode(H.MtDCStat) DCStatus
+	,CASE WHEN H.MtDCStat = 338 THEN dbo.GetACCHarvestCode(DeathLab) END AS DeathLab 
+	,CASE WHEN H.MtDCStat = 338 THEN dbo.GetACCHarvestCode(DeathCause) END AS DeathCause 	
+	,dbo.GetACCHarvestCode(H.CardSurg) CardSurg
+FROM Hospitalization H 
+LEFT OUTER JOIN Mortality M ON H.PatID = M.PatId 
+WHERE H.HospitalizationID = @HospitalizationID;
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPAblationExport]
+	@CathId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+	CathId 
+	,CathEPId 
+	,dbo.GetACCHarvestCode( EP.EPPrimaryInd)	EPPrimaryInd
+	,dbo.GetACCHarvestCode( EP.EPHxCHD)	EPHxCHD
+	,dbo.GetACCHarvestCode( EP.EPPrevTherapy)	EPPrevTherapy
+	,dbo.GetACCHarvestCode( EP.PriorCathAblation)	PriorCathAblation
+	,dbo.GetACCHarvestCode( EP.PriorPharmaTherapy)	PriorPharmaTherapy
+	,dbo.GetACCHarvestCode( EP.PriorChemCard)	PriorChemCard
+	,dbo.GetACCHarvestCode( EP.PriorDCCard)	PriorDCCard
+	,dbo.GetACCHarvestCode( EP.PriorPaceInsert)	PriorPaceInsert
+	,dbo.GetACCHarvestCode( EP.PriorICDInsert)	PriorICDInsert
+	,dbo.GetACCHarvestCode( EP.PriorArrSurgery)	PriorArrSurgery
+	,EP.PriorCathAblaNum	
+	,dbo.GetACCHarvestCode( EP.SSSQ1)	SSSQ1
+	,dbo.GetACCHarvestCode( EP.SSSQ2)	SSSQ2
+	,dbo.GetACCHarvestCode( EP.SSSQ3)	SSSQ3
+	,dbo.GetACCHarvestCode( EP.SSSQ4)	SSSQ4
+	,dbo.GetACCHarvestCode( EP.SSSQ6)	SSSQ6
+	,dbo.GetACCHarvestCode( EP.SSSQ7)	SSSQ7
+FROm CathEP EP
+WHERE EP.CathID = @CathId
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPAblationTargetExport]
+	@CathEPID int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+	CathEPId 
+	, TargetId 
+	,Sort EPTargetCounter
+	,dbo.GetACCHarvestCode(EP.EPTargetSub) EPTargetSub
+,dbo.GetACCHarvestCode(EP.EPTargetLocID) EPTargetLocID
+,dbo.GetACCHarvestCode(EP.EPAblationAttempted) EPAblationAttempted
+,dbo.GetACCHarvestCode(EP.EPAblationNotAttempted) EPAblationNotAttempted
+,dbo.GetACCHarvestCode(EP.EPAblationOutcome) EPAblationOutcome
+FROm CathEPTarget  EP
+WHERE EP.CathEPID = @CathEPID 
+ORDER By Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPDeviceAssociationExport]
+	@DeviceId int
+AS
+	SELECT 
+		EPDeviceID 
+		, T.Sort EPTargetAssn 
+		, EP.Sort 
+	FROM CathEPDeviceAssociation EP
+	INNER JOIN CathEPTarget T ON EP.EPTargetAssn = T.TargetId 
+	WHERE EP.EPDeviceId = @DeviceId 
+	ORDER BY EP.Sort, T.Sort 
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPDevicesExport]
+	@CathEPID int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+	CathEPId 
+	,Sort EPDevCounter
+	,EP.EPAblationCathID EPAblationCathID
+	,EPTargetSeconds
+	,EPActivationsNum
+	,EP.EPDeviceID
+FROm CathEPDevices   EP
+WHERE EP.CathEPID = @CathEPID 
+ORDER By Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEpisodesExport]
+@PatId int
+,@DischargeDate1 DateTime 
+,@DischargeDate2 DateTime 
+,@HospitalId int
+AS
+--Declare @PatId int,@DischargeDate1 DateTime
+-- ,@DischargeDate2 DateTime
+-- SET @PatId = 15905
+--SET @DischargeDate1 = '04/01/2011'
+--SET @DischargeDate2 = '08/01/2011'
+SELECT Distinct 
+	D.PatID AS NCDRPatientID 
+	, Hn.HospitalizationID AS HospitalizationID 
+	, Hn.AdmitDt ArrivalDate--Arrival Date 
+	--,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN ISnull(Hn.ZipCodeNA,0) END AS ZipCodeNA -- remove from demographics and add to Hospitalization 
+	,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN 
+			CASE WHEN (Hn.ZipCodeNa = 0 OR Hn.ZipCodeNa IS NULL) THEN
+				CASE WHEN Len(Hn.ZipCode) > 5 
+				  THEN LEFT(Hn.ZipCode,5) 
+				  ELSE Hn.ZipCode END 
+			END
+	  END AS ZipCode-- Add to hospitalization table 
+	  ,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN Hn.ZipCodeNA END AS ZipCodeNA-- Add to hospitalization table 
+	--,I.InsuranceName 
+	,CASE WHEN hn.PayorNS = 1 THEN NULL ELSE ISNULL(dbo.GetACCHarvestCode(hn.PayorCom),0) END InsPrivate--Insurance Payors - Private Health Insurance 
+	,CASE WHEN hn.PayorNS = 1 THEN NULL ELSE ISNULL(dbo.GetACCHarvestCode(hn.PayorGovMcare),0) END InsMedicare--Insurance Payors - Medicare 
+	,CASE WHEN hn.PayorNS = 1 THEN NULL ELSE ISNULL(dbo.GetACCHarvestCode(hn.PayorGovMcaid),0) END InsMedicaid--Insurance Payors - Medicaid 
+	,CASE WHEN hn.PayorNS = 1 THEN NULL ELSE ISNULL(dbo.GetACCHarvestCode(hn.PayorGovMil),0) END InsMilitary--Insurance Payors - Military Health Care 
+	,CASE WHEN hn.PayorNS = 1 THEN NULL ELSE ISNULL(dbo.GetACCHarvestCode(hn.PayorGovState),0) END InsState--Insurance Payors - State-Specific Plan (Non Medicaid) 
+	,CASE WHEN hn.PayorNS = 1 THEN NULL ELSE ISNULL(dbo.GetACCHarvestCode(hn.PayorGovIHS),0) END InsIHS--Insurance Payors - Indian Health Service 
+	,CASE WHEN hn.PayorNS = 1 THEN NULL ELSE ISNULL(dbo.GetACCHarvestCode(hn.PayorNonUS),0) END InsNonUS--Insurance Payors - Non-US Insurance 
+	,ISNULL(dbo.GetACCHarvestCode(hn.PayorNS),0) InsNone --Insurance Payors - None 
+	,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN Hn.HICNumber END AS HIC--Health Insurance Claim Number (HIC) 
+	,dbo.GetACCHarvestCode(D.PatForeign) IntlPatient --International Patient Create field in the Demographics 
+	,dbo.GetACCHarvestCode(D.Country) CountryResidence--Country of Residence 
+	,dbo.GetACCHarvestCode(hn.PriorCath) PriorCath--Prior Cardiac Catheterization 
+	,hn.NumPriorCath --Number of Prior Cardiac Catheterizations 
+	,hn.LastCathDate --Date of Last Catheterization 
+	,(Select TOP 1 CPCP.MostRecCathProcID FROM [CathPriorCathProc] CPCP WHERE CPCP.PriorCathID = Hn.PriorCath ) AS MostRecentCaths --Most Recent Catheterization Procedure ID (1 to many section [CathPriorCathProc]) 
+	,dbo.GetACCHarvestCode(A.Premature) PreBirth --Premature Birth 
+	,CAST(A.BirthWtKg as Decimal(5,2)) BirthWeight--Birth Weight -- ACC accepts only 2 decimal places where as PC4 needs 3
+	,A.GestAgeWeeks GestAge--Gestational Age 
+	,dbo.GetDiagnosisHarvestCode(A.FundDiag) As FundamentalDxCode
+	,dbo.GetACCHarvestCode(hn.PriorSurg) PriorSurg --Prior Cardiac Surgery 
+	,hn.NumPrevCardSurg --Number of Prior Cardiac Surgeries 
+	,hn.LastCardSurgDate --Date of Last Cardiac Surgery 
+	,(Select TOP 1 CPSP.MostRecCardSurgID FROM [CathPriorSurgProc] CPSP WHERE CPSP.PriorSurgID = Hn.PriorSurg ) AS MostRecentSurgs--Most Recent Cardiac Surgery ID (1 to many section [CathPriorSurgProc]) 
+	--,(Select TOP 1 CASE WHEN NCAA = null THEN 0 ELSE 1 END AS NCAA_ACC FROM NCAA WHERE NCAA.PatID = D.PatID AND NCAA = 218) AS DiGeorgeSynd--22q11 Deletion (DiGeorge Syndrome) 
+	--,(Select TOP 1 CASE WHEN NCAA = null THEN 0 ELSE 1 END AS NCAA_ACC FROM NCAA WHERE NCAA.PatID = D.PatID AND NCAA = 217) AS AlagilleSynd--Alagille Syndrome 
+	--,(Select TOP 1 CASE WHEN NCAA = null THEN 0 ELSE 1 END AS NCAA_ACC FROM NCAA WHERE NCAA.PatID = D.PatID AND NCAA = 217) AS Hernia--Congenital Diaphragmatic Hernia 
+	,dbo.GetACCHarvestCode(Hn.EnrolledStudy) EnrolledStudy
+	,dbo.GetACCHarvestCode( PA.DiGeorgeSynd) AS DiGeorgeSynd--22q11 Deletion (DiGeorge Syndrome) 
+	,dbo.GetACCHarvestCode(PA.AlagilleSynd) AS AlagilleSynd--Alagille Syndrome 
+	,dbo.GetACCHarvestCode(PA.Hernia) AS Hernia--Congenital Diaphragmatic Hernia 
+	--,(Select TOP 1 CASE WHEN Syndrome = null THEN 0 ELSE 1 END AS Syndrome FROM Syndrome S WHERE S.PatID = D.PatID AND Syndrome = 217) AS DownSynd--Down Syndrome 
+	,dbo.GetACCHarvestCode(PA.DownSynd) AS DownSynd--Down Syndrome 
+	--,(Select TOP 1 CASE WHEN Syndrome = null THEN 0 ELSE 1 END AS Syndrome FROM Syndrome S WHERE S.PatID = D.PatID AND Syndrome = 89) AS Heterotaxy--Heterotaxy 
+	,dbo.GetACCHarvestCode(PA.Heterotaxy) AS Heterotaxy--Heterotaxy 
+	--,(Select TOP 1 CASE WHEN Syndrome = null THEN 0 ELSE 1 END AS Syndrome FROM Syndrome S WHERE S.PatID = D.PatID AND Syndrome = 101) AS MarfanSynd--Marfan Syndrome //?? 
+	,dbo.GetACCHarvestCode(PA.MarfanSynd) AS MarfanSynd--Marfan Syndrome //?? 
+	--,(Select TOP 1 CASE WHEN Syndrome = null THEN 0 ELSE 1 END AS Syndrome FROM Syndrome S WHERE S.PatID = D.PatID AND Syndrome = 108) AS NoonanSynd--Noonan Syndrome 
+	,dbo.GetACCHarvestCode(PA.NoonanSynd) AS NoonanSynd--Noonan Syndrome 
+	--,(Select TOP 1 CASE WHEN Syndrome = null THEN 0 ELSE 1 END AS Syndrome FROM Syndrome S WHERE S.PatID = D.PatID AND Syndrome = 111) AS Rubella--Rubella 
+	,dbo.GetACCHarvestCode(Pa.Rubella) AS Rubella--Rubella 
+	--,(Select TOP 1 CASE WHEN ChromAb = null THEN 0 ELSE 1 END AS ChromAb FROM ChromAbnormalities CH WHERE CH.PatID = D.PatID AND ChromAb = 68) AS Trisomy13--[Trisomy-13] 
+	,dbo.GetACCHarvestCode(PA.Trisomy13) AS Trisomy13--[Trisomy-13] 
+	--,(Select TOP 1 CASE WHEN ChromAb = null THEN 0 ELSE 1 END AS ChromAb FROM ChromAbnormalities CH WHERE CH.PatID = D.PatID AND ChromAb = 69) AS Trisomy18--Trisomy-18 
+	,dbo.GetACCHarvestCode(PA.Trisomy18) AS Trisomy18--[Trisomy-18] 
+	--,(Select TOP 1 CASE WHEN Syndrome = null THEN 0 ELSE 1 END AS Syndrome FROM Syndrome S WHERE S.PatID = D.PatID AND Syndrome = 117) AS TurnerSynd --Turner Syndrome 
+	,dbo.GetACCHarvestCode(PA.TurnerSynd) AS TurnerSynd --Turner Syndrome 
+	--,(Select TOP 1 CASE WHEN Syndrome = null THEN 0 ELSE 1 END AS Syndrome FROM Syndrome S WHERE S.PatID = D.PatID AND Syndrome = 121) AS WilliamsBeurenSynd --[Williams-Beuren Syndrome] 
+	,dbo.GetACCHarvestCode(PA.WilliamsBeurenSynd) AS WilliamsBeurenSynd --[Williams-Beuren Syndrome] 
+	,dbo.GetACCHarvestCode(Hist.Arrhythmia) Arrhythmia
+	,dbo.GetACCHarvestCode(Hist.PriorCM) PriorCM
+	,dbo.GetACCHarvestCode(Hist.PriorCMHx) PriorCMHx
+	,dbo.GetACCHarvestCode(Hist.ChronicLungDisease) As ChronicLungDisease--Chronic Lung Disease 
+	,dbo.GetACCHarvestCode(Hist.CoagDisorder) AS CoagDisorder--Coagulation Disorder 
+	,dbo.GetACCHarvestCode(Hist.HyperCoag) As HyperCoag--Hypercoagulable State 
+	,dbo.GetACCHarvestCode(Hist.HypoCoag) As HypoCoag--Hypocoagulable State 
+	,dbo.GetACCHarvestCode(Hist.Diabetes) As Diabetes--Diabetes Mellitus 
+	,dbo.GetACCHarvestCode(Hist.Endocarditis) As Endocarditis--Endocarditis
+	,dbo.GetACCHarvestCode(Hist.HF) AS HF--HF
+	,dbo.GetACCHarvestCode(Hist.NYHA) AS NYHA--HF
+	,dbo.GetACCHarvestCode(Hist.HeartTransplant) AS HeartTransplant
+	,dbo.GetACCHarvestCode(Hist.IschemicHD) As IschemicHD
+	,dbo.GetACCHarvestCode(Hist.KawasakiDisease) As KawasakiDisease
+	,dbo.GetACCHarvestCode(Hist.HepaticDisease) AS HepaticDiseases--Hepatic Disease 
+	,dbo.GetACCHarvestCode(Hist.RenalInsuff) AS RenalInsuff--Renal Insufficiency 
+	,dbo.GetACCHarvestCode(Hist.RheumaticHD) AS RheumaticHD--Renal Insufficiency 	
+	,dbo.GetACCHarvestCode(Hist.Seizures) AS Seizures--Seizure Disorder 
+	,dbo.GetACCHarvestCode(Hist.SickleCell) AS SickleCell--Sickle Cell Anemia 
+	,dbo.GetACCHarvestCode(Hist.PriorStroke) AS PriorStroke--Stroke 
+	,Hn.Aux3 AS Aux3--Auxiliary 3 Add to the hospitalization table 
+	,Hn.Aux4 AS Aux4 --Auxiliary 4 Add to the hospitalization table 
+	,dbo.GetACCHarvestCode(Hn.PtRestriction) PtRestriction
+	FROM Demographics D 
+	LEFT JOIN Hospitalization Hn ON D.PatID = Hn.PatID 
+	INNER JOIN CathData CD ON Hn.HospitalizationID = CD.HospID 
+	LEFT JOIN Hospital H ON Hn.HospName  = H.HospitalID 
+	LEFT JOIN Insurance I ON Hn.HospitalizationID = I.HospitalizationID 
+	LEFT JOIN CathPatAnatomy PA ON D.PatID = PA.PatID 
+	LEFT JOIN PatAnatomy A ON D.PatID = A.PatID 
+	LEFT JOIN CathHistory Hist ON --D.PatID = Hist.PatID and 
+	Hist.HospitalizationID = Hn.HospitalizationID 
+	WHERE Hn.DischDt BETWEEN @DischargeDate1 AND @DischargeDate2 AND D.PatID = @PatId 
+	AND Hn.HospName = @HospitalId 
+	AND ProcStartDate is not null
+	AND (CD.ExcludeFromHarvest IS NULL OR CD.ExcludeFromHarvest = 0)
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPMapSysExport]
+	@CathId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+	CathId 
+	,dbo.GetACCHarvestCode( EP.EPMapSys) EPMapSys
+FROm CathEPMapSys  EP
+WHERE EP.CathID = @CathId 
+ORDER By Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPSedMedExport]
+	@CathId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+	CathId 
+	,dbo.GetACCHarvestCode( EP.EPSedMed) EPSedMed
+FROm CathEPSedMed EP
+WHERE EP.CathID = @CathId 
+ORDER By Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPSSSQ5Export]
+	@CathId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+	CathId 
+	,dbo.GetACCHarvestCode( EP.SSSQ5)	SSSQ5
+FROm CathEPSSSQ5 EP
+WHERE EP.CathID = @CathId 
+ORDER BY Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPTachyarrObsExport]
+	@CathId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+	CathId 
+	,dbo.GetACCHarvestCode( EP.EPTachyarrObs)	EPTachyarrObs
+FROm CathEPTachyarrObs EP
+WHERE EP.CathID = @CathId 
+ORDER By Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPTargetApproachExport]
+	@TargetId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+	TargetId  
+	,dbo.GetACCHarvestCode(EP.EPTargetApproach) EPTargetApproach
+FROm CathEPTargetApproach  EP
+WHERE EP.TargetId = @TargetId
+ORDER By Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPTargetMethod]
+	@TargetId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+	TargetId  
+	,dbo.GetACCHarvestCode(EP.EPTargetMethod) EPTargetMethod
+FROm CathEPTargetMethod EP
+WHERE EP.TargetId = @TargetId
+ORDER By Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEPTargetMethodExport]
+	@TargetId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+	TargetId  
+	,dbo.GetACCHarvestCode(EP.EPTargetMethod) EPTargetMethod
+FROm CathEPTargetMethod  EP
+WHERE EP.TargetId = @TargetId
+ORDER By Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathEventsPostConduitTearTreatmentExport]
+	@CathId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+ CE.TreatmentID 
+ ,CE.CathID 
+,dbo.GetACCHarvestCode(CE.PostConduitTearTreat) PostConduitTearTreat
+  FROM CathEventsPostConduitTearTreatment CE INNER JOIN CathData ON CE.CathID = CathData.CathID
+  WHERE CE.CathID = @CathId AND (CathData.ExcludeFromHarvest IS NULL OR CathData.ExcludeFromHarvest = 0)
+  ORDER BY SortNum
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathFollowUpAssnExport]
+	@CathFollowUpID int
+AS
+	SELECT CathFollowUpID , CD.ProcStartDate , CD.ProcStartTime 
+	FROM CathFollowUpAssn FA inner join CathData CD on FA.CathID = CD.CathID
+	WHERE CathFollowUpID = @CathFollowUpID 
+RETURN 0
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathFollowupExport]
+	 @HospitalizationId int
+	,@F_AssessmentDate1 DateTime 
+	,@F_AssessmentDate2 DateTime 
+AS
+	SELECT  
+	F.CathFollowUpID 
+	,F_AssessmentDate		
+	,dbo.GetACCHarvestCode(F.F_Method_Office) F_Method_Office
+	,dbo.GetACCHarvestCode(F.F_Method_MedRecord) F_Method_MedRecord
+	,dbo.GetACCHarvestCode(F.F_Method_MedProvider) F_Method_MedProvider
+	,dbo.GetACCHarvestCode(F.F_Method_Phone) F_Method_Phone
+	,dbo.GetACCHarvestCode(F.F_Method_SSFile) F_Method_SSFile
+	,dbo.GetACCHarvestCode(F.F_Method_Hospital) F_Method_Hospital
+	,dbo.GetACCHarvestCode(F.F_Method_Other) F_Method_Other
+	,dbo.GetACCHarvestCode(F.F_Status) F_Status
+	,M.MtDate 	F_DeathDate		
+	,dbo.GetACCHarvestCode(F.F_DeathCause) F_DeathCause
+	,dbo.GetACCHarvestCode(F.F_Readmitted) F_Readmitted
+	,	F_ReadmissionLOS		
+	,	F_ReadmissionDate		
+	,dbo.GetACCHarvestCode(F.F_Hosp) F_Hosp
+	,dbo.GetACCHarvestCode(F.F_ASDErosion) F_ASDErosion
+	,dbo.GetACCHarvestCode(F.F_ASDDeviceEmbol) F_ASDDeviceEmbol
+	,dbo.GetACCHarvestCode(F.F_ASDRetrieveCath) F_ASDRetrieveCath
+	,dbo.GetACCHarvestCode(F.F_ASDRetrieveSurgery) F_ASDRetrieveSurgery
+	,dbo.GetACCHarvestCode(F.F_ASDEndocarditis) F_ASDEndocarditis
+	,	F_ASDEndocarditisDxDate		
+	,dbo.GetACCHarvestCode(F.F_ASDEndocarditisFactors) F_ASDEndocarditisFactors
+	,dbo.GetACCHarvestCode(F.F_ASDRx) F_ASDRx
+	,dbo.GetACCHarvestCode(F.F_ASDResShunt) F_ASDResShunt
+	,dbo.GetACCHarvestCode(F.F_SSSQ1) F_SSSQ1
+	,dbo.GetACCHarvestCode(F.F_SSSQ2) F_SSSQ2
+	,dbo.GetACCHarvestCode(F.F_SSSQ3) F_SSSQ3
+	,dbo.GetACCHarvestCode(F.F_SSSQ4) F_SSSQ4
+	,dbo.GetACCHarvestCode(F.F_SSSQ6) F_SSSQ6
+	,dbo.GetACCHarvestCode(F.F_SSSQ7) F_SSSQ7
+	,dbo.GetACCHarvestCode(F.F_TPVInPlace) F_TPVInPlace
+	,dbo.GetACCHarvestCode(F.F_TPVPertubationReason) F_TPVPertubationReason
+	,dbo.GetACCHarvestCode(F.F_TPVReintervention) F_TPVReintervention
+	,dbo.GetACCHarvestCode(F.F_TPVSurgReinter) F_TPVSurgReinter
+	,	F_TPVSurgReinterDate		
+	,dbo.GetACCHarvestCode(F.F_TPVCathReinter) F_TPVCathReinter
+	,	F_TPVCathReinterDate		
+	,dbo.GetACCHarvestCode(F.F_TPVReinterReason) F_TPVReinterReason
+	,dbo.GetACCHarvestCode(F.F_TPVEndocarditis) F_TPVEndocarditis
+	,	F_TPVEndocarditisDxDate		
+	,dbo.GetACCHarvestCode(F.F_TPVEndocarditisFactors) F_TPVEndocarditisFactors
+	,dbo.GetACCHarvestCode(F.F_TPVEndocarditisRx) F_TPVEndocarditisRx
+	,	F_TPVMeanValveGradient		
+	,	F_TPVMaxValveGradient		
+	,dbo.GetACCHarvestCode(F.F_TPVPulValveRegurg) F_TPVPulValveRegurg
+	FROM CathFollowUp F INNER JOIN Hospitalization H ON F.HospitalizationID = H.HospitalizationID
+	LEFT OUTER JOIN Mortality M ON H.PatID = M.PatId
+	WHERE F.HospitalizationID = @HospitalizationId 
+		AND F.F_AssessmentDate BETWEEN @F_AssessmentDate1 AND @F_AssessmentDate2
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathFollowUpSSSQ5Export]
+	@CathFollowUpID int
+AS
+	SELECT CathFollowUpID ,dbo.GetACCHarvestCode(SSSQ5)  SSSQ5 
+	FROM CathFollowUpSSSQ5 
+	WHERE CathFollowUpID = @CathFollowUpID 
+	ORDER By Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathHemodynamicsExport]
+	@CathId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+SELECT
+	CD.CathID 
+	,CH.SystemicArtSat
+	,CH.SystemicArtSatNA
+	,CH.MixVenSat
+	,CH.MixVenSatNA
+	,CH.SystemVentSysPres
+	,CH.SystemVentSysPresNA
+	,CH.SystemVentEndDiaPres
+	,CH.SystemVentEndDiaPresNA
+	,CH.SystemSysBP
+	,CH.SystemSysBPNA
+	,CH.SystemDiaBP
+	,CH.SystemDiaBPNA
+	,CH.SystemMeanBP
+	,CH.SystemMeanBPNA
+	,CH.PulmArtSysPres
+	,CH.PulmArtSysPresNA
+	,CH.PulmArtMeanPres
+	,CH.PulmArtMeanPresNA
+	,CH.PulmVentSysPres
+	,CH.PulmVentSysPresNA
+	,CH.PulmVascRestInd
+	,CH.PulmVascRestIndNA
+	,CH.CardInd
+	,CH.CardIndNA
+	,CH.QpQsRatio
+	,CH.QpQsRatioNA
+
+FROM CathData CD LEFT OUTER JOIN CathHemodynamics CH ON CD.CathID = CH.CathID
+  Where CD.CathID = @CathId  AND (CD.ExcludeFromHarvest IS NULL OR CD.ExcludeFromHarvest = 0)
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathIntraPostProcedureEventsExport]
+	@CathId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT
+ CE.EventID 
+,dbo.GetACCHarvestCode(CE.CArrest) CArrest --Cardiac Arrest
+,dbo.GetACCHarvestCode(CE.PostArrhyth) PostArrhyth --Arrhythmia
+,dbo.GetACCHarvestCode(CE.PostArrhythMed) PostArrhythMed --Arrhythmia Requiring Antiarrhythmic Medication
+,dbo.GetACCHarvestCode(CE.PostArrhythCardiovers) PostArrhythCardiovers --Arrhythmia Requiring Cardioversion
+,dbo.GetACCHarvestCode(CE.PostArrhythTempPM) PostArrhythTempPM --Arrhythmia Requiring Temporary Pacemaker
+,dbo.GetACCHarvestCode(CE.PostArrhythPermPM) PostArrhythPermPM --Arrhythmia Requiring Permanent Pacemaker
+,dbo.GetACCHarvestCode(CE.PostNewRegurge) PostNewRegurge --New Heart Valve Regurgitation
+,dbo.GetACCHarvestCode(CE.PostTamponade) PostTamponade --Tamponade
+,dbo.GetACCHarvestCode(CE.PostAirEmbolus) PostAirEmbolus --Air Embolus
+,dbo.GetACCHarvestCode(CE.PostEmbStroke) PostEmbStroke --Embolic Stroke
+,dbo.GetACCHarvestCode(CE.PostDevMalposThrom) PostDevMalposThrom --Device Malposition or Thrombus (Requiring surgery)
+,dbo.GetACCHarvestCode(CE.PostDevEmbol) PostDevEmbol --Device Embolization (Requiring device retrieval)
+,dbo.GetACCHarvestCode(CE.PostDevRetrievePCT) PostDevRetrievePCT --Device Embolization Retrieved via Catheterization
+,dbo.GetACCHarvestCode(CE.PostDevRetrieveSurg) PostDevRetrieveSurg --Device Embolization Retrieved via Surgery
+,dbo.GetACCHarvestCode(CE.PostDialysis) PostDialysis --New Requirement for Dialysis
+,dbo.GetACCHarvestCode(CE.PostIntubation) PostIntubation --Airway Event Requiring Intubation
+,dbo.GetACCHarvestCode(CE.PostECMO) PostECMO --Event Requiring ECMO
+,dbo.GetACCHarvestCode(CE.PostLVAD) PostLVAD --Event Requiring LVAD
+,dbo.GetACCHarvestCode(CE.PostBleed) PostBleed --Bleeding Event
+,dbo.GetACCHarvestCode(CE.PostBleedAccessSite) PostBleedAccessSite --Bleeding Event at Access Site
+,dbo.GetACCHarvestCode(CE.PostBleedHematoma) PostBleedHematoma --Hematoma at Access Site
+,dbo.GetACCHarvestCode(CE.PostRetroBleed) PostRetroBleed --Retroperitoneal Bleeding
+,dbo.GetACCHarvestCode(CE.PostGIBleed) PostGIBleed --Gastrointestinal Bleeding
+,dbo.GetACCHarvestCode(CE.PostGUBleed) PostGUBleed --Genital-Urinary Bleeding
+,dbo.GetACCHarvestCode(CE.PostOtherBleed) PostOtherBleed --Other Bleeding
+,dbo.GetACCHarvestCode(CE.PostTransfusion) PostTransfusion --RBC/Whole Blood Transfusion
+,dbo.GetACCHarvestCode(CE.PostOtherVasComp) PostOtherVasComp --Other Vascular Complications Requiring Treatment
+,dbo.GetACCHarvestCode(CE.PostOtherEvents) PostOtherEvents --Other Events
+,dbo.GetACCHarvestCode(CE.PostPlanCardiacSurg) PostPlanCardiacSurg --Planned Cardiac Surgery
+,dbo.GetACCHarvestCode(CE.PostUnplanCardSurg) PostUnplanCardSurg --Unplanned Cardiac Surgery
+,dbo.GetACCHarvestCode(CE.PostUnplanVasSurg) PostUnplanVasSurg --Unplanned Vascular Surgery
+,dbo.GetACCHarvestCode(CE.PostUnplanOtherSurg) PostUnplanOtherSurg --Unplanned Other Surgery
+,dbo.GetACCHarvestCode(CE.PostOtherSurgCathComp) PostOtherSurgCathComp --Other Surgery Due to Cath Complication
+,dbo.GetACCHarvestCode(CE.PostSubsCath) PostSubsCath --Subsequent Cardiac Cath
+,dbo.GetACCHarvestCode(CE.PostAVBlock) PostAVBlock
+,dbo.GetACCHarvestCode(CE.PostArrhythResolved) PostArrhythResolved
+,dbo.GetACCHarvestCode(CE.PostDevMalposThromRetCT) PostDevMalposThromRetCT
+,dbo.GetACCHarvestCode(CE.PostDevMalposThromRetSurg) PostDevMalposThromRetSurg
+,dbo.GetACCHarvestCode(CE.PostCorArteryComp) PostCorArteryComp
+,dbo.GetACCHarvestCode(CE.PostErosion) PostErosion
+,dbo.GetACCHarvestCode(CE.PostEsoFistula) PostEsoFistula
+,dbo.GetACCHarvestCode(CE.PostLBBB) PostLBBB
+,dbo.GetACCHarvestCode(CE.PostRBBB) PostRBBB
+,dbo.GetACCHarvestCode(CE.PostDropHgb) PostDropHgb
+,dbo.GetACCHarvestCode(CE.PostPriorAnemia) PostPriorAnemia
+,dbo.GetACCHarvestCode(CE.PostBloodLoss) PostBloodLoss
+,dbo.GetACCHarvestCode(CE.PostECMOBloodReplace) PostECMOBloodReplace
+,dbo.GetACCHarvestCode(CE.PostPeriNerveInjury) PostPeriNerveInjury
+,dbo.GetACCHarvestCode(CE.PostPhNerveParalysis) PostPhNerveParalysis
+,dbo.GetACCHarvestCode(CE.PostPneumothorax) PostPneumothorax
+,dbo.GetACCHarvestCode(CE.PostPulEmbolism) PostPulEmbolism
+,dbo.GetACCHarvestCode(CE.PostPulVeinStenosis) PostPulVeinStenosis
+,dbo.GetACCHarvestCode(CE.PostRadiationBurn) PostRadiationBurn
+,dbo.GetACCHarvestCode(CE.PostDVT) PostDVT
+,dbo.GetACCHarvestCode(CE.PostConduitTear) PostConduitTear
+,dbo.GetACCHarvestCode(CE.PostConduitTearLoc ) PostConduitTearLoc 
+  FROM CathEvents CE 
+  INNER JOIN CathData ON CE.CathID = CathData.CathID
+  WHERE CE.CathID = @CathId AND (CathData.ExcludeFromHarvest IS NULL OR CathData.ExcludeFromHarvest = 0)
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathLabVisitsExport]
+		@HospitalizationID int
+	,@DischargeDate1 DateTime
+	,@DischargeDate2 DateTime
+AS
+--Declare @HospitalizationID int
+--,@DischargeDate1 DateTime
+--	,@DischargeDate2 DateTime
+--SET @HospitalizationID = 22228
+--SET @DischargeDate1 = '01/01/2011'
+--SET @DischargeDate2 = '10/01/2011'
+SELECT 
+	CD.CathID  AS CathId
+	,0 PreProcDiags--Pre-Procedure Diagnosis Code
+	,CD.Height  --Height
+	,CD.Weight --Weight
+	,CD.PreProcHgb --Pre-Procedure Hemoglobin
+	,dbo.GetACCHarvestCode(CD.PreProcHgbND ) PreProcHgbND
+	,CD.PreProcCreat --Pre-Procedure Creatinine
+	,dbo.GetACCHarvestCode(CD.PreProcCreatND ) PreProcCreatND	
+	,CD.PreProcO2 --Pre-Procedure O2 Saturation
+	,dbo.GetACCHarvestCode(CD.SVDefect) SVDefect
+	,dbo.GetACCHarvestCode(CD.NEC) NEC --Necrotizing Enterocolitis
+	,dbo.GetACCHarvestCode(CD.Sepsis) Sepsis --Sepsis
+	,dbo.GetACCHarvestCode(CD.Preg) Preg --Pregnant
+	,dbo.GetACCHarvestCode(CD.PreProcMed) PreProcMed
+	,dbo.GetACCHarvestCode(CD.PreProcAntiarr) PreProcAntiarr --Pre-Procedure Antiarrhythmics
+	,dbo.GetACCHarvestCode(CD.PreProcAnticoag) PreProcAnticoag --Pre-Procedure Anticoagulants
+	,dbo.GetACCHarvestCode(CD.PreProcAntihyp) PreProcAntihyp --Pre-Procedure Antihypertensives
+	,dbo.GetACCHarvestCode(CD.PreProcAntiplatelet) PreProcAntiplatelet --Pre-Procedure Antiplatelets
+	,dbo.GetACCHarvestCode(CD.PreProcBB) PreProcBB --Pre-Procedure Beta Blockers
+	,dbo.GetACCHarvestCode(CD.PreProcDiuretic) PreProcDiuretic --Pre-Procedure Diuretics
+	,dbo.GetACCHarvestCode(CD.PreProcProsta) PreProcProsta --Pre-Procedure Prostaglandins
+	,dbo.GetACCHarvestCode(CD.PreProcVaso) PreProcVaso --Pre-Procedure Vasodilators
+	,dbo.GetACCHarvestCode(CD.PreProcSinus) PreProcSinus --Pre-Procedure Sinus Rhythm
+	,dbo.GetACCHarvestCode(CD.PreProcAET) PreProcAET --Pre-Procedure Atrial Ectopic Tachycardia (AET)
+	,dbo.GetACCHarvestCode(CD.PreProcSVT) PreProcSVT --Pre-Procedure Supraventricular Tachycardia (SVT)
+	,dbo.GetACCHarvestCode(CD.PreProcAfib) PreProcAfib --Pre-Procedure AFib/Flutter
+	,dbo.GetACCHarvestCode(CD.PreProcJunct) PreProcJunct --Pre-Procedure Junctional Rhythm
+	,dbo.GetACCHarvestCode(CD.PreProcIdio) PreProcIdio --Pre-Procedure Idioventricular Rhythm
+	,dbo.GetACCHarvestCode(CD.PreProcAVB2) PreProcAVB2 --Pre-Procedure Second Degree AV Block
+	,dbo.GetACCHarvestCode(CD.PreProcAVB3) PreProcAVB3 --Pre-Procedure Third Degree AV Block
+	,dbo.GetACCHarvestCode(CD.PreProcPaced) PreProcPaced --Pre-Procedure Paced
+	,CD.Aux5 --Auxiliary 5  
+	,CD.Aux6 --Auxiliary 6
+  FROM Demographics D
+  INNER JOIN Hospitalization Hn ON D.PatID = Hn.PatID 
+  INNER JOIN CathData CD ON Hn.HospitalizationID = CD.HospID 
+  INNER JOIN Hospital H ON Hn.HospName  = H.HospitalID  
+  Where Hn.DischDt BETWEEN @DischargeDate1 AND @DischargeDate2 
+		AND Hn.HospitalizationID = @HospitalizationID  
+		AND ProcStartDate is not null
+		AND (CD.ExcludeFromHarvest IS NULL OR CD.ExcludeFromHarvest = 0)
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathPatientExport]
+	@CreateDateTime DateTime
+	,@TransmissionNumber int
+	,@DischargeDate1 DateTime
+	,@DischargeDate2 DateTime
+	,@HospitalId int
+AS
+--Declare @CreateDateTime DateTime
+--Declare @TransmissionNumber int
+--,@DischargeDate1 DateTime
+--	,@DischargeDate2 DateTime
+--SET @CreateDateTime = GETDATE()
+--SET @TransmissionNumber = 1
+--SET @DischargeDate1 = '01/01/2012'
+--SET @DischargeDate2 = '03/31/2012'
+SELECT 
+	D.PatID AS NCDRPatientID
+	,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN D.PatLName END AS LastName
+	,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN D.PatFName END AS FirstName
+	,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN D.PatMName END AS MidName
+	,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN D.SSN END AS SSN
+--,dbo.GetACCHarvestCode(D.SSNNA) SSNNA--SSN N/A  Add to demographics
+,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN ISnull(D.SSNNA,0) END AS SSNNA--SSN N/A  Add to demographics
+--, Null As OtherId--Other ID This is the original code (SELECT Top 1 MedRecNum2   FROM OtherMRN M where M.PatID = D.PatID) 
+, (SELECT Top 1 MedRecNum2   FROM OtherMRN M where M.PatID = D.PatID)  OtherId
+--please remove the d.medrecn in the group by when replacing the fields
+,D.DOB 
+,DBO.GetACCHarvestCode(D.Gender) Sex
+,ISNULL(dbo.GetACCHarvestCode(D.RaceCaucasian),0) RaceWhite 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceBlack),0) RaceBlack 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceAsian),0) RaceAsian 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceNativeAm),0) RaceAmIndian
+,ISNULL(dbo.GetACCHarvestCode(D.RaceNativePacific),0) RaceNatHaw
+,dbo.GetACCHarvestCode(D.Ethnicity) HispOrig
+,ISNULL(dbo.GetACCHarvestCode(D.RaceAsianIndian),0) RaceAsianIndian
+,ISNULL(dbo.GetACCHarvestCode(D.RaceChinese),0) RaceChinese
+,ISNULL(dbo.GetACCHarvestCode(D.RaceFilipino),0) RaceFilipino
+,ISNULL(dbo.GetACCHarvestCode(D.RaceJapanese),0) RaceJapanese
+,ISNULL(dbo.GetACCHarvestCode(D.RaceKorean),0) RaceKorean
+,ISNULL(dbo.GetACCHarvestCode(D.RaceVietnamese),0) RaceVietnamese
+,ISNULL(dbo.GetACCHarvestCode(D.RaceAsianOther),0) RaceAsianOther
+,ISNULL(dbo.GetACCHarvestCode(D.RaceNativeHawaii),0) RaceNativeHawaii
+,ISNULL(dbo.GetACCHarvestCode(D.RaceGuamChamorro),0) RaceGuamChamorro
+,ISNULL(dbo.GetACCHarvestCode(D.RaceSamoan),0) RaceSamoan
+,ISNULL(dbo.GetACCHarvestCode(D.RacePacificIslandOther),0) RacePacificIslandOther
+,ISNULL(dbo.GetACCHarvestCode(D.HispEthnicityMexican),0) HispEthnicityMexican
+,ISNULL(dbo.GetACCHarvestCode(D.HispEthnicityPuertoRico),0) HispEthnicityPuertoRico
+,ISNULL(dbo.GetACCHarvestCode(D.HispEthnicityCuban),0) HispEthnicityCuban
+,ISNULL(dbo.GetACCHarvestCode(D.HispEthnicityOtherOrigin),0) HispEthnicityOtherOrigin
+,D.Aux1 -- Auxiliary 1 Add to the demographics table
+,D.Aux2  --Auxiliary 2 Add to the demographics table
+,D.Premature PreBirth --Premature Birth
+,D.BirthWtKg BirthWeight--Birth Weight
+,D.GestAgeWeeks GestAge--Gestational Age
+,(Select TOP 1 CASE WHEN NCAA = null THEN 0 ELSE 1 END AS NCAA_ACC FROM NCAA WHERE NCAA.PatID = D.PatID AND NCAA = 218) AS DiGeorgeSynd--22q11 Deletion (DiGeorge Syndrome) 
+,(Select TOP 1 CASE WHEN NCAA = null THEN 0 ELSE 1 END AS NCAA_ACC FROM NCAA WHERE NCAA.PatID = D.PatID AND NCAA = 217) AS AlagilleSynd--Alagille Syndrome
+,(Select TOP 1 CASE WHEN NCAA = null THEN 0 ELSE 1 END AS NCAA_ACC FROM NCAA WHERE NCAA.PatID = D.PatID AND NCAA = 217) AS Hernia--Congenital Diaphragmatic Hernia
+FROM Demographics D 
+INNER JOIN Hospitalization Hn ON D.PatID = Hn.PatID 
+INNER JOIN CathData CD ON Hn.HospitalizationID = CD.HospID 
+WHERE Hn.DischDt BETWEEN @DischargeDate1 AND @DischargeDate2
+		AND ProcStartDate is not null
+		AND (CD.ExcludeFromHarvest IS NULL OR CD.ExcludeFromHarvest = 0)
+		AND Hn.HospName = @HospitalId 
+GROUP BY D.PatID
+	,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN D.PatLName END
+,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN D.PatFName END
+,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN D.PatMName END
+,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN D.SSN END
+,CASE WHEN (NOT D.ACCExclude = 1 OR D.ACCExclude IS NULL) THEN ISNULL(D.SSNNA,0) END
+,D.DOB 
+,DBO.GetACCHarvestCode(D.Gender) 
+,dbo.GetACCHarvestCode(D.RaceCaucasian)  
+,dbo.GetACCHarvestCode(D.RaceBlack)  
+,dbo.GetACCHarvestCode(D.RaceAsian)  
+,dbo.GetACCHarvestCode(D.RaceNativeAm) 
+,dbo.GetACCHarvestCode(D.RaceNativePacific) 
+,dbo.GetACCHarvestCode(D.Ethnicity) 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceAsianIndian),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceChinese),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceFilipino),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceJapanese),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceKorean),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceVietnamese),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceAsianOther),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceNativeHawaii),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceGuamChamorro),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.RaceSamoan),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.RacePacificIslandOther),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.HispEthnicityMexican),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.HispEthnicityPuertoRico),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.HispEthnicityCuban),0) 
+,ISNULL(dbo.GetACCHarvestCode(D.HispEthnicityOtherOrigin),0) 
+,D.Aux1
+,D.Aux2
+,D.Premature
+,D.BirthWtKg
+,D.GestAgeWeeks
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathProcInfoExport]
+		@CathId int
+AS
+--Declare @CathId int
+--SET @CathId  = 143
+
+SELECT 
+CD.CathID 
+,dbo.GetACCHarvestCode(CD.ProcDxCath) ProcDxCath --Procedure - Diagnostic Cath
+,dbo.GetACCHarvestCode(CD.ProcASD) ProcASD --Procedure - Atrial Septal Defect (ASD) Closure
+,dbo.GetACCHarvestCode(CD.ProcCoarc) ProcCoarc  --Procedure - Aortic Coarctation Procedure
+,dbo.GetACCHarvestCode(CD.ProcAorticValv) ProcAorticValv --Procedure - Aortic Valvuloplasty
+,dbo.GetACCHarvestCode(CD.ProcPulmonaryValv) ProcPulmonaryValv --Procedure - Pulmonary Valvuloplasty
+,dbo.GetACCHarvestCode(CD.ProcPDA) ProcPDA --Procedure - PDA Closure
+,dbo.GetACCHarvestCode(CD.ProcProxPAStent) ProcProxPAStent --Procedure - Proximal PA Stenting
+,dbo.GetACCHarvestCode(CD.ProcEPAblation) ProcEPAblation --Procedure - Proximal PA Stenting
+,dbo.GetACCHarvestCode(CD.ProcEPCath) ProcEPCath --Procedure - Proximal PA Stenting
+,dbo.GetACCHarvestCode(CD.ProcTPVR) ProcTPVR --Procedure - Proximal PA Stenting
+,CD.SpecificProcID --Specific Procedure ID
+,dbo.GetACCHarvestCode(CD.HospStatus) HospStatus --Hospital Status
+,dbo.GetACCHarvestCode(CD.ProcStatus) ProcStatus --Procedure Status
+--,dbo.GetACCHarvestCode(CD.Trainee) Trainee --Trainee Present
+,(SELECT [LASTNAME] FROM Contacts WHERE ContactID = CD.OperatorID) as OperLName--Operator Last Name contacts table 
+,(SELECT [FirstName] FROM Contacts WHERE ContactID = CD.OperatorID) as OperFName--Operator First Name  
+,(SELECT MiddleName  FROM Contacts WHERE ContactID = CD.OperatorID) as OperMName--Operator Middle Name  
+,(SELECT [SurgNPI]  FROM Contacts WHERE ContactID = CD.OperatorID) as OperNPI--Operator NPI  
+,dbo.GetACCHarvestCode(CD.Trainee) ParticipatingTrainee
+, dbo.GetACCHarvestCode(CD.SecondParticipating ) SecondParticipating
+, CD.ProcStartDate 
+,CASE WHEN NOT CD.ProcStartDate IS NULL THEN ISNULL(CD.ProcStartTime,'00:00:00') ELSE CD.ProcStartTime END   ProcStartTime
+,CD.ProcEndDate
+,CASE WHEN NOT CD.ProcEndDate IS NULL THEN ISNULL(CD.ProcEndTime,'00:00:00') ELSE CD.ProcEndTime END   ProcEndTime
+,dbo.GetACCHarvestCode(CD.AnesPresent) AnesPresent --Anesthesiologist Present
+,dbo.GetACCHarvestCode(CD.AnesCalledIn) AnesCalledIn --Anesthesiologist Called In
+,dbo.GetACCHarvestCode(CD.Sedation) Sedation --Sedation
+,dbo.GetACCHarvestCode(CD.AirMng) AirMng --Airway Management - Spontaneous Respirations with or without O2
+,dbo.GetACCHarvestCode(CD.AirMngLMA) AirMngLMA --Airway Management - Laryngeal mask airway
+,dbo.GetACCHarvestCode(CD.AirMngTrach) AirMngTrach --Airway Management - Tracheostomy
+,dbo.GetACCHarvestCode(CD.AirMngBagMask) AirMngBagMask --Airway Management - Bag mask ventilation
+,dbo.GetACCHarvestCode(CD.AirMngCPAP) AirMngCPAP --Airway Management - CPAP (Continuous Positive Airway Pressure)
+,dbo.GetACCHarvestCode(CD.AirMngElecIntub) AirMngElecIntub --Airway Management - Elective Intubation at Start
+,dbo.GetACCHarvestCode(CD.AirMngPrevIntub) AirMngPrevIntub --Airway Management - Previously Intubated
+,dbo.GetACCHarvestCode(CD.AccessLoc) AccessLoc --Access Location
+,dbo.GetACCHarvestCode(CD.VenAccess) VenAccess --Venous Access Site
+,CD.VenLargSheath --Venous Sheath Size
+,CD.VenClosureMethodCounter --Venous Closure Method Counter
+--Venous Closure Method(s) (1 to many table) [CathVenousClosureMethod] // write another SP to get the data
+,dbo.GetACCHarvestCode(CD.VenClosureMethodND) VenClosureMethodND--Venous Closure Method Not Documented
+,dbo.GetACCHarvestCode(CD.ArtAccess) ArtAccess --Arterial Access Site
+,CD.ArtLargSheath --Arterial Sheath Size
+,CD.ArtClosureMethodCounter --Arterial Closure Method Counter
+--Arterial Closure Method(s) (1 to many table) [CathArterialClosureMethod] // write another SP to get the data
+,dbo.GetACCHarvestCode(CD.ArtClosureMethodND) ArtClosureMethodND --Arterial Closure Method Not Documented
+,CD.FluoroTime --Fluoroscopy Time
+,CD.FluoroDose --Fluoroscopy Dose
+,CD.FluoroDAP --Fluoroscopy Dose Area Product
+,CD.ContrastVol --Contrast Volume
+,dbo.GetACCHarvestCode(CD.SysHeparin) SysHeparin --Systemic Heparinization
+,CAST(dbo.GetACCHarvestCode(CD.ACTMonitor) as int) ACTMonitor --Activated Clotting Time Monitored
+,CD.ACTPeak --Activated Clotting Time Peak
+,dbo.GetACCHarvestCode(CD.Inotrope) Inotrope --Inotrope
+,dbo.GetACCHarvestCode(CD.InotropeUse) InotropeUse --Inotrope Use
+,dbo.GetACCHarvestCode(CD.ECMOUse) ECMOUse --Extracorporeal Membrane Oxygenation (ECMO) Use
+,dbo.GetACCHarvestCode(CD.LVADUse) LVADUse --Left Ventricular Assist Device (LVAD) Use
+,dbo.GetACCHarvestCode(CD.IABPUse) IABPUse
+,dbo.GetACCHarvestCode(CD.PlaneUsed) PlaneUsed
+,FluoroDoseKerm
+,dbo.GetACCHarvestCode(CD.FluoroDoseKerm_Units) FluoroDoseKerm_Units
+,FluoroDoseDAP
+,dbo.GetACCHarvestCode(CD.FluoroDoseDAP_Units) FluoroDoseDAP_Units
+
+  FROM CathData CD
+  Where CD.CathID = @CathId AND (CD.ExcludeFromHarvest IS NULL OR CD.ExcludeFromHarvest = 0)
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathPulmonaryValvuloplastyExport]
+@CathId int
+AS
+--Declare @PulmonaryValvuloplastyID int
+--SET @PulmonaryValvuloplastyID  = 1
+SELECT dbo.GetACCHarvestCode(PV.PVProcInd) PVProcInd --PV - Primary Procedure Indication
+		,dbo.GetACCHarvestCode(PV.PVMorphology) PVMorphology --PV - Pulmonary Valve Morphology
+		,dbo.GetACCHarvestCode(PV.PVSubStenosis) PVSubStenosis --PV - Subpulmonary Stenosis Present
+		,PV.PVDiameter --PV - Pulmonary Valve Diameter
+		,PV.PVPrePkSysGrad --PV - Pre-Procedure Peak Systolic Gradient
+		,PV.PVPrePkSysGradNA  PVPrePkSysGradNA 
+		,dbo.GetACCHarvestCode(PV.PVBallTech)  PVBallTechnique      
+		,PV.PVBall1DevID  PVBall1DevID
+		,dbo.GetACCHarvestCode(PV.PVBallStab) PVBallStab
+		,PV.PVBallPressure   PVBallPressure
+		,dbo.GetACCHarvestCode(PV.PVBallOutcome)	PVBallOutcome
+		,PV.PVBall2DevID	      PVBall2DevID
+		,PVPostPkSysGrad	
+		,PVPostPkSysGradNA
+	FROM CathPulmonaryValvuloplasty PV 
+	INNER JOIN CathData ON PV.CathID = CathData.CathID 
+	Where PV.CathID = @CathId 
+	AND (CathData.ExcludeFromHarvest IS NULL OR CathData.ExcludeFromHarvest = 0)
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathTPVRDeviceAssociationExport]	
+	@CathId int
+AS
+SELECT CTPVRDev.Sort TPVRDeviceCounter--TPVR - Device Counter
+	,CTPVRDev.DevID --TPVR - Device ID
+	,dbo.GetACCHarvestCode(CTPVRDev.DevOutcome) DevOutcome --TPVR - Device Outcome
+FROM CathDevicesUsed CTPVRDev INNER JOIN CathData ON CTPVRDev.CathID = CathData.CathID
+WHERE CTPVRDev.CathID = @CathId AND (CathData.ExcludeFromHarvest IS NULL OR CathData.ExcludeFromHarvest = 0)
+AND CTPVRDev.CathProcID = dbo.GetCathProcID('CathProcType','TPVR')
+ORDER BY CTPVRDev.Sort
+
+Text
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE [dbo].[Cath_v2_GetCathTPVRExport]
+	@CathId int
+AS
+--Declare @CathId int
+--SET @CathId = 1
+
+SELECT 
+		T.TPVRID ,
+		T.CathID 
+		,dbo.GetACCHarvestCode(T.TPVRClinInd) TPVRClinInd
+		,dbo.GetACCHarvestCode(T.TPVRHemoInd) TPVRHemoInd
+		,dbo.GetACCHarvestCode(T.TPVRRVOTDysfunction) TPVRRVOTDysfunction
+		,dbo.GetACCHarvestCode(T.TPVREcho) TPVREcho
+		,T.TPVREchoMeanGradient TPVREchoMeanGradient
+		,T.TPVREchoMaxGradient TPVREchoMaxGradient
+		,dbo.GetACCHarvestCode(T.TPVREchoPVRegurg) TPVREchoPVRegurg
+		,T.TPVREchoLVEF TPVREchoLVEF
+		,dbo.GetACCHarvestCode(T.TPVREchoTRS) TPVREchoTRS
+		,dbo.GetACCHarvestCode(T.TPVRMRI) TPVRMRI
+		,T.TPVRMRIRVEF TPVRMRIRVEF
+		,T.TPVRMRILVEF TPVRMRILVEF
+		,T.TPVRMRIRVEDVIndex TPVRMRIRVEDVIndex
+		,T.TPVRMRIRVESVIndex TPVRMRIRVESVIndex
+		,T.TPVRMRILVEDVIndex TPVRMRILVEDVIndex
+		,T.TPVRMRILVESVIndex TPVRMRILVESVIndex
+		,T.TPVRMRIPRFraction TPVRMRIPRFraction
+		,dbo.GetACCHarvestCode(T.TPVRRVOTType) TPVRRVOTType
+		,T.TPVROriginalConduit TPVROriginalConduit
+		,dbo.GetACCHarvestCode(T.TPVRExistingStent) TPVRExistingStent
+		,dbo.GetACCHarvestCode(T.TPVRPriorTPVR) TPVRPriorTPVR
+		,T.TPVRCathPeakGradient TPVRCathPeakGradient
+		,T.TPVRNarrowDia TPVRNarrowDia
+		,dbo.GetACCHarvestCode(T.TPVRAortoPerf) TPVRAortoPerf
+		,dbo.GetACCHarvestCode(T.TPVRSelectiveAngio) TPVRSelectiveAngio
+		,dbo.GetACCHarvestCode(T.TPVRCorCompressTest) TPVRCorCompressTest
+		,T.TPVRMaxBalloonSize TPVRMaxBalloonSize
+		,dbo.GetACCHarvestCode(T.TPVRCorCompressPresent) TPVRCorCompressPresent
+		,dbo.GetACCHarvestCode(T.TPVRPredilationPerf) TPVRPredilationPerf
+		,T.TPVRFirstBallSize TPVRFirstBallSize
+		,T.TPVRMaxBallSize TPVRMaxBallSize
+		,T.TPVRHighInflaPerf TPVRHighInflaPerf
+		,dbo.GetACCHarvestCode(T.TPVRNewPreStent) TPVRNewPreStent
+		,T.TPVRNewStentsNum TPVRNewStentsNum
+		,dbo.GetACCHarvestCode(T.TPVRAccessVessel) TPVRAccessVessel
+		,T.TPVRDeliBallSize TPVRDeliBallSize
+		,dbo.GetACCHarvestCode(T.TPVRTPVDeployed) TPVRTPVDeployed
+		,dbo.GetACCHarvestCode(T.TPVRTPVPostDilation) TPVRTPVPostDilation
+		,T.TPVRFinalBallSize TPVRFinalBallSize
+		,T.TPVRFinalPressure TPVRFinalPressure
+		,T.TPVRPeakRVOTGrad TPVRPeakRVOTGrad
+		,dbo.GetACCHarvestCode(T.TPVRPostProcPVRegurg) TPVRPostProcPVRegurg
+		,T.TPVRFinalDiameter TPVRFinalDiameter
+		,dbo.GetACCHarvestCode(T.TPVRNotDeployedReason) TPVRNotDeployedReason
+		,dbo.GetACCHarvestCode(T.TPVRPostEcho) TPVRPostEcho
+		,T.TPVRPostEchoMeanGrad TPVRPostEchoMeanGrad
+		,T.TPVRPostEchoMaxGrad TPVRPostEchoMaxGrad
+		,dbo.GetACCHarvestCode(T.TPVRPostEchoPulValveRegurg) TPVRPostEchoPulValveRegurg
+  FROM CathTPVR  T INNER JOIN CathData ON T.CathID = CathData.CathID
+  WHERE T.CathID = @CathId AND (CathData.ExcludeFromHarvest IS NULL OR CathData.ExcludeFromHarvest = 0)
+

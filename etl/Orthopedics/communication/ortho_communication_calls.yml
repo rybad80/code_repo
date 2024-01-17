@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: ortho_communication_calls
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, 'coalesce(commn_id, -9999)']
+          tags: ['failing']
+    columns:
+      - name: visit_key
+        tests:
+          - not_null
+      - name: encounter_type
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - Telephone
+                - Email Correspondence
+                - Mychart Encounter
+              quote: true
+      - name: call_type_name
+        tests:
+          - accepted_values:
+              values:
+                - INCOMING
+                - OUTGOING
+              quote: true

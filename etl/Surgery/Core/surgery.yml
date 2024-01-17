@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: stg_surgery_ser_loc
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [prov_id, line]
+  - name: surgery_block_utilization
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [surgery_block_util_key]
+  - name: surgery_encounter
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_key]
+          warn_if: ">0"
+          error_if: ">7"
+    columns:
+      - name: or_key
+      - name: first_panel_first_procedure_name
+        tests:
+          - not_null
+  - name: surgery_procedure
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_key, procedure_seq_num]
+          tags: ['failing']
+    columns:
+      - name: or_key
+  - name: surgery_encounter_timestamps
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_key]
+          tags: ['failing']
+    columns:
+      - name: or_key
+  - name: surgery_encounter_pre_post_department
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+          tags: ['failing']
+  - name: surgery_encounter_arc_preplan
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]

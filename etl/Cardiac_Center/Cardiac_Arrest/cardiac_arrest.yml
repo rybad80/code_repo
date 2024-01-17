@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: cardiac_arrest_all
+    tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [arrest_key]  
+    columns:
+      - name: arrest_key
+  - name: cardiac_arrest_cohort
+    tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [cicu_enc_key]  
+    columns:
+      - name: cicu_enc_key
+  - name: cardiac_arrest_cohort_hourly
+    tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [time_mark_key]  
+    columns:
+      - name: time_mark_key
+  - name: cardiac_arrest_cohort_model
+    tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [cicu_enc_key]  
+    columns:
+      - name: cicu_enc_key
+  - name: cardiac_arrest_days
+    tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [cicu_enc_key]
+        tags: ['failing']
+    columns:
+      - name: cicu_enc_key
+  - name: cardiac_arrest_flags_hourly
+    tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [time_mark_key]  
+    columns:
+      - name: time_mark_key
+  - name: cardiac_arrest_flags_save
+    tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [time_mark_key]  
+    columns:
+      - name: time_mark_key
+  - name: cardiac_arrest_huddle
+    tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [huddle_key]  
+    columns:
+      - name: huddle_key

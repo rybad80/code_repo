@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: stg_usage_qliksense_sessions
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [qliksense_log_entry_key]
+  - name: stg_usage_rstudio_connect_content_sessions
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [rsc_content_usage_key]
+  - name: usage_business_objects_users
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [bo_content_user_key]
+  - name: usage_dw_column_users
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [column_user_key]
+    columns:
+      - name: user_name
+  - name: usage_dw_table_users
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [table_user_key]
+    columns:
+      - name: user_name
+  - name: usage_dw_table_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [table_month_key]
+    columns:
+      - name: usage_month
+  - name: usage_dw_database_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [database_month_key]
+    columns:
+      - name: usage_month
+  - name: usage_dw_server_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [usage_month]
+  - name: usage_qlikview_users
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [qlikview_app_user_key]
+    columns:
+      - name: first_usage_date
+        tests:
+          - not_null
+      - name: last_usage_date
+        tests:
+          - not_null
+  - name: usage_qliksense_users
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [qliksense_app_user_key]
+  - name: usage_rstudio_connect_content_users
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [rsc_content_user_key]

@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: dim_medication
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [medication_key]
+    columns:
+      - name: medication_key
+  - name: fact_medication_administration
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [medication_administration_key]
+    columns:
+      - name: medication_order_key
+  - name: fact_medication_order
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [medication_order_key]
+    columns:
+      - name: medication_order_key
+  - name: medication_administration_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [medication_administration_key]
+    columns:
+      - name: medication_order_key
+    columns:
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('stg_encounter')
+              field: visit_key
+      - name: admin_date
+        tests:
+          - dbt_chop_utils.date_in_past:
+              severity: warn
+          - not_null
+  - name: medication_order_administration
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [med_ord_key, administration_seq_number]
+          tags: ['failing']
+    columns:
+      - name: medication_order_key
+  - name: medication_order_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [medication_order_key]
+    columns:
+      - name: medication_order_key

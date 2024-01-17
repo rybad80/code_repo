@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: dim_question
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [question_key]

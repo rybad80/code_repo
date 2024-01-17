@@ -1,0 +1,38 @@
+version: 2
+
+models:        
+  - name: patient_access_composite
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [metric_name,
+          primary_key]
+    columns:
+      - name: metric_name
+      - name: care_setting
+      - name: specialty_name
+      - name: department_name
+      - name: primary_key
+      - name: index_date
+      - name: numerator
+      - name: denominator
+      - name: group_by
+  - name: tna_phys_app_psych_available_slot_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [as_of_date, department_id, prov_id, slot_begin_time, group_by]
+    columns:
+      - name: as_of_date
+        tests:
+          - not_null
+      - name: department_id
+        tests:
+          - not_null
+      - name: prov_id
+        tests:
+          - not_null
+      - name: slot_begin_time
+        tests:
+          - not_null
+      - name: group_by
+        tests:
+          - not_null

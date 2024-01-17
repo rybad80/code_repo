@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: nephrology_encounter_dialysis
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: age_at_year_end
+        tests:
+          - not_null
+      - name: dialysis_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['HD', 'PD']
+      - name: maintenance_dialysis_start_date
+        tests:
+          - not_null
+      - name: most_recent_dialysis_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['HD', 'PD']
+      - name: usnwr_flu_season_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+models:
+  - name: fact_glean_historical_cohort_metrics
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [hashed_mrn]

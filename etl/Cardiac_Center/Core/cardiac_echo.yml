@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: cardiac_echo
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [CARDIAC_STUDY_ID]   
+    columns:
+      - name: PATIENT_NAME
+        tests:
+          - not_null    
+      - name: DOB
+        tests:
+          - dbt_chop_utils.date_in_past
+          - not_null
+      - name: MRN
+        tests:
+          - not_null             
+      - name: STUDY_DATE
+        tests:
+          - not_null    
+          - dbt_chop_utils.date_in_past            

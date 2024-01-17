@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: dim_redcap_project
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_project_key]
+    columns:
+      - name: project_id
+        tests:
+          - unique
+  - name: dim_redcap_form
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_form_key]
+  - name: dim_redcap_field
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_field_key]
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project_id
+            - form_name
+            - field_name
+  - name: dim_redcap_field_option
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_field_option_key]
+  - name: dim_redcap_survey
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_survey_key]
+  - name: dim_redcap_event
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_event_key]
+  - name: fact_redcap_record_value
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_record_value_key]
+    columns:
+      - name: redcap_project_key
+        tests:
+          - not_null
+      - name: redcap_event_key
+        tests:
+          - not_null
+  - name: dim_redcap_participant
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_participant_key]
+  - name: fact_redcap_survey_response
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_response_key]
+    columns:
+      - name: redcap_participant_key
+        tests:
+          - not_null
+  - name: redcap_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_record_value_key]
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('fact_redcap_record_value')
+    columns:
+      - name: redcap_project_key
+        tests:
+          - not_null
+      - name: redcap_event_key
+        tests:
+          - not_null
+      - name: redcap_form_key
+        tests:
+          - not_null
+      - name: redcap_field_key
+        tests:
+          - not_null
+      - name: redcap_field_option_key
+        tests:
+          - not_null

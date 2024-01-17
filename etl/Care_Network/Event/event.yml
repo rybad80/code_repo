@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: care_network_expected_event
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: encounter_closed_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: allergies_verified_expected_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: after_visit_sum_ind
+        tests:
+          - dbt_chop_utils.is_indicator

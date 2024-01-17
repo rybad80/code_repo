@@ -1,0 +1,24 @@
+	SELECT CATH_SRC.SURG_ENC_ID, C.CATHID, C.EMREVENTID, TGT.HospitalizationID
+	--SELECT *
+	FROM [dbo].[CHOP_IMPACT_CATHHISTORY] CATH_SRC LEFT JOIN dbo.CathData C ON CATH_SRC.SURG_ENC_ID = C.EMREventID
+	                                              LEFT JOIN dbo.Hospitalization H on C.HospID = H.HospitalizationID
+	                                              LEFT join CATHHISTORY tgt on H.HospitalizationID = tgt.HospitalizationID 
+
+
+
+WHERE CATH_SRC.SURG_ENC_ID = 2058559507
+
+
+
+DECLARE @SURGENCID INT
+DECLARE @PAStentID INT
+SET @SURGENCID = 2058531241
+
+--select * from [dbo].[CHOP_IMPACT_CATHEVENTS] WHERE SURG_ENC_ID = @SURGENCID
+select * from [dbo].[CHOP_IMPACT_CATHEVENTOTHER] WHERE SURG_ENC_ID = @SURGENCID
+
+--select * from [dbo].[CATHAORTICVALVULOPLASTY] WHERE cathid IN (select CATHID FROM CATHDATA WHERE EMREVENTID =  @SURGENCID)
+select * from [dbo].[CATHHISTORY] WHERE HospitalizationID IN (select HOSPID FROM CATHDATA WHERE EMREVENTID =  @SURGENCID)
+
+update [CHOP_IMPACT_CATHHISTORY] Set PENDINGIMPORT = 1 where SURG_ENC_ID = 2058559507
+update [CHOP_IMPACT_CATHHISTORY] Set PRIORSTROKE = 2 where SURG_ENC_ID = 2058559507

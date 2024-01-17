@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: equity_coi2
+    +tags: 
+      - "core"
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [census_tract_key, observation_year]
+    columns:
+      - name: census_tract_key

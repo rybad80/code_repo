@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: fact_patient_flow
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, dept_seq_num]
+    columns:
+      - name: visit_key

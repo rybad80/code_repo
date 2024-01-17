@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: transport_encounter_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [transport_key]
+    columns:
+      - name: transport_key
+        tests:
+          - unique
+          - not_null

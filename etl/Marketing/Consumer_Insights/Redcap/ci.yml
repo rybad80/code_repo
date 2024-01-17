@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: current_marketing_ci_sick_season_survey
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key]

@@ -1,0 +1,367 @@
+{{ config(meta = {
+    'critical': true
+}) }}
+
+/*
+Balance sheet logic
+-- Ending Balance = Beginning Balance + Month Activity
+-- Not all the work tag groups (ones in the group by) will have activity every month.
+-- To get the cumulative total month by month, we need activity record every month. To achieve this
+    we are creating dummy records if one does not exist.
+-- Get all the distinct year and periods for balance sheet activity.
+-- Cross join distinct year and periods with the actual activity and insert dummy records
+   where the actvity is missing.
+*/
+with
+gl_periods as (
+select distinct
+    stg_finance_gl_summary_ending_balance_derived.year as gl_year,
+    stg_finance_gl_summary_ending_balance_derived.period as gl_period
+from
+    {{ref('stg_finance_gl_summary_ending_balance_derived')}} as stg_finance_gl_summary_ending_balance_derived
+where
+    1 = 1
+),
+stg_gl_summary_ending_balance as (
+select
+    sum(month_activity_amount_new) as month_activity_amount_new,
+        period,
+        year,
+        company_key,
+        company_reference_id,
+        company_name,
+        cost_center_key,
+        cost_center_reference_id,
+        cost_center_name,
+        ledger_account_key,
+        ledger_account_id,
+        ledger_account_name,
+        project_key,
+        project_reference_id,
+        project_name,
+        provider_reference_id,
+        ledger_type,
+        payor_key,
+        payor_reference_id,
+        payor_name,
+        cost_center_site_key,
+        cost_center_site_reference_id,
+        cost_center_site_name,
+        revenue_category_key,
+        revenue_category_reference_id,
+        revenue_category_name,
+        spend_category_key,
+        spend_category_reference_id,
+        spend_category_name,
+        grant_key,
+        grant_reference_id,
+        grant_name,
+        program_key,
+        program_reference_id,
+        program_name,
+        fund_key,
+        fund_reference_id,
+        fund_name,
+        gift_reference_id,
+        location_reference_id,
+        location_name,
+        grant_costshare_key,
+        grant_costshare_reference_id,
+        grant_costshare_code,
+        journal_source_key,
+        journal_source_reference_id,
+        intercompany_affiliate_reference_id
+from
+    (
+    select distinct
+        case
+            when year = gl_year
+                and period = gl_period
+        then month_activity_amount
+                else 0
+            end as month_activity_amount_new,
+            gl_period as period,
+            gl_year as year,
+            company_key,
+            company_reference_id,
+            company_name,
+            cost_center_key,
+            cost_center_reference_id,
+            cost_center_name,
+            ledger_account_key,
+            ledger_account_id,
+            ledger_account_name,
+            0 as project_key,
+            'NA' as project_reference_id,
+            'NA' as project_name,
+            'NA' as provider_reference_id,
+            ledger_type,
+            0 as payor_key,
+            'NA' as payor_reference_id,
+            'NA' as payor_name,
+            cost_center_site_key,
+            cost_center_site_reference_id,
+            cost_center_site_name,
+            revenue_category_key,
+            revenue_category_reference_id,
+            revenue_category_name,
+            spend_category_key,
+            spend_category_reference_id,
+            spend_category_name,
+            0 as grant_key,
+            'NA' as grant_reference_id,
+            'NA' as grant_name,
+            0 as program_key,
+            'NA' as program_reference_id,
+            'NA' as program_name,
+            0 as fund_key,
+            'NA' as fund_reference_id,
+            'NA' as fund_name,
+            'NA' as gift_reference_id,
+            'NA' as location_reference_id,
+            'NA' as location_name,
+            0 as grant_costshare_key,
+            'NA' as grant_costshare_reference_id,
+            'NA' as grant_costshare_code,
+            0 as journal_source_key,
+            'NA' as journal_source_reference_id,
+            intercompany_affiliate_reference_id
+        from
+            {{ref('stg_finance_gl_summary_ending_balance_derived')}}
+            as stg_finance_gl_summary_ending_balance_derived
+        inner join
+        gl_periods on
+            gl_periods.gl_year = stg_finance_gl_summary_ending_balance_derived.year
+            and gl_periods.gl_period >= stg_finance_gl_summary_ending_balance_derived.period
+        where
+            1 = 1
+) as a
+group by
+    period,
+    year,
+    company_key,
+    company_reference_id,
+    company_name,
+    cost_center_key,
+    cost_center_reference_id,
+    cost_center_name,
+    ledger_account_key,
+    ledger_account_id,
+    ledger_account_name,
+    project_key,
+    project_reference_id,
+    project_name,
+    provider_reference_id,
+    ledger_type,
+    payor_key,
+    payor_reference_id,
+    payor_name,
+    cost_center_site_key,
+    cost_center_site_reference_id,
+    cost_center_site_name,
+    revenue_category_key,
+    revenue_category_reference_id,
+    revenue_category_name,
+    spend_category_key,
+    spend_category_reference_id,
+    spend_category_name,
+    grant_key,
+    grant_reference_id,
+    grant_name,
+    program_key,
+    program_reference_id,
+    program_name,
+    fund_key,
+    fund_reference_id,
+    fund_name,
+    gift_reference_id,
+    location_reference_id,
+    location_name,
+    grant_costshare_key,
+    grant_costshare_reference_id,
+    grant_costshare_code,
+    journal_source_key,
+    journal_source_reference_id,
+    intercompany_affiliate_reference_id
+)
+select distinct
+        {{
+        dbt_utils.surrogate_key([
+            'company_reference_id',
+            'cost_center_reference_id',
+            'ledger_account_id',
+            'project_reference_id',
+            'provider_reference_id',
+            'period',
+            'year',
+            'ledger_type',
+            'payor_reference_id',
+            'cost_center_site_reference_id',
+            'revenue_category_reference_id',
+            'spend_category_reference_id',
+            'grant_reference_id',
+            'program_reference_id',
+            'fund_reference_id',
+            'gift_reference_id',
+            'location_reference_id',
+            'grant_costshare_reference_id',
+            'journal_source_reference_id',
+            'intercompany_affiliate_reference_id'
+        ])
+    }} as gl_summary_key,
+    company_key,
+    company_reference_id,
+    company_name,
+    cost_center_key,
+    cost_center_reference_id,
+    cost_center_name,
+    ledger_account_key,
+    ledger_account_id,
+    ledger_account_name,
+    project_key,
+    project_reference_id,
+    project_name,
+    provider_reference_id,
+    period,
+    year,
+    ledger_type,
+    sum(month_activity_amount_new) over (partition by
+    company_key,
+    company_reference_id,
+    company_name,
+    cost_center_key,
+    cost_center_reference_id,
+    cost_center_name,
+    ledger_account_key,
+    ledger_account_id,
+    ledger_account_name,
+    year,
+    ledger_type,
+    cost_center_site_key,
+    cost_center_site_reference_id,
+    cost_center_site_name,
+    revenue_category_key,
+    revenue_category_reference_id,
+    revenue_category_name,
+    spend_category_key,
+    spend_category_reference_id,
+    spend_category_name,
+    intercompany_affiliate_reference_id
+order by
+    period
+    )
+    as amount,
+    payor_key,
+    payor_reference_id,
+    payor_name,
+    cost_center_site_key,
+    cost_center_site_reference_id,
+    cost_center_site_name,
+    revenue_category_key,
+    revenue_category_reference_id,
+    revenue_category_name,
+    spend_category_key,
+    spend_category_reference_id,
+    spend_category_name,
+    grant_key,
+    grant_reference_id,
+    grant_name,
+    program_key,
+    program_reference_id,
+    program_name,
+    fund_key,
+    fund_reference_id,
+    fund_name,
+    gift_reference_id,
+    location_reference_id,
+    location_name,
+    grant_costshare_key,
+    grant_costshare_reference_id,
+    grant_costshare_code,
+    journal_source_key,
+    journal_source_reference_id,
+    intercompany_affiliate_reference_id,
+    current_timestamp as create_date,
+    current_timestamp as update_date
+from
+    stg_gl_summary_ending_balance
+where 1 = 1
+--    
+union all
+--
+select
+    {{
+        dbt_utils.surrogate_key([
+            'company_reference_id',
+            'cost_center_reference_id',
+            'ledger_account_id',
+            'project_reference_id',
+            'provider_reference_id',
+            'period',
+            'year',
+            'ledger_type',
+            'payor_reference_id',
+            'cost_center_site_reference_id',
+            'revenue_category_reference_id',
+            'spend_category_reference_id',
+            'grant_reference_id',
+            'program_reference_id',
+            'fund_reference_id',
+            'gift_reference_id',
+            'location_reference_id',
+            'grant_costshare_reference_id',
+            'journal_source_reference_id',
+            'intercompany_affiliate_reference_id'
+        ])
+    }} as gl_summary_key,
+    company_key,
+    company_reference_id,
+    company_name,
+    cost_center_key,
+    cost_center_reference_id,
+    cost_center_name,
+    ledger_account_key,
+    ledger_account_id,
+    ledger_account_name,
+    project_key,
+    project_reference_id,
+    project_name,
+    provider_reference_id,
+    period,
+    year,
+    ledger_type,
+    month_activity_amount as amount,
+    payor_key,
+    payor_reference_id,
+    payor_name,
+    cost_center_site_key,
+    cost_center_site_reference_id,
+    cost_center_site_name,
+    revenue_category_key,
+    revenue_category_reference_id,
+    revenue_category_name,
+    spend_category_key,
+    spend_category_reference_id,
+    spend_category_name,
+    grant_key,
+    grant_reference_id,
+    grant_name,
+    program_key,
+    program_reference_id,
+    program_name,
+    fund_key,
+    fund_reference_id,
+    fund_name,
+    gift_reference_id,
+    location_reference_id,
+    location_name,
+    grant_costshare_key,
+    grant_costshare_reference_id,
+    grant_costshare_code,
+    journal_source_key,
+    journal_source_reference_id,
+    intercompany_affiliate_reference_id,
+    current_timestamp as create_date,
+    current_timestamp as update_date
+from
+    {{ref('stg_finance_gl_summary_activity')}}

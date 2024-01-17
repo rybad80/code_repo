@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: outbreak_daily_checkin
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [invited_user_id, invite_date,checkin_id]
+          tags: ['failing']
+    columns:
+      - name: invited_user_id

@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: dim_lab
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [lab_key]
+    columns:
+      - name: integration_id
+        tests:
+          - unique
+  - name: dim_lab_section
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [lab_section_key]
+    columns:
+      - name: integration_id
+        tests:
+          - unique
+  - name: dim_lab_test
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [lab_test_key]
+    columns:
+      - name: integration_id
+        tests:
+          - unique
+  - name: dim_reference_range_anatomic
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [reference_range_key]
+  - name: dim_reference_range_categorical
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [reference_range_key]
+  - name: dim_reference_range_clinical
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [reference_range_key]

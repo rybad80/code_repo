@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: fact_transaction_pb
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [tdl_id]
+    columns:
+      - name: tdl_id
+        tests:
+          - unique
+          - not_null
+  - name: fact_reimbursement_pb          
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [tx_id]
+          tags: ['failing']
+    columns:
+      - name: tx_id
+        tests:
+          - unique:
+              warn_if: ">0"
+              error_if: ">711"
+          - not_null

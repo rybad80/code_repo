@@ -1,0 +1,87 @@
+version: 2
+
+models:  
+  - name: nutrition_ip_summary
+    columns:  
+      - name: visit_key
+        tests:
+          - not_null
+      - name: mrn
+        tests:
+          - not_null
+      - name: weight_grams_initial
+        tests:
+          - dbt_chop_utils.within_range_threshold:
+              min_value: 100
+              max_value: 100000
+              max_percent_allowed_outside_range: 5
+              severity: warn
+      - name: weight_grams_final
+        tests:
+          - dbt_chop_utils.within_range_threshold:
+              min_value: 100
+              max_value: 100000
+              max_percent_allowed_outside_range: 5
+              severity: warn
+      - name: z_score_weight_initial
+        tests:
+          - dbt_chop_utils.within_range_threshold:
+              min_value: -25
+              max_value: 25
+              max_percent_allowed_outside_range: 1
+              severity: warn
+      - name: z_score_weight_final
+        tests:
+          - dbt_chop_utils.within_range_threshold:
+              min_value: -25
+              max_value: 25
+              max_percent_allowed_outside_range: 1
+              severity: warn
+      - name: intake_po_percent_initial
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0 
+              max_value: 1 
+              severity: warn
+      - name: intake_po_percent_final
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0 
+              max_value: 1 
+              severity: warn
+      - name: feeding_type_initial
+        tests:
+          - accepted_values:
+              values: [Enteral, Parenteral, Enteral and Parenteral]
+              quote: true    
+              severity: warn
+      - name: feeding_type_final
+        tests:
+          - accepted_values:
+              values: [Enteral, Parenteral, Enteral and Parenteral]
+              quote: true    
+              severity: warn
+  - name: nutrition_ip_weekly
+    columns:  
+      - name: visit_key
+        tests:
+          - not_null
+      - name: mrn
+        tests:
+          - not_null
+      - name: feeding_type
+        tests:
+          - accepted_values:
+              values: [Enteral, Parenteral, Enteral and Parenteral]
+              quote: true    
+              severity: warn
+      - name: intake_po_percent
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0 
+              max_value: 1 
+              severity: warn
+      - name: malnutrition_dx_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+    

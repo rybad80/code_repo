@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: patient_geospatial
+    +tags: 
+      - "core"
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, address_seq_num]
+    columns:
+      - name: pat_key
+        tests:
+          - not_null
+      - name: address_seq_num
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 1
+          - not_null
+      - name: address_effective_start_date
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: "current_date"
+          - not_null
+      - name: address_effective_end_date_or_current_date
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: address_effective_start_date
+          - dbt_utils.accepted_range:
+              max_value: "current_date"
+          - not_null
+      - name: current_address_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: po_box_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: geocode_match_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: geocode_address_match_type
+        tests:
+          - accepted_values:
+              values:
+                - 'PointAddress'
+                - 'StreetAddress'
+                - 'Subaddress'
+                - 'StreetInt'
+      - name: geocode_match_accuracy_score
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: 85

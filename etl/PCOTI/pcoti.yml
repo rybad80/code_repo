@@ -1,0 +1,533 @@
+version: 2
+
+models:
+################################################################################
+# BASE TABLES
+################################################################################
+  - name: pcoti_episodes
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_key]
+    columns:
+      - name: episode_key
+        tests:
+          - not_null
+      - name: pat_key
+      - name: visit_key
+      - name: hospital_admit_date
+      - name: hospital_discharge_date
+      - name: admission_department_center_abbr
+      - name: active_episode_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: pat_died_during_episode_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cat_call_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: code_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: emergent_transfer_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: ccot_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: watcher_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: tran_review_huddle_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: tran_review_tier_ii_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: vasopressor_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: fluid_bolus_gt60_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: intubation_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: pcoti_episode_events
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_event_key]
+          tags: ['failing']
+    columns:
+      - name: episode_event_key
+        tests:
+          - not_null
+      - name: episode_key
+        tests:
+          - not_null
+      - name: pat_key
+      - name: visit_key
+      - name: event_type_name
+        tests:
+          - not_null:
+              tags: ['failing']
+      - name: event_type_abbrev
+          - not_null
+      - name: dept_key
+      - name: department_name
+      - name: department_group_name
+      - name: bed_care_group
+      - name: campus_name
+      - name: event_start_date
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              max_value: "current_date"
+              severity: warn
+      - name: event_end_date
+  - name: pcoti_icu_transfers
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_event_key]
+    columns:
+      - name: episode_event_key
+        tests:
+          - not_null
+      - name: episode_key
+        tests:
+          - not_null
+      - name: pat_key
+        tests:
+          - not_null
+      - name: visit_key
+        tests:
+          - not_null
+      - name: icu_xfer_event_type_name
+        tests:
+          - not_null
+      - name: icu_xfer_event_type_abbrev
+        tests:
+          - not_null
+      - name: to_department_group_name
+      - name: to_bed_care_group
+      - name: to_campus_name
+      - name: icu_enter_date
+          - not_null
+      - name: icu_exit_date
+      - name: prev_event_type_abbrev
+      - name: from_dept_key
+      - name: from_department_name
+      - name: from_department_group_name
+      - name: from_bed_care_group
+      - name: from_campus_name
+      - name: transfer_from_floor_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: gte_2hrs_in_icu_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: surg_proc_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: intubation_pre1hr_post1hr_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: vasopressor_pre1hr_post1hr_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: fluid_bolus_pre1hr_post1hr_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cat_code_pre24hr_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: surg_last_end_date
+      - name: intubation_first_start_date
+      - name: vasopressor_first_start_date
+      - name: fluid_bolus_gt60_date
+      - name: cat_code_first_date
+      - name: unplanned_transfer_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: emergent_transfer_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: pcoti_cat_code_details_1
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_event_key, redcap_record_id]
+    columns:
+      - name: episode_event_key
+        tests:
+          - not_null
+      - name: redcap_record_id
+        tests:
+          - not_null
+      - name: episode_key
+        tests:
+          - not_null
+      - name: mrn
+      - name: csn
+      - name: dob
+      - name: last_name
+      - name: first_name
+      - name: admit_source
+      - name: event_date
+      - name: event_location_details
+      - name: event_location
+      - name: event_type
+      - name: attending_saw_cat_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: caller_role
+      - name: cat_called_in_prior_24hrs_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cat_nippv_escalated_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cat_none_reason
+      - name: cat_follow_up
+      - name: cat_grp_debrief_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cat_left_time
+      - name: cat_provider_type
+      - name: cat_return_time
+      - name: cat_rn_follow_up_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cc_done_ind
+      - name: cc_duration_category
+      - name: cc_duration_mins
+      - name: cha_code_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: code_category
+      - name: code_cpa_arc
+  - name: pcoti_cat_code_details_2
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_event_key, redcap_record_id]
+    columns:
+      - name: episode_event_key
+        tests:
+          - not_null
+      - name: redcap_record_id
+        tests:
+          - not_null
+      - name: episode_key
+        tests:
+          - not_null
+      - name: airway_support_bag_valve_artificial_airway_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: airway_support_bag_valve_mask_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: airway_support_bipap_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: airway_support_cpap_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: airway_support_intubation_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: code_int_d_stick_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: code_int_echo_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: code_int_labs_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: code_int_needle_decompr_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: code_int_other_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: code_leader_signature_complete_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: code_narrator_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: code_return_to_picu_time
+      - name: codenarrator_barrier_computer_access_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: codenarrator_barrier_epic_issue_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: codenarrator_barrier_not_impl_in_unit_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: codenarrator_barrier_other_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: codenarrator_barrier_staff_comfort_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: codenarrator_barrier_tech_issue_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_als_protocol_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_ascom_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_cat_recommendations_not_followed_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_ecg_rhythm_analysis_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_equipment_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_family_support_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_leadership_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_md_unaware_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_medications_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_notification_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_rn_unaware_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_roles_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_universal_precautions_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_cat_unplanned_extubation_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_form_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cqi_issues_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: pcoti_cat_code_details_3
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_event_key, redcap_record_id]
+    columns:
+      - name: episode_event_key
+        tests:
+          - not_null
+      - name: redcap_record_id
+        tests:
+          - not_null
+      - name: episode_key
+        tests:
+          - not_null
+      - name: dcp_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dnr_status_at_event
+      - name: documentation_issues_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dx_at_event
+      - name: edu_remediation_complete_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: escalated_to_code
+      - name: follow_up_leave_time
+      - name: follow_up_pending_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: follow_up_return_time
+      - name: icu_12hrs_cpa_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: icu_cpa_dt_tm
+      - name: immediate_disposition
+      - name: keypoint_summary_complete_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_anti_convulsants_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_atropine_iv_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_blood_products_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_blood
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_epinephrine_im_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_epinephrine_iv_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_fluid_bolus_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_nmb_vecuronium_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_other_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_sedative_narcotic_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: meds_sodium_bicarbonate_iv_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: pcoti_cat_code_details_4
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_event_key, redcap_record_id]
+    columns:
+      - name: episode_event_key
+        tests:
+          - not_null
+      - name: redcap_record_id
+        tests:
+          - not_null
+      - name: episode_key
+        tests:
+          - not_null
+      - name: neuro_interventions_alt_mental_status_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: neuro_interventions_concern_icp_shunt_malfunc_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: neuro_interventions_increase_seizure_freq_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: neuro_interventions_other_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: non_icu_inpatient_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: non_patient_category
+      - name: non_pt_escalation_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: np_return_to_ed_time
+      - name: reason_cardiovascular_change_ind
+      - name: reason_family_concern_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: reason_mpews_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: reason_neurologic_change_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: reason_other_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: reason_respiratory_change_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: reason_staff_concern_gut_feeling_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: reason_vascular_access_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: signature_complete_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: survival_status
+      - name: telecat_length
+      - name: telecat_use_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: video_review_performed_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: pcoti_mpews
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_key, score_calc_datetime]
+
+################################################################################
+# METRIC TABLES
+################################################################################
+  - name: pcoti_metrics_cha_code_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [event_year_month, campus_name, department_group_name]
+    columns:
+      - name: event_year_month
+      - name: campus_name
+      - name: department_group_name
+      - name: numerator_cha_codes
+      - name: denominator_patdays
+  - name: pcoti_metrics_icu_emergent_transfer_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [event_year_month, campus_name, department_group_name]
+    columns:
+      - name: event_year_month
+      - name: campus_name
+      - name: department_group_name
+      - name: numerator_emergent_transfers
+      - name: denominator_patdays
+  - name: pcoti_metrics_non_icu_codes_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [event_year_month, campus_name, department_group_name]
+    columns:
+      - name: event_year_month
+      - name: campus_name
+      - name: department_group_name
+      - name: count_codes_patient
+      - name: count_codes_nonpatient
+      - name: count_aa
+      - name: count_total
+      - name: denominator_patdays
+  - name: pcoti_metrics_cat_calls_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [event_year_month, campus_name, department_group_name]
+    columns:
+      - name: event_year_month
+      - name: campus_name
+      - name: department_group_name
+      - name: numerator_cat_calls
+      - name: denominator_patdays
+  - name: pcoti_metrics_ed_to_icu_transfer_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [event_year_month, campus_name]
+    columns:
+      - name: event_year_month
+      - name: campus_name
+      - name: numerator_transfers
+      - name: denom_ed_visits
+  - name: pcoti_metrics_icu_bounceback_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [event_year_month, campus_name, department_group_name]
+    columns:
+      - name: event_year_month
+      - name: campus_name
+      - name: department_group_name
+      - name: numerator_bouncebacks
+      - name: denominator_patdays

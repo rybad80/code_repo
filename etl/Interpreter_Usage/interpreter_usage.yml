@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: interpreter_call_details_lsa
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [call_record_number]
+          tags: ['failing']
+  - name: interpreter_call_details_amn_stratus
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [session_id, start_time, interpreter_id]
+          warn_if: ">0"
+          error_if: ">241"
+  - name: interpreter_call_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key]
+          tags: ['failing']

@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: cardiac_cath
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cardiac_study_id]
+          tags: ['failing']
+    columns:
+      - name: patient_name
+        tests:
+          - not_null    
+      - name: dob
+        tests:
+          - dbt_chop_utils.date_in_past
+          - not_null
+      - name: mrn
+        tests:
+          - not_null             
+      - name: study_date
+        tests:
+          - not_null    
+          - dbt_chop_utils.date_in_past            

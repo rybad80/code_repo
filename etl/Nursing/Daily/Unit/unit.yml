@@ -1,0 +1,27 @@
+version: 2
+
+models:
+   - name: nursing_metric_unit
+     tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [metric_abbreviation, metric_dt_key, worker_id, cost_center_id, cost_center_site_id, department_id, job_code, job_group_id, metric_grouper]
+          tags: ['failing']
+     columns:
+      - name: metric_abbreviation
+        description: PK
+      - name: metric_dt_key
+        description: PK
+      - name: worker_id
+        description: PK
+      - name: cost_center_cd
+        description: PK
+      - name: cost_center_site_id
+        description: PK
+      - name: department_id
+        description: PK
+      - name: job_code
+        description: PK
+      - name: job_group_id
+        description: PK
+      - name: metric_grouper
+        description: PK

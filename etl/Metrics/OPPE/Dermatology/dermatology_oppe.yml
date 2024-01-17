@@ -1,0 +1,22 @@
+version: 2
+models:
+  - name: stg_derm_oppe_sel_measures_provider_lvl
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [service_provider_key,service_dt]        
+    columns:
+      - name: service_provider_key 
+        tests: 
+          - not_null   
+      - name: service_prov
+      - name: service_dt
+        tests: 
+          - not_null 
+      - name: confirmed_site_before_surgery_num
+      - name: complication_rate_num
+      - name: sel_proc_complication_rate_num
+      - name: count_rows_den
+      - name: sel_proc_count_rows_den
+      - name: yr_service_dt
+      - name: mnth_service_dt
+      - name: week_number

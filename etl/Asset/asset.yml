@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  - name: admin_security_groups
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [admin_security_group_key]
+  - name: asset_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [asset_inventory_key]
+  - name: asset_automarts
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [automart_table_key]
+  - name: asset_business_objects
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [bo_content_key]
+  - name: asset_cdw_scheduled_query
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [table_key]
+          tags: ['failing']
+  - name: asset_qliksense
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [qliksense_app_id]
+  - name: asset_qlikview
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [qlikview_app_key]
+  - name: asset_query_metrics
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [asset_inventory_key]
+  - name: asset_query_runtime_percentile
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [asset_inventory_key]
+  - name: asset_rstudio_connect
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [content_id]
+  - name: cdw_consumer_query
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [query_key]
+  - name: cdw_scheduled_query
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [query_key]
+  - name: cdw_sla_daily_statistics
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [query_date_user_key]
+  - name: cdw_table_load_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [workflow_history_key]
+  - name: column_lineage_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [column_lineage_key]
+  - name: dw_asset_column_lineage
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [asset_column_lineage_key]
+          warn_if: ">0"
+          error_if: ">54"
+  - name: mu_column_lineage
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mu_column_lineage_key]
+  - name: stg_cdw_query
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [query_key]
+  - name: stg_cdw_query_inclusion
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [query_key]
+  - name: stg_cdw_query_stats
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [query_key]
+  - name: stg_cdw_scheduled_query
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [query_key]
+  - name: stg_cdw_session
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [session_key]
+  - name: stg_cdw_user
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [user_id]

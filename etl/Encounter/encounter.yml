@@ -1,0 +1,555 @@
+version: 2
+
+models:
+  - name: encounter_ed
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: days
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: csn
+        tests:
+          - dbt_chop_utils.number_of_characters:
+              min_length: 14
+      - name: encounter_date
+        tests:
+          - not_null
+      - name: acuity_esi
+        tests:
+          - not_null
+      - name: admission_department_name
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: inpatient_ind = 1
+              warn_if: ">0"
+              error_if: ">149"
+      - name: billing_dx_primary_dx_key
+      - name: billing_dx_primary_icd10
+      - name: billing_dx_primary_icd9
+      - name: clinical_dx_all_dx_nm
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: clinical_dx_primary_dx_key is not null
+      - name: clinical_dx_primary_dx_key
+      - name: clinical_dx_primary_icd10
+      - name: clinical_dx_primary_icd9
+      - name: complex_chronic_condition_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: edecu_admit_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.not_null_when:
+              expression: edecu_discharge_date is not null
+              warn_if: ">0"
+              error_if: ">2"
+          - dbt_chop_utils.not_null_when:
+              expression: edecu_ind = 1
+              tags: ['failing']
+      - name: edecu_discharge_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: edecu_admit_date
+              tags: ['failing']
+      - name: edecu_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: edecu_los_hrs
+      - name: ed_arrival_date
+        tests:
+          - not_null
+          - dbt_chop_utils.date_in_past
+      - name: ed_discharge_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: ed_arrival_date
+              tags: ['failing']
+      - name: ed_los_hrs
+      - name: ed_roomed_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: ed_arrival_date
+              severity: warn
+      - name: ed_triage_start_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: ed_arrival_date
+              severity: warn
+      - name: hsp_acct_key
+      - name: icu_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: inpatient_admit_date
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: inpatient_ind = 1
+      - name: inpatient_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: md_evaluation_date
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: ed_arrival_date
+              severity: warn
+      - name: medically_complex_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: pat_key
+        tests:
+          - relationships:
+              to: ref('stg_patient')
+              field: pat_key
+              warn_if: ">0"
+              error_if: ">2"
+          - dbt_chop_utils.distribution_stability:
+              date_column: encounter_date
+              num_days_to_check: 10
+              max_pct_diff_allowed: 20
+              severity: warn
+      - name: payor_name
+      - name: primary_reason_for_visit_id
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: primary_reason_for_visit_name is not null
+      - name: primary_reason_for_visit_name
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: primary_reason_for_visit_id is not null
+      - name: revisit_72_hour_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('encounter_all')
+              field: visit_key
+      - name: initial_ed_department_center_id
+        tests:
+          - not_null:
+              tags: ['failing']
+      - name: initial_ed_department_center_abbr
+        tests:
+          - not_null:
+              tags: ['failing']
+      - name: final_ed_department_center_id
+        tests:
+          - not_null:
+              tags: ['failing']
+      - name: final_ed_department_center_abbr
+        tests:
+          - not_null:
+              tags: ['failing']
+  - name: encounter_primary_care
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: day
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: csn
+        tests:
+          - dbt_chop_utils.number_of_characters:
+              min_length: 10
+              max_length: 14
+      - name: pat_key
+        tests:
+          - relationships:
+              to: ref('stg_patient')
+              field: pat_key
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('encounter_all')
+              field: visit_key
+  - name: encounter_specialty_care
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: day
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: pat_key
+        tests:
+          - relationships:
+              to: ref('stg_patient')
+              field: pat_key
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('encounter_all')
+              field: visit_key
+  - name: encounter_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+      - dbt_utils.expression_is_true:
+          expression: "primary_care_ind + specialty_care_ind + inpatient_ind <= 1"
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: day
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: csn
+        tests:
+          - dbt_chop_utils.number_of_characters:
+              min_length: 12
+              max_length: 14
+              severity: warn
+      - name: encounter_date
+        tests:
+          - not_null
+      - name: age_days
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: age_years is not null
+      - name: age_years
+        tests:
+          - dbt_chop_utils.within_range_threshold:
+              min_value: -1
+              max_value: 200
+              max_percent_allowed_outside_range: 1
+          - dbt_chop_utils.not_null_when:
+              expression: age_days is not null
+      - name: appointment_status
+        tests:
+          - accepted_values:
+              values:
+                [
+                  "NOT APPLICABLE",
+                  "COMPLETED",
+                  "ARRIVED",
+                  "CANCELED",
+                  "NO SHOW",
+                  "SCHEDULED",
+                  "INVALID",
+                  "LEFT WITHOUT SEEN",
+                  "NO",
+                ]
+              quote: true
+      - name: cancel_noshow_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: department_id
+        tests:
+          - not_null
+      - name: department_name
+        tests:
+          - not_null
+          - dbt_chop_utils.distribution_stability:
+              date_column: encounter_date
+              num_days_to_check: 10
+              max_pct_diff_allowed: 20
+              severity: warn
+      - name: dept_key
+        tests:
+          - not_null
+      - name: ed_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: encounter_type
+        tests:
+          - not_null
+      - name: encounter_type_id
+        tests:
+          - not_null
+      - name: hospital_admit_date
+        tests:
+          - dbt_chop_utils.date_in_past:
+              tags: ['failing']
+      - name: hospital_discharge_date
+      - name: international_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: inpatient_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: level_service_procedure_code
+      - name: patient_class
+        tests:
+          - not_null:
+              warn_if: ">0"
+              error_if: ">4"
+      - name: patient_class_id
+        tests:
+          - not_null:
+              warn_if: ">0"
+              error_if: ">4"
+      - name: pat_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_patient')
+              field: pat_key
+              warn_if: ">0"
+              error_if: ">9"
+      - name: payor_group
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 95
+      - name: primary_care_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: provider_id
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: provider_name is not null
+      - name: provider_name
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: provider_id > 0
+      - name: service_area
+        tests:
+          - not_null
+      - name: service_area_id
+        tests:
+          - not_null
+      - name: specialty_care_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: visit_key
+      - name: visit_type
+        tests:
+          - not_null
+      - name: visit_type_id
+        tests:
+          - not_null
+      - name: well_visit_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: encounter_inpatient
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: days
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: csn
+      - name: currently_admitted_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: encounter_readmission
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [index_visit_key]
+    columns:
+      - name: index_visit_key
+  - name: encounter_office_visit_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: encounter_office_visit_completed
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: encounter_rescheduled
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [csn,rescheduled_enc_id]
+          tags: ['failing']
+    columns:
+      - name: csn
+  - name: encounter_ed_lwbs
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: csn
+        tests:
+          - dbt_chop_utils.number_of_characters:
+              min_length: 14
+      - name: encounter_date
+        tests:
+          - not_null
+      - name: acuity_esi
+        tests:
+          - not_null
+      - name: admission_department_name
+      - name: billing_dx_primary_dx_key
+      - name: billing_dx_primary_icd10
+      - name: billing_dx_primary_icd9
+      - name: clinical_dx_all_dx_nm
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: clinical_dx_primary_dx_key is not null
+      - name: clinical_dx_primary_dx_key
+      - name: clinical_dx_primary_icd10
+      - name: clinical_dx_primary_icd9
+      - name: complex_chronic_condition_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: edecu_admit_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.not_null_when:
+              expression: edecu_discharge_date is not null
+          - dbt_chop_utils.not_null_when:
+              expression: edecu_ind = 1
+      - name: edecu_discharge_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: edecu_admit_date
+      - name: edecu_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: edecu_los_hrs
+      - name: ed_arrival_date
+        tests:
+          - not_null
+          - dbt_chop_utils.date_in_past
+      - name: ed_discharge_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: ed_arrival_date
+      - name: ed_los_hrs
+      - name: ed_roomed_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: ed_arrival_date
+              severity: warn
+      - name: ed_triage_start_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: ed_arrival_date
+              severity: warn
+      - name: hsp_acct_key
+      - name: icu_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: inpatient_admit_date
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: inpatient_ind = 1
+      - name: inpatient_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: md_evaluation_date
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: ed_arrival_date
+              severity: warn
+      - name: medically_complex_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: pat_key
+        tests:
+          - relationships:
+              to: ref('stg_patient')
+              field: pat_key
+      - name: payor_name
+      - name: primary_reason_for_visit_id
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: primary_reason_for_visit_name is not null
+      - name: primary_reason_for_visit_name
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: primary_reason_for_visit_id is not null
+      - name: revisit_72_hour_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('encounter_all')
+              field: visit_key
+      - name: initial_ed_department_center_id
+        tests:
+          - not_null
+      - name: initial_ed_department_center_abbr
+        tests:
+          - not_null
+      - name: final_ed_department_center_id
+        tests:
+          - not_null
+      - name: final_ed_department_center_abbr
+        tests:
+          - not_null
+  - name: encounter_urgent_care
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [encounter_key]
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: days
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: patient_key
+        tests:
+          - relationships:
+              to: ref('stg_patient_ods')
+              field: patient_key
+      - name: encounter_key
+        tests:
+          - relationships:
+              to: ref('stg_encounter')
+              field: encounter_key
+      - name: diagnosis_key
+        tests:
+          - relationships:
+              to: ref('diagnosis_encounter_all')
+              field: diagnosis_key
+      - name: provider_key
+        tests:
+          - relationships:
+              to: ref('dim_provider')
+              field: provider_key
+  - name: encounter_nurse_triage
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [encounter_key]
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: days
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: next_sick_encounter_date
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: encounter_date
+              severity: warn

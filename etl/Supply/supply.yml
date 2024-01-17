@@ -1,0 +1,91 @@
+version: 2
+
+models:
+ - name: purchase_invoice_spend
+   tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [document_number]
+        tags: ['failing']
+   columns:
+     - name: document_number
+       tests:
+         - not_null
+     - name: document_wid
+       tests:
+           - not_null
+     - name: document_date
+       tests:
+           - not_null
+     - name: financial_year
+       tests:
+         - not_null
+     - name: transaction_type
+       tests:
+         - not_null
+     - name: company_name
+       tests:
+         - not_null
+     - name: company_id
+       tests:
+         - not_null
+     - name: spend_category_name
+       tests:
+         - not_null
+     - name: quantity
+       tests:
+         - not_null
+     - name: financial_year_supplier_contract_flag
+       tests:
+         - not_null
+ - name: preference_cards
+   tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [preference_card_key]
+   columns:
+     - name: or_procedure_active_ind
+       tests:
+         - not_null
+   columns:
+     - name: default_or_modified_preference_card
+       tests:
+         - not_null
+ - name: preference_cards_supplies
+   tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [preference_card_supply_key]
+   columns:
+     - name: or_procedure_active_ind
+       tests:
+         - not_null
+   columns:
+     - name: default_or_modified_preference_card
+       tests:
+         - not_null
+   columns:
+     - name: preference_card_key
+       tests:
+         - not_null
+ - name: preference_cards_instruments
+   tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [preference_card_instrument_key]
+   columns:
+     - name: or_procedure_active_ind
+       tests:
+         - not_null
+   columns:
+     - name: default_or_modified_preference_card
+       tests:
+         - not_null
+   columns:
+     - name: preference_card_key
+       tests:
+         - not_null
+ - name: kill_report_inventory_balance
+   tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [primary_key]
+ - name: kill_report_purchase_item_master_substitutes
+   tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [primary_key]

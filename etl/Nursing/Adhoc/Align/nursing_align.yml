@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: nursing_cost_center_person_alignment
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cc_superior_id, cost_center_id, cc_superior_management_level_sort_num]
+    columns:
+      - name: cc_superior_id
+        description: PK
+      - name: cost_center_id
+        description: PK
+      - name: cc_superior_management_level_sort_num
+        description: PK

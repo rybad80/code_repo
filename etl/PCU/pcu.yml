@@ -1,0 +1,75 @@
+version: 2
+
+models:  
+  - name: pcu_episode
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key]
+          tags: ['failing']
+    columns:
+      - name: visit_event_key
+      - name: mrn
+        tests:
+          - not_null
+      - name: csn
+        tests:
+          - not_null
+      - name: patient_name
+        tests:
+          - not_null
+      - name: sex
+      - name: age_years
+      - name: pcu_admit_date
+        tests:
+          - not_null
+      - name: pcu_admit_fy
+      - name: pcu_admit_shift
+      - name: first_bed_name
+      - name: service
+      - name: previous_adt_department_name
+      - name: previous_adt_department_group_name
+      - name: previous_adt_bed_care_group
+      - name: previous_adt_campus
+      - name: origin_desc
+      - name: pcu_discharge_date
+      - name: pcu_discharge_fy
+      - name: pcu_discharge_shift
+      - name: hospital_admit_date
+      - name: hospital_discharge_date
+      - name: next_adt_department_name
+      - name: next_adt_department_group_name
+      - name: next_adt_bed_care_group
+      - name: next_adt_campus
+      - name: destination_desc
+      - name: pre_pcu_los_days
+      - name: pcu_los_days
+      - name: hospital_los_days
+      - name: pcu_percent_of_hospital_los
+      - name: hospital_admission_reason
+      - name: pcu_admission_reason
+      - name: training_status
+      - name: admission_gtube_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: trach_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: trach_placement_date
+      - name: new_trach_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: discharge_feed_tube
+      - name: discharge_central_line
+      - name: discharge_tpn_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: discharge_team_name
+      - name: projected_disposition
+      - name: transport_mode
+      - name: ccceo_redcap_id
+      - name: visit_key
+        tests:
+          - not_null
+      - name: pat_key
+        tests:
+          - not_null

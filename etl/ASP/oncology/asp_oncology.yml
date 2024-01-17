@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: asp_oncology_culture_results_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [positive_culture_key]
+    columns:
+      - name: mrn
+        tests:
+          - not_null
+      - name: result_date
+        tests:
+          - not_null
+      - name: organism
+        tests:
+          - not_null
+      - name: antibiotic
+        tests:
+          - not_null
+      - name: susceptible_ind
+        tests:
+          - not_null:
+              tags: ['failing']
+          - dbt_chop_utils.is_indicator
+      - name: clinically_relevant_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: cefepime_numerator_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: cefepime_gentamicin_numerator_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: cefepime_vancomycin_numerator_part1_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: cefepime_vancomycin_numerator_part2a_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: cefepime_vancomycin_numerator_part2b_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: meropenem_imipenem_numerator_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator

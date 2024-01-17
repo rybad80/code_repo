@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: hematology_results
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [result_id, line]
+  - name: fact_specimen_container
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [specimen_container_key]
+    columns:
+      - name: integration_id
+        tests:
+          - unique
+  - name: fact_specimen_order
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [specimen_order_key]
+    columns:
+      - name: integration_id
+        tests:
+          - unique
+      - name: lab_test_key
+        tests:
+          - relationships:
+              to: ref('dim_lab_test')
+              field: lab_test_key
+      - name: lab_section_key
+        tests:
+          - relationships:
+              to: ref('dim_lab_section')
+              field: lab_section_key
+  - name: lab_corrections
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [result_id, result_validation_audit_line]
+  - name: lab_communications
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [call_communication_id]
+  - name: specimen_order_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [specimen_order_key]
+  - name: stg_ap_tests
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [test_id]
+  - name: stg_specimen
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [specimen_id]
+  - name: stg_specimen_order_containers
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [procedure_order_id, container_id]

@@ -1,0 +1,187 @@
+version: 2
+models:
+  - name: access_services_calls
+    columns:
+      - name: CALLS_HANDLED_CNT
+      - name: CALLS_AGENT_ANSWERED_CNT
+      - name: TOTAL_CALLS_ABANDONED_CNT
+      - name: MAX_CALLS_QUEUED_CNT
+      - name: SERVICE_LEVEL_CALLS_ANSWERED_CNT
+      - name: SERVICE_LEVEL_CALLS_OFFERED_CNT
+      - name: SERVICE_LEVEL_ABANDONED_CNT
+      - name: SERVICE_LEVEL_CALLS_COULD_ANSWER
+      - name: CALL_HANDLED_SECONDS
+      - name: ANSWER_WAIT_SECONDS
+      - name: MAX_CALL_WAIT_SECONDS
+      - name: ABANDONED_CALL_DELAY_SECONDS
+      - name: STANDARD_HOURS_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: WEEKDAY_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: STANDARD_CALL_CENTER_DAY_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: SCHEDULING_IND
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: DIM_CALL_TYPE_CALL_CNTR_GRP_KEY
+      - name: DIM_CALL_CNTR_GRP_KEY
+        tests:
+          - not_null
+      - name: DIM_ACCESS_INTAKE_SERVICE_LEVEL_TYPE_KEY
+        tests:
+          - not_null
+      - name: ACCESS_INTAKE_CONT_CALL_TYPE_KEY
+        tests:
+          - not_null
+      - name: PERIOD_START_DT
+      - name: PERIOD_START_HR
+      - name: CALENDAR_MONTH
+      - name: CALL_TYPE_ID
+      - name: CALL_TYPE
+      - name: CALL_TYPE_DESC
+      - name: CALL_CENTER_GROUP_ID
+      - name: CALL_CENTER_GROUP
+      - name: CALL_CENTER_GROUP_ALT_NM
+      - name: CALL_CENTER_GROUP_DESC
+      - name: ORG_GROUPER
+      - name: CALL_CENTER_GROUPER
+      - name: DEPT_GROUPER
+      - name: CALLS_OFFERED_CNT
+  - name: access_encounter_registration
+    tests:
+    - dbt_chop_utils.is_primary_key:
+        column_names: [csn]
+        tags: ['failing']
+    columns:
+      - name: csn
+        tests:
+          - not_null
+      - name: mrn
+        tests:
+          - not_null
+      - name: contact_date
+        tests:
+          - not_null
+  - name: access_encounter_audit_records
+    tests:
+        - dbt_chop_utils.is_primary_key:
+            column_names: [audit_record_key]
+    columns:
+      - name: audit_record_key
+      - name: record_id
+        tests:
+          - not_null
+      - name: svc_date
+      - name: month
+      - name: emp_name
+      - name: supervisor
+      - name: patient_name
+      - name: pt_demo
+      - name: emergency_recorded
+      - name: doc_sgnd
+      - name: pcp_recorded
+      - name: cov_attached
+      - name: pharmacy_recorded
+      - name: travel
+      - name: demo_num
+      - name: demo_den
+      - name: ins_recorded
+      - name: response_history
+      - name: verified_man
+      - name: guar_subs_info
+      - name: copay_indicated
+      - name: ins_rx_scanned
+      - name: nonpar_ins
+      - name: cdc_completed
+      - name: copay_collect
+      - name: cover_num
+      - name: cover_den
+      - name: auth_ref
+      - name: visit_num
+      - name: visit_den
+      - name: mychop_setup
+      - name: mychop_num
+      - name: mychop_den
+      - name: comments
+      - name: audit_tool_complete
+      - name: num
+      - name: den
+      - name: department 
+        tests:
+          - not_null 
+      - name: ins_term
+      - name: ia_mva_accts
+      - name: selfpay
+      - name: ref_physician_recorded
+      - name: fiscal_year
+        tests:
+          - not_null
+      - name: upd_dt
+        tests:
+          - not_null
+  - name: access_services_tasks
+    tests:
+        - dbt_chop_utils.is_primary_key:
+            column_names: [task_id]
+    columns: 
+      - name: task_id
+      - name: short_id
+      - name: activity_date
+      - name: status
+      - name: owner_id
+      - name: is_deleted
+      - name: account_id
+      - name: is_closed
+      - name: created_date
+      - name: last_modified_date
+      - name: system_modified_timestamp
+      - name: is_archived
+      - name: date_time_closed
+      - name: date_time_opened
+      - name: sales_cloud_taskid
+      - name: record_type_id
+      - name: call_line
+      - name: fiscal_year_month_number
+      - name: fiscal_year_month_name
+      - name: fiscal_year_quarter
+      - name: fiscal_year
+      - name: calendar_year_month_number
+      - name: day_name
+      - name: calendar_date_key
+      - name: date
+      - name: fiscal_year_day_indicator
+      - name: current_fiscal_year_indicator
+      - name: last_fiscal_year_indicator
+      - name: fiscal_year_cap_indicator
+      - name: week_start
+      - name: month_name
+      - name: department
+      - name: division
+      - name: reason_for_call_historic
+      - name: reason_for_call
+      - name: upd_dt
+      - name: description
+      - name: time_to_close_in_minutes
+      - name: source
+      - name: created_by_name
+      - name: contact_id
+      - name: contact_name
+      - name: contact_mailing_street
+      - name: contact_mailing_city
+      - name: contact_mailing_state
+      - name: contact_mailing_postal_code
+      - name: contact_mailing_country
+      - name: contact_mailing_latitude
+      - name: contact_mailing_longitude
+      - name: contact_phone
+      - name: contact_fax
+      - name: contact_email
+      - name: contact_title
+      - name: contact_department
+      - name: contact_chop_employee
+      - name: contact_chop_location
+      - name: source_system
+      - name: blocks_last_update_date

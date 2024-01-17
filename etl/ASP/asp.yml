@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: asp_inpatient_medication
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mar_visit_event_date_drug_route_key]
+    columns:
+      - name: cohort_date
+        tests:
+          - not_null
+      - name: medication_route_group
+        tests:
+          - not_null
+      - name: generic_medication_name_group
+        tests:
+          - not_null
+      - name: adt_department
+        tests:
+          - not_null
+      - name: adt_service
+        tests:
+          - not_null
+      - name: bmt_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: asp_inpatient_location
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_date_key]
+    columns:
+      - name: cohort_date
+        tests:
+          - not_null
+      - name: adt_department
+        tests:
+          - not_null
+      - name: adt_service
+        tests:
+          - not_null
+      - name: bmt_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: asp_inpatient_nicu_fungal
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: positive_fungal_any_culture_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: asp_outpatient_prescription
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [med_ord_key]
+    columns:
+      - name: visit_key
+        tests:
+          - not_null

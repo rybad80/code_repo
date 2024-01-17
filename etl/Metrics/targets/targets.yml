@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: scorecard_targets
+    columns:
+      - name: visual_month
+        tests:
+          - not_null
+      - name: drill_down_one
+      - name: drill_down_two

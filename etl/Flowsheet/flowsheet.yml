@@ -1,0 +1,138 @@
+version: 2
+
+models:
+  - name: flowsheet_vitals
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [recorded_date, flowsheet_record_id]
+    columns:
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('encounter_all')
+              field: visit_key
+              warn_if: ">0"
+              error_if: ">4184"
+  #test too heavy for netezza
+  - name: flowsheet_all
+    columns:
+      - name: visit_key
+    #tests:
+    #  - dbt_chop_utils.is_primary_key:
+    #      column_names: [visit_key, seq_num, fs_rec_key]
+  - name: flowsheet_ventilation
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [recorded_date, flowsheet_record_id]
+      - dbt_chop_utils.recency:
+          column_name: recorded_date
+          datepart: day
+          interval: 2
+          tags: ['failing']
+      - dbt_utils.expression_is_true:
+              expression: "invasive_ind=1"
+              condition: "lower(resp_o2_device) in ('ventilation~ invasive', 'invasive ventilation')"
+    columns:
+      - name: patient_name
+        tests:
+          - not_null
+      - name: encounter_date
+        tests:
+          - not_null
+      - name: hospital_admit_date
+        tests:
+          - dbt_chop_utils.date_in_past:
+              error_if: ">2"
+              warn_if: ">1"
+      - name: o2_flow_rate_liters_per_minute
+        tests:
+          - dbt_chop_utils.within_range_threshold:
+              max_percent_allowed_outside_range: 5
+              min_value: 0
+              max_value: 10
+      - name: spo2_percent
+        tests:
+          - dbt_chop_utils.within_range_threshold:
+              max_percent_allowed_outside_range: 6
+              min_value: 89
+              max_value: 100
+      - name: airway_pressure
+        tests:
+          - dbt_chop_utils.within_range_threshold:
+              max_percent_allowed_outside_range: 1
+              min_value: 0
+              max_value: 20
+              tags: ['failing']
+      - name: pip_cm_h2o
+        tests:
+          - dbt_chop_utils.within_range_threshold:
+              max_percent_allowed_outside_range: 4
+              min_value: 0
+              max_value: 30
+      - name: peep_cm_h2o
+        tests:
+          - dbt_chop_utils.within_range_threshold:
+              max_percent_allowed_outside_range: 2
+              min_value: 0
+              max_value: 12
+      - name: pulse_ox_site_rotated_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: invasive_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('encounter_all')
+              field: visit_key
+              warn_if: ">0"
+              error_if: ">4264"
+      - name: pat_key
+        tests:
+          - relationships:
+              to: ref('stg_patient')
+              field: pat_key
+      - name: resp_o2_device
+  - name: flowsheet_ecmo
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, ecmo_start_datetime]
+    columns:
+      - name: visit_key
+        tests:
+          - not_null
+      - name: ecmo_end_datetime
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: ecmo_start_datetime
+          - not_null
+  - name: flowsheet_lda
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [ip_lda_id, flo_meas_id, fsd_id, recorded_date, occurance]
+    columns:
+      - name: pat_key
+        tests:
+          - not_null
+  - name: stg_flowsheet_vitals_info
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [recorded_date, flowsheet_record_id]
+    columns:
+      - name: recorded_date
+        description: PK
+      - name: flowsheet_record_id
+        description: PK
+  - name: flowsheet_vuds
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [recorded_date, flowsheet_record_id]
+    columns:
+      - name: recorded_date
+        description: PK
+      - name: flowsheet_record_id
+        description: PK
+
+        

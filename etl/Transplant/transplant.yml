@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: transplant_recipients
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_organ_key]
+          tags: ['failing']
+    columns:
+      - name: episode_organ_key
+        tests:
+          - unique:
+              tags: ['failing']
+          - not_null

@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_worker_language
+    columns:
+      - name: worker_id
+        tests:
+          - unique:
+              tags: ['failing']
+          - not_null
+  - name: stg_worker_certification
+    columns:
+      - name: worker_id
+        tests:
+          - not_null
+  - name: stg_worker_education
+    columns:
+      - name: worker_id
+        tests:
+          - not_null

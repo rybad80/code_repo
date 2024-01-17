@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: ventilator_liberation_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [lda_id]
+    columns:
+      - name: visit_key
+        tests:
+          - not_null

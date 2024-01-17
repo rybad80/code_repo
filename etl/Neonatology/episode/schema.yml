@@ -1,0 +1,71 @@
+version: 2
+
+models:
+ - name: neo_nicu_episode
+   tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_key]
+      - dbt_chop_utils.recency:
+          column_name: episode_start_date
+          datepart: day
+          interval: 3
+          tags: ['failing']
+   columns:
+     - name: episode_key
+       tests:
+         - not_null
+         - unique
+     - name: episode_start_date
+       tests:
+         - not_null
+         - dbt_chop_utils.date_in_past
+         - dbt_chop_utils.is_greater_or_equal_to:
+            expression: "hospital_admit_date"
+     - name: hospital_discharge_date
+       tests:
+         - dbt_chop_utils.is_greater_or_equal_to:
+            expression: "episode_end_date"
+     - name: episode_end_date
+       tests:
+        - dbt_chop_utils.not_null_when:
+            expression: "hospital_discharge_date is not null"
+     - name: nicu_disposition
+       tests:
+        - dbt_chop_utils.not_null_when:
+            expression: "episode_end_date is not null"
+     - name: nicu_los_days
+       tests:
+        - dbt_chop_utils.not_null_when:
+            expression: "episode_end_date is not null"
+        - dbt_chop_utils.is_greater_or_equal_to:
+            expression: "0"
+     - name: hospital_los_days
+       tests:
+        - dbt_chop_utils.is_greater_or_equal_to:
+            expression: "nicu_los_days - 0.0001"
+     - name: nicu_episode_number
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 1
+            max_value: 10
+     - name: episode_start_treatment_team
+       tests:
+         - accepted_values:
+            values: ['NICU Blue', 'NICU Green', 'NICU Orange', 'NICU Purple', 'NICU Red', 'NICU Yellow']
+     - name: episode_end_treatment_team
+       tests:
+         - accepted_values:
+            values: ['NICU Blue', 'NICU Green', 'NICU Orange', 'NICU Purple', 'NICU Red', 'NICU Yellow']
+     - name: itcu_transfer_ind
+       tests:
+         - dbt_chop_utils.is_indicator
+     - name: visit_key
+       tests:
+         - relationships:
+             to: ref('encounter_inpatient')
+             field: visit_key
+     - name: pat_key
+       tests:
+         - relationships:
+             to: ref('encounter_inpatient')
+             field: pat_key

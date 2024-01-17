@@ -1,0 +1,26 @@
+select
+    stg_outbreak_daily_checkin.invited_user_id,
+    stg_outbreak_daily_checkin.invite_date,
+    stg_outbreak_daily_checkin.checkin_id,
+    stg_outbreak_daily_checkin.employee_id,
+    stg_outbreak_daily_checkin.reg_user_id,
+    stg_outbreak_daily_checkin.manager_name,
+    stg_outbreak_daily_checkin.checkin_employee_name,
+    stg_outbreak_daily_checkin.department,
+    stg_outbreak_daily_checkin.title,
+    stg_outbreak_daily_checkin.next_shift,
+    stg_outbreak_daily_checkin.emp_check_count,
+    stg_outbreak_daily_checkin.red_flag,
+    stg_outbreak_daily_checkin.create_datetime,
+    stg_outbreak_daily_checkin.current_pp_ind,
+    stg_outbreak_daily_checkin.prev_pp_ind,
+    stg_outbreak_daily_checkin.symptoms,
+    stg_outbreak_daily_checkin.division,
+    stg_outbreak_daily_checkin.vaccine,
+    stg_outbreak_daily_checkin.checkin_location_cleaned,
+    stg_outbreak_daily_checkin.checkin_last_24_hr_ind,
+    stg_outbreak_daily_checkin.checkin_last_24_to_48_ind,
+    stg_outbreak_daily_checkin.checkin_last_week_ind,
+    stg_outbreak_daily_checkin.checkin_last_month_ind
+from
+    {{ref('stg_outbreak_daily_checkin')}} as stg_outbreak_daily_checkin

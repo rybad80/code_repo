@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: cardiac_cardiomyopathy_in_fa_echo
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [echo_study_id]
+    columns:
+      - name: echo_study_id

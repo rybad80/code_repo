@@ -1,0 +1,159 @@
+version: 2
+
+models:
+  - name: fetal_center_birth_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [delivery_episode_id]
+      - dbt_chop_utils.recency:
+          column_name: delivery_date
+          datepart: days
+          interval: 10
+          tags: ['failing']
+    columns:
+     - name: pregnancy_episode_id
+       tests:
+        - relationships:
+            to: ref('fetal_center_pregnancy')
+            field: pregnancy_episode_id
+     - name: pregnancy_episode_id
+       tests:
+        - not_null
+     - name: gestational_age_total_days
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 100
+            max_value: 300
+     - name: living_status
+       tests:
+         - accepted_values:
+             values: ['Living', 'Fetal Demise', 'Neonatal Demise']
+     - name: apgar_1_min
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 10
+     - name: apgar_5_min
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 10
+     - name: apgar_10_min
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 10
+     - name: mother_pat_key
+       tests:
+        - relationships:
+            to: ref('fetal_center_pregnancy')
+            field: pat_key
+  - name: fetal_center_pregnancy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pregnancy_episode_id]
+    columns:
+     - name: pregnancy_episode_id
+       tests:
+        - not_null
+     - name: pregnancy_episode_status
+       tests:
+         - accepted_values:
+             values: ['RESOLVED', 'ACTIVE', 'DELETED']
+     - name: gravida_count
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 25
+     - name: para_count
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 15
+     - name: ectopic_count
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 15
+     - name: viable_birth_count
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 1
+            max_value: 4
+     - name: multiple_births_ind
+       tests:
+        - dbt_chop_utils.is_indicator
+  - name: fetal_center_ff_pregnancy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pregnancy_id]
+    columns:
+     - name: pregnancy_id
+       tests:
+        - not_null
+  - name: fetal_center_ff_appointment
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [appointment_id]
+    columns:
+     - name: appointment_id
+       tests:
+        - not_null
+  - name: fetal_center_ff_birth_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [account_id]
+    columns:
+     - name: account_id
+       tests:
+        - not_null
+     - name: pregnancy_id
+       tests:
+        - relationships:
+            to: ref('fetal_center_ff_pregnancy')
+            field: pregnancy_id
+  - name: fetal_center_pregnancy_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pregnancy_episode_id]
+    columns:
+     - name: pregnancy_episode_id
+       tests:
+        - not_null
+     - name: pregnancy_episode_status
+       tests:
+         - accepted_values:
+             values: ['RESOLVED', 'ACTIVE', 'DELETED']
+     - name: gravida_count
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 25
+     - name: para_count
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 15
+     - name: ectopic_count
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 0
+            max_value: 15
+     - name: viable_birth_count
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 1
+            max_value: 4
+  - name: fetal_center_patient_enrollment
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [enroll_id]
+  - name: delivery_room_resuscitation
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [sdu_resus_key]
+    columns:
+     - name: resus_start
+       tests:
+        - not_null
+

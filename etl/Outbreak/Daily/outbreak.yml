@@ -1,0 +1,468 @@
+version: 2
+
+models:
+  - name: outbreak_covid_inpatient
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+          tags: ['failing']
+    columns:
+      - name: visit_key
+        tests:
+          - relationships:
+              to: ref('encounter_inpatient')
+              field: visit_key
+      - name: isolation_desc
+      - name: covid19_exposure_ind
+        tests:
+          - dbt_chop_utils.is_indicator  
+          - not_null    
+      - name: fever_last_24_hours_ind
+        tests:
+          - dbt_chop_utils.is_indicator  
+          - not_null  
+      - name: respiratory_symptoms_ind
+        tests:
+          - dbt_chop_utils.is_indicator  
+          - not_null
+      - name: aerosol_generating_procedure_ind
+        tests:
+          - dbt_chop_utils.is_indicator  
+          - not_null  
+      - name: mis_c_concern_ind
+        tests:
+          - dbt_chop_utils.is_indicator  
+          - not_null
+  - name: outbreak_covid_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [proc_ord_key]
+          tags: ['failing']
+    columns:
+      - name: proc_ord_key
+        tests:
+          - not_null
+      - name: csn
+        tests:
+          - not_null
+      - name: emp_tbl_link_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: drive_thru_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: roberts_drive_thru_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: bucks_drive_thru_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: pat_key
+        tests:
+          - not_null
+      - name: visit_key
+        tests:
+          - not_null
+  - name: outbreak_covid_cohort_patient
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [proc_ord_key]
+          tags: ['failing']
+    columns:
+      - name: proc_ord_key
+        tests:
+          - not_null
+      - name: csn
+        tests:
+          - not_null
+      - name: emp_tbl_link_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: drive_thru_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: roberts_drive_thru_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: bucks_drive_thru_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: pat_key
+        tests:
+          - not_null
+      - name: visit_key
+        tests:
+          - not_null
+  - name: outbreak_covid_cohort_patient_encounter
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+        tests:
+          - not_null
+      - name: patient_name
+      - name: mrn
+        tests:
+          - not_null
+      - name: csn
+        tests:
+          - not_null
+      - name: encounter_date
+        tests:
+          - not_null
+      - name: positive_covid_test_ind
+        tests: 
+          - dbt_chop_utils.is_indicator
+      - name: covid_diagnosis_ind
+        tests: 
+          - dbt_chop_utils.is_indicator
+      - name: pstu_siu_team_ind
+        tests: 
+          - dbt_chop_utils.is_indicator
+      - name: inpatient_ind
+          - dbt_chop_utils.is_indicator
+  - name: outbreak_covid_pui_fields
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key]
+    columns:
+      - name: pat_key
+        tests:
+          - not_null
+      - name: patient_name
+      - name: mrn
+      - name: current_status
+      - name: case_cdcreport_dt
+      - name: res_county
+      - name: res_state
+      - name: ethnicity
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: sex
+      - name: race_asian
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: race_aian
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: race_black
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: race_nhpi
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: race_white
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: race_unk
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: race_other
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: race_spec
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dob
+      - name: age
+      - name: ageunit
+      - name: pos_spec_dt
+      - name: pos_spec_unk
+      - name: pos_spec_na
+      - name: pna_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: acuterespdistress_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: diagother
+      - name: abxchest_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: sympstatus
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: onset_dt
+      - name: onset_unk
+      - name: symp_res_dt
+      - name: symp_res_yn
+      - name: hosp_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: adm1_dt
+      - name: dis1_dt
+      - name: icu_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: primary_dx
+      - name: primary_dx_icd
+      - name: inpatient_outcome
+      - name: mechvent_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: mechvent_dur
+      - name: ecmo_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: death_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: death_dt
+      - name: death_unk
+      - name: hc_work_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: collect_ptinterview
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: collect_medchart
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: fever_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: sfever_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: chills_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: myalgia_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: runnose_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: sthroat_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cough_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: sob_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: nauseavomit_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: headache_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: abdom_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: diarrhea_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: medcond_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cld_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: diabetes_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cvd_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: renaldis_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: liverdis_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: immsupp_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: neuro_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: pregnant_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: smoke_curr_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: smoke_former_yn
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: oth_resp_support
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: outbreak_flu_pui_fields
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, test_type]
+          tags: ['failing']
+    columns:
+      - name: pat_key
+        tests:
+          - not_null
+  - name: outbreak_covid_isolation
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, enter_date]
+    columns:
+      - name: visit_key
+        tests:
+          - not_null
+      - name: enter_date
+        tests:
+          - not_null
+      - name: patient_name
+        tests:
+          - not_null
+      - name: mrn
+        tests:
+          - not_null
+      - name: dob
+        tests:
+          - not_null
+      - name: csn
+        tests:
+          - not_null
+      - name: encounter_date
+        tests:
+          - not_null
+      - name: unit_name
+        tests:
+          - not_null
+      - name: pat_key
+        tests:
+          - not_null
+      - name: hsp_acct_key
+        tests:
+          - not_null
+  - name: outbreak_covid_isolation_census
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [census_date, visit_key]
+    columns:
+      - name: census_date
+        tests:
+          - not_null
+      - name: visit_key
+        tests:
+          - not_null
+      - name: patient_name
+        tests:
+          - not_null
+      - name: mrn
+        tests:
+          - not_null
+      - name: dob
+        tests:
+          - not_null
+      - name: csn
+        tests:
+          - not_null
+      - name: encounter_date
+        tests:
+          - not_null
+      - name: unit_name
+        tests:
+          - not_null
+      - name: covid_positive_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: precautions
+        tests:
+          - not_null
+      - name: pat_key
+        tests:
+          - not_null
+      - name: hsp_acct_key
+        tests:
+          - not_null
+  - name: outbreak_covid_poc_tests
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [proc_ord_key]
+    columns:
+      - name: proc_ord_key
+  - name: outbreak_covid_vaccination
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mrn]
+    columns:
+      - name: mrn
+        tests:
+          - not_null
+      - name: patient_name
+      - name: dob
+      - name: patient_type
+      - name: dose_1_appointment_date
+      - name: dose_1_scheduled_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dose_1_appointment_location
+      - name: dose_1_received_date
+      - name: dose_1_received_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dose_1_manufacturer_name
+      - name: dose_2_appointment_date
+      - name: dose_2_scheduled_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dose_2_appointment_location
+      - name: dose_2_received_date
+      - name: dose_2_received_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dose_2_manufacturer_name
+      - name: pat_key
+        tests:
+            - not_null
+  - name: outbreak_covid_vaccination_outreach
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mrn]
+    columns:
+      - name: mrn
+        tests:
+          - not_null
+      - name: patient_name
+      - name: dob
+      - name: patient_type
+      - name: email_address
+      - name: mailing_state
+      - name: county
+      - name: mailing_zip
+      - name: race_ethnicity
+      - name: preferred_language
+      - name: payor_group
+      - name: first_outreach_date
+      - name: invited_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: mychop_activation_date
+      - name: dose_1_appointment_date
+      - name: dose_1_scheduled_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dose_1_appointment_location
+      - name: dose_1_received_date
+      - name: dose_1_received_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dose_1_manufacturer_name
+      - name: dose_2_appointment_date
+      - name: dose_2_scheduled_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dose_2_appointment_location
+      - name: dose_2_received_date
+      - name: dose_2_received_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: dose_2_manufacturer_name
+      - name: pat_key
+        tests:
+            - not_null
+  - name: outbreak_covid_ctc_handoff
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [record_id]

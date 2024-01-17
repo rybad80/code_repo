@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: care_network_primary_care_active_patients
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, month_year]           
+    columns:
+      - name: pat_key
+      - name: department_name
+        tests:
+          - not_null
+      - name: department_id
+        tests:
+          - not_null
+  - name: care_network_primary_care_wrvu_transactions
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [tdl_id]
+    columns:
+      - name: rvu_provider_worker_id
+        tests:
+          - dbt_utils.relationships_where:
+              to: ref('worker')
+              field: worker_id
+      - name: billing_provider_worker_id
+        tests:
+          - dbt_utils.relationships_where:
+              to: ref('worker')
+              field: worker_id
+      - name: location_id
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 5
+      - name: cost_center_id
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 5
+      - name: cost_center_site_id
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 5
+  - name: primary_care_patients
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [patient_key]
+    columns:
+      - name: patient_key
+        tests:
+          - relationships:
+              to: ref('stg_patient')
+              field: patient_key
+      - name: first_encounter_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: dob
+              severity: warn
+      - name: last_encounter_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: dob
+              severity: warn
+      - name: last_well_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: dob
+              severity: warn
+      - name: current_record_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: current_active_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: last_department_id
+        tests:
+          - not_null

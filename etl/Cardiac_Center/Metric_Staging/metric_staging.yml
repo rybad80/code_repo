@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: stg_sl_dash_cardiac_charges
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key]
+    columns:
+      - name: primary_key
+  - name: stg_sl_dash_cardiac_internal_mobility
+    tests:
+        - dbt_chop_utils.is_primary_key:
+            column_names: [primary_key]
+    columns:
+      - name: primary_key

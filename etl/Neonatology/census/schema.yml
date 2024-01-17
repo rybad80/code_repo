@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: neo_nicu_census_daily
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [census_date]
+    columns:
+      - name: total_nicu_census
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 50
+              max_value: 150
+      - name: green_census
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 5
+              max_value: 50
+              warn_if: ">0"
+              error_if: ">11"
+      - name: sdu_births
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0
+              max_value: 10
+  - name: neo_nicu_census_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [census_month]
+    columns:
+      - name: total_nicu_census
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 50
+              max_value: 150
+              warn_if: ">0"
+              error_if: ">38"
+      - name: green_census
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 5
+              max_value: 50
+      - name: sdu_births
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0
+              max_value: 100

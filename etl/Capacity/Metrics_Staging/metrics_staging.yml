@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: stg_kpi_dash_capacity_admissions
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]           
+    columns:
+      - name: transport_ind
+        tests:     
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: stg_kpi_dash_capacity_transfers
+    columns:
+      - name: service_at_transfer
+        tests:
+          - not_null
+  - name: stg_kpi_dash_capacity_midnight_census
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [surrogate_key]
+  - name: stg_kpi_dash_capacity_discharges
+    columns:
+      - name: discharge_service
+        tests:
+          - not_null

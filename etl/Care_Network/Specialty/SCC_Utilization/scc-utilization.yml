@@ -1,0 +1,228 @@
+version: 2
+
+models:
+  - name: scc_qgenda_schedule_entries
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [schedulekey, department_id]
+    columns:
+      - name: schedulekey
+      - name: fiscal_year
+      - name: fiscal_quarter
+      - name: month_int
+      - name: resdate
+      - name: weekday_name
+      - name: starttime
+      - name: staffkey
+      - name: staff_abbrev
+      - name: provider_id
+      - name: provider_name
+      - name: provider_type
+      - name: room_name
+      - name: taskkey
+      - name: session_type
+      - name: room_type
+      - name: exam_room_ind
+      - name: department_name
+      - name: department_id
+      - name: location_name
+      - name: site
+      - name: specialty
+      - name: business_day_ind
+  - name: scc_division_utilization
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [schedulekey, department_id]
+    columns:
+      - name: schedulekey
+      - name: department_id
+        tests:
+          - not_null
+      - name: department_name
+      - name: location_name
+      - name: site
+      - name: specialty
+      - name: resdate
+      - name: weekday_name
+      - name: fiscal_year
+      - name: fiscal_quarter
+      - name: room_name
+        tests:
+          - not_null
+      - name: room_type
+        tests:
+          - not_null
+      - name: session_type
+      - name: reserved_rooms
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: 1
+              config:
+                severity: warn
+                warn_if: ">10"
+      - name: total_visits
+      - name: telehealth_visits
+      - name: telehealth_check_ind
+        tests:
+          - dbt_chop_utils.is_indicator:
+              config:
+                severity: warn
+                warn_if: ">10"
+      - name: room_used_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: scc_division_utilization_metrics
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [department_id, location_name, fiscal_year, fy_month_int, session_type]
+    columns:
+      - name: department_id
+        tests:
+          - not_null
+      - name: department_name
+      - name: specialty
+      - name: location_name
+      - name: site
+      - name: fiscal_year
+        tests:
+          - not_null
+      - name: fiscal_quarter
+      - name: fy_yy_qtr
+      - name: fy_month_int
+      - name: session_type
+      - name: reserved_rooms
+      - name: used_rooms
+      - name: reserved_not_used
+      - name: utilized_percent
+      - name: rnu_percent
+  - name: scc_division_utilization_metrics_wide
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [department_name, location_name, fiscal_year, session_type]
+    columns:
+      - name: department_name
+        tests:
+          - not_null
+      - name: specialty
+        tests:
+          - not_null
+      - name: location_name
+      - name: site
+      - name: fiscal_year
+        tests:
+          - not_null
+      - name: session_type
+        tests:
+          - not_null
+      - name: Q1_reserved_rooms
+      - name: Q2_reserved_rooms
+      - name: Q3_reserved_rooms
+      - name: Q4_reserved_rooms
+      - name: Q1_used_rooms
+      - name: Q2_used_rooms
+      - name: Q3_used_rooms
+      - name: Q4_used_rooms
+      - name: Q1_reserved_not_used
+      - name: Q2_reserved_not_used
+      - name: Q3_reserved_not_used
+      - name: Q4_reserved_not_used
+      - name: Q1_utilized_percent
+      - name: Q2_utilized_percent
+      - name: Q3_utilized_percent
+      - name: Q4_utilized_percent
+      - name: Q1_rnu_percent
+      - name: Q2_rnu_percent
+      - name: Q3_rnu_percent
+      - name: Q4_rnu_percent
+  - name: scc_site_utilization
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [schedulekey, department_id]
+    columns:
+      - name: schedulekey
+      - name: department_id
+      - name: location_name
+      - name: site
+      - name: specialty
+      - name: resdate
+      - name: weekday_name
+      - name: fiscal_year
+      - name: fiscal_quarter
+      - name: month_int
+      - name: taskname
+      - name: room_type
+      - name: session_type
+      - name: reserved_rooms
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: 1
+              config:
+                severity: warn
+                warn_if: ">10"
+      - name: total_visits
+      - name: telehealth_visits
+      - name: telehealth_check_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: room_used_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: scc_site_utilization_metrics
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [site, location_name, fiscal_year, fy_month_int, session_type]
+    columns:
+      - name: site
+        tests:
+          - not_null
+      - name: fiscal_year
+        tests:
+          - not_null
+      - name: location_name
+      - name: fiscal_quarter
+      - name: fy_yy_qtr
+      - name: fy_month_int
+      - name: session_type
+      - name: total_rooms
+      - name: reserved_rooms
+      - name: used_rooms
+      - name: reserved_not_used
+      - name: utilized_percent
+      - name: rnu_percent
+      - name: not_used_by site
+  - name: scc_site_utilization_metrics_wide
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [site, location_name, fiscal_year, session_type]
+    columns:
+      - name: site
+        tests:
+          - not_null
+      - name: location_name
+      - name: total_rooms
+      - name: fiscal_year
+        tests:
+          - not_null
+      - name: session_type
+        tests:
+          - not_null
+      - name: Q1_reserved_rooms
+      - name: Q2_reserved_rooms
+      - name: Q3_reserved_rooms
+      - name: Q4_reserved_rooms
+      - name: Q1_used_rooms
+      - name: Q2_used_rooms
+      - name: Q3_used_rooms
+      - name: Q4_used_rooms
+      - name: Q1_reserved_not_used
+      - name: Q2_reserved_not_used
+      - name: Q3_reserved_not_used
+      - name: Q4_reserved_not_used
+      - name: Q1_utilized_percent
+      - name: Q2_utilized_percent
+      - name: Q3_utilized_percent
+      - name: Q4_utilized_percent
+      - name: Q1_rnu_percent
+      - name: Q2_rnu_percent
+      - name: Q3_rnu_percent
+      - name: Q4_rnu_percent

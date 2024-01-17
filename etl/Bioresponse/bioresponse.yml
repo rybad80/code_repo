@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: bioresponse_stats_daily
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [campus, diagnosis_hierarchy_1, stat_name, stat_date]
+  - name: bioresponse_diagnosis_encounter
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [encounter_key, diagnosis_hierarchy_1]
+  - name: bioresponse_infectious_episodes
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [patient_key, diagnosis_hierarchy_1, episode_start_date]
+  - name: bioresponse_isolation_events
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [encounter_key, enter_date]
+  - name: bioresponse_lab_results
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [procedure_order_result_key]
+  - name: bioresponse_encounters_with_positives
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [encounter_key, episode_start_date, diagnosis_hierarchy_1]
+  - name: bioresponse_vaccine
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_vaccination_key]
+  - name: doh_virals_report
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [encounter_episode_key]
+  - name: doh_virals_hpi_notes
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [note_enc_id, line, encounter_episode_key]

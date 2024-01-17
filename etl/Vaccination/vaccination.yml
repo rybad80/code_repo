@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: vaccination_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [vaccination_received_key]
+    columns:
+      - name: pat_key
+        tests:
+          - not_null
+      - name: pat_id
+        tests:
+          - not_null

@@ -1,0 +1,263 @@
+version: 2
+
+models:
+  - name: dim_bed
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [bed_key]
+    columns:
+      - name: bed_key
+  - name: dim_company
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [company_key]
+    columns:
+      - name: company_key
+  - name: dim_cost_center
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_key]
+    columns:
+      - name: cost_center_key
+  - name: dim_cost_center_site
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_site_key]
+    columns:
+      - name: cost_center_site_key
+  - name: dim_hospital_drg
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [drg_key]
+  - name: dim_grant
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [grant_key]
+    columns:
+      - name: grant_key
+  - name: dim_grant_costshare
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [grant_costshare_key]
+    columns:
+      - name: grant_costshare_key
+  - name: dim_grant_hierarchy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [grant_hier_key]
+    columns:
+      - name: grant_hier_key
+  - name: dim_grant_hierarchy_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [grant_hier_key]
+    columns:
+      - name: grant_hier_key
+  - name: dim_journal_source
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [journal_source_key]
+    columns:
+      - name: journal_source_key
+  - name: dim_ledger_account
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [ledger_account_key]
+    columns:
+      - name: ledger_account_key
+  - name: dim_fund
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [fund_key]
+    columns:
+      - name: fund_key
+  - name: dim_pay_group
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pay_group_key]
+    columns:
+      - name: pay_group_key
+  - name: dim_payor
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [payor_key]
+    columns:
+      - name: payor_key
+  - name: dim_program
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [program_key]
+    columns:
+      - name: program_key
+  - name: dim_revenue_category
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [revenue_category_key]
+    columns:
+      - name: revenue_category_key
+  - name: dim_spend_category
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [spend_category_key]
+    columns:
+      - name: spend_category_key
+  - name: dim_cost_center_hierarchy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_hier_key]
+    columns:
+      - name: cost_center_hier_key
+  - name: dim_cost_center_hierarchy_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_hier_key]
+    columns:
+      - name: cost_center_hier_key
+  - name: dim_company_hierarchy_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [company_hier_key]
+    columns:
+      - name: company_hier_key
+  - name: dim_cost_center_site_hierarchy_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_site_hier_key]
+    columns:
+      - name: cost_center_site_hier_key
+  - name: dim_journal_source_hierarchy_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [journal_source_hier_key]
+    columns:
+      - name: journal_source_hier_key
+  - name: dim_ledger_account_hierarchy_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [ledger_account_hier_key]
+    columns:
+      - name: ledger_account_hier_key
+  - name: dim_location
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [location_key]
+    columns:
+      - name: location_key
+  - name: dim_location_hierarchy_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [location_hier_key]
+    columns:
+      - name: location_hier_key
+  - name: dim_payor_hierarchy_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [payor_hier_key]
+    columns:
+      - name: payor_hier_key
+  - name: dim_procedure
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [procedure_key]
+    columns:
+      - name: procedure_key
+  - name: dim_revenue_category_hierarchy_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [revenue_category_hier_key]
+    columns:
+      - name: revenue_category_hier_key
+  - name: dim_room
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [room_key]
+    columns:
+      - name: room_key
+  - name: dim_spend_category_hierarchy_long
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [spend_category_hier_key]
+    columns:
+      - name: spend_category_hier_key
+  - name: dim_supplier
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [supplier_key]
+    columns:
+      - name: supplier_key
+  - name: dim_project
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [project_key]
+    columns:
+      - name: project_key
+  - name: dim_place_of_service
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [place_of_service_key]
+  - name: dim_provider
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [provider_key]
+    columns:
+      - name: provider_key
+  - name: dim_job_family_group
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_family_group_key]
+    columns:
+      - name: job_family_group_key
+  - name: dim_job_family
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_family_key]
+    columns:
+      - name: job_family_key
+  - name: dim_job_profile
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_profile_key]
+    columns:
+      - name: job_profile_key
+  - name: dim_expense_item
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [expense_item_key]
+    columns:
+      - name: expense_item_key
+  - name: dim_gl_code
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [glcode_key]
+    columns:
+      - name: glcode_key
+  - name: dim_or_supply
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [supply_key]
+    columns:
+      - name: supply_key
+  - name: dim_patient
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [patient_key]
+    columns:
+      - name: patient_key
+  - name: dim_revenue_code
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [revenue_code_key]
+    columns:
+      - name: revenue_code_key
+  - name: dim_purchase_item
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [purchase_item_key]
+    columns:
+      - name: purchase_item_key
+  - name: dim_liability_bucket
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [liability_bucket_key]
+    columns:
+      - name: liability_bucket_key

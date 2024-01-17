@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: pathway_infection_meds
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pathway_med_key]
+    columns:
+      - name: pathway_med_key

@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: fact_surgery_rampup_sched
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_case_id]
+    columns:
+      - name: or_case_id
+  - name: fact_surgery_rampup_unsched
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_case_id]
+          tags: ['failing']
+    columns:
+      - name: or_case_id
+  - name: fact_surgical_covid_cancellations
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_case_id]
+          tags: ['failing']
+    columns:
+      - name: or_case_id

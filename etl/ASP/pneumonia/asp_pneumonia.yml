@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: asp_ip_cap_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+  - name: asp_ip_cap_metric_adherence
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: treatment_adherence_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: duration_adherence_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+  - name: asp_ip_cap_metric_descriptive
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+  - name: asp_ip_cap_metric_medication
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [med_ord_key, administration_seq_number]

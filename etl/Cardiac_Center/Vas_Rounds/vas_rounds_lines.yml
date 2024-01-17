@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: vas_rounds_lines
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_lda_key,mrn, visit_key, lda_id]

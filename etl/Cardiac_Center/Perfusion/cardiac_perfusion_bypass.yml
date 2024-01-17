@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: cardiac_perfusion_bypass
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [VISIT_KEY]
+    columns:
+      - name: PATIENT_NAME
+        tests:
+          - not_null    
+      - name: DOB
+        tests:
+          - dbt_chop_utils.date_in_past
+          - not_null
+      - name: MRN
+        tests:
+          - not_null    
+          - dbt_chop_utils.number_of_characters:
+              min_length: 8
+              condition: MRN not in ('INVALID')            
+      - name: CSN
+        tests:
+          - dbt_chop_utils.number_of_characters:
+              min_length: 14          
+      - name: TOTAL_BYPASS_MINUTES
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: 0                               

@@ -1,0 +1,51 @@
+version: 2
+
+models:
+ - name: neo_nicu_treatment_team
+   tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [episode_treatment_team_key]
+      - dbt_chop_utils.recency:
+          column_name: treatment_team_start_date
+          datepart: day
+          interval: 3
+          tags: ['failing']
+   columns:
+     - name: episode_treatment_team_key
+       tests:
+         - not_null
+         - unique
+     - name: treatment_team_start_date
+       tests:
+         - not_null
+         - dbt_chop_utils.date_in_past
+         - dbt_chop_utils.is_greater_or_equal_to:
+            expression: "episode_start_date"
+     - name: episode_end_date
+       tests:
+         - dbt_chop_utils.is_greater_or_equal_to:
+            expression: "treatment_team_end_date"
+     - name: treatment_team_end_date
+       tests:
+        - dbt_chop_utils.not_null_when:
+            expression: "episode_end_date is not null"
+     - name: treatment_team_los_days
+       tests:
+        - dbt_chop_utils.not_null_when:
+            expression: "treatment_team_end_date is not null"
+        - dbt_chop_utils.is_greater_or_equal_to:
+            expression: "0"
+     - name: treatment_team_number
+       tests:
+        - dbt_chop_utils.within_range:
+            min_value: 1
+            max_value: 10
+     - name: treatment_team
+       tests:
+         - accepted_values:
+             values: ['NICU Blue', 'NICU Green', 'NICU Orange', 'NICU Purple', 'NICU Red', 'NICU Yellow']
+     - name: episode_key
+       tests:
+         - relationships:
+             to: ref('neo_nicu_episode')
+             field: episode_key

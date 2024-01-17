@@ -1,0 +1,85 @@
+version: 2
+models:
+  - name: stg_picu_central_line_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_lda_key, census_dt]
+    columns:
+      - name: LINE_GROUPING
+        tests:
+          - accepted_values:
+              values:
+                - PICC
+                - Port
+                - Broviac
+                - Temporary CVL
+                - Apheresis
+                - Other
+                - UVC
+                - UAC
+              quote: true
+  - name: picu_cl_access
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, rec_dt]
+    columns:
+      - name: visit_key
+  - name: picu_clabsi_risk
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [lda_id, census_dt]
+          tags: ['failing']
+    columns:
+      - name: lda_id
+  - name: stg_picu_risk_bhconsults
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, census_dt]
+    columns:
+      - name: pat_key
+  - name: stg_picu_risk_hxclabsi
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, census_dt]
+    columns:
+      - name: pat_key
+  - name: stg_picu_risk_inv_vent
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, census_dt]
+    columns:
+      - name: PAT_KEY
+        tests:
+          - not_null
+  - name: stg_picu_risk_meds
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, census_dt]
+    columns:
+      - name: PAT_KEY
+        tests:
+          - not_null
+  - name: stg_picu_risk_prbc
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, census_dt]
+    columns:
+      - name: PAT_KEY
+        tests:
+          - not_null
+  - name: stg_picu_risk_prematurity
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, census_dt]
+    columns:
+      - name: PAT_KEY
+        tests:
+          - not_null
+  - name: stg_picu_risk_ostomy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, census_dt]
+    columns:
+      - name: PAT_KEY
+        tests:
+          - not_null

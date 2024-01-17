@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: research_study_oncore
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [protocol_no, pi_name, mgmt_group_description]
+    columns:
+      - name: protocol_no

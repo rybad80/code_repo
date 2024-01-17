@@ -1,0 +1,209 @@
+version: 2
+
+models:
+  - name: cancer_center_brain_tumor_diagnosis
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [subject_id, diagnosis_type, diagnosis_relapse_date, diagnosis_histology]
+    columns:
+      - name: subject_id
+  - name: cancer_center_patient
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key]
+    columns:
+      - name: pat_key
+      - name: mrn
+      - name: dob
+      - name: death_date
+      - name: touch_category
+        tests:
+          - accepted_values:
+              values: ['base cohort', 'low touch', 'medium touch', 'high touch']
+      - name: high_touch_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: medium_touch_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: low_touch_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: cancer_center_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visual_month
+      - name: visit_key
+      - name: visit_date
+      - name: mrn
+      - name: pat_key
+      - name: touch_category
+        tests:
+          - accepted_values:
+              values: ['low touch', 'medium touch', 'high touch', 'base cohort w/ visit']
+      - name: death_date
+      - name: death_date_visual_month
+  - name: stg_cancer_center_base_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key]
+    columns:
+      - name: pat_key
+      - name: mrn
+      - name: death_date
+      - name: dob
+      - name: onco_visit_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: cancer_dx_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: stg_cancer_center_chemo_rad
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, radiation_or_chemo_month, treatment_source]
+    columns:
+      - name: pat_key
+      - name: mrn
+      - name: radiation_or_chemo_month
+      - name: treatment_source
+        tests:
+          - accepted_values:
+              values: ['chemo', 'rad']
+  - name: stg_cancer_center_first_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key]
+    columns:
+      - name: pat_key
+      - name: first_visit_date
+      - name: eighteen_months_after_visit
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: first_visit_date
+      - name: visit_after_18_months_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: stg_cancer_center_oncore_registry
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key]
+    columns: 
+      - name: pat_key
+      - name: new_dx_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: received_chemo_or_rad_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: oncore_criteria_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: stg_cancer_center_surgery_biopsy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key, or_proc_nm, surgeon_service, procedure_seq_num]
+    columns:
+      - name: pat_key
+      - name: mrn
+      - name: patient_name
+      - name: log_key
+      - name: event_in_dt
+      - name: event_out_dt
+      - name: or_proc_nm
+      - name: procedure_service
+      - name: surgeon_service
+      - name: tumor_mass_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: lesion_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: excision_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: resection_removal_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: ectomy_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: biopsy_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: stg_cancer_center_tumor_registry
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key]
+    columns:
+      - name: pat_key
+      - name: malignant_dx_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: histology_behavior_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: received_chemo_or_rad_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: tumor_registry_criteria_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: stg_cancer_center_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: pat_key
+      - name: mrn
+      - name: patient_name
+      - name: visit_key
+      - name: visit_date
+      - name: department_name
+      - name: visit_type
+      - name: encounter_type
+      - name: appointment_status
+      - name: age_years
+      - name: cancer_dx_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: anatomical_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: consult_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: first_chop_dx_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: stg_cancer_center_internal_mobility
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key]
+    columns:
+      - name: primary_key

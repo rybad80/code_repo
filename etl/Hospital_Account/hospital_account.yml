@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: fact_hospital_account_diagnosis
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [hospital_account_key, line]
+    columns:
+      - name: diagnosis_key
+        tests:
+          - relationships:
+              to: ref('dim_diagnosis')
+              field: diagnosis_key

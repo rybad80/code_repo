@@ -1,0 +1,70 @@
+-- primary care encounters
+    select
+        stg_encounter_outpatient.visit_key,
+        stg_encounter_outpatient.patient_name,
+        stg_encounter_outpatient.mrn,
+        stg_encounter_outpatient.dob,
+        stg_encounter_outpatient.csn,
+        stg_encounter_outpatient.encounter_date,
+        stg_encounter_outpatient.sex,
+        stg_encounter_outpatient.age_years,
+        stg_encounter_outpatient.age_months,
+        stg_encounter_outpatient.age_days,
+        stg_encounter_outpatient.provider_name,
+        stg_encounter_outpatient.department_name,
+        stg_encounter_outpatient.department_id,
+        stg_encounter_outpatient.visit_type,
+        stg_encounter_outpatient.visit_type_id,
+        stg_encounter_outpatient.payor_name,
+        stg_encounter_outpatient.payor_group,
+        stg_encounter_outpatient.chop_market,
+        stg_encounter_outpatient.region_category,
+        stg_encounter_outpatient.patient_address_seq_num,
+        stg_encounter_outpatient.patient_address_zip_code,
+        stg_encounter_outpatient.original_appointment_made_date,
+        stg_encounter_outpatient.appointment_made_date,
+        stg_encounter_outpatient.appointment_date,
+        stg_encounter_outpatient.start_visit_date,
+        stg_encounter_outpatient.check_in_date,
+        stg_encounter_outpatient.assign_room_date,
+        stg_encounter_outpatient.start_rooming_date,
+        stg_encounter_outpatient.done_rooming_date,
+        stg_encounter_outpatient.check_out_date,
+        stg_encounter_outpatient.complete_visit_date,
+        stg_encounter_outpatient.encounter_close_date,
+        stg_encounter_outpatient.scheduled_length_min,
+        stg_encounter_outpatient.actual_length_min,
+        stg_encounter_outpatient.scheduled_to_encounter_days,
+        stg_encounter_outpatient.npv_appointment_lag_days,
+        stg_encounter_outpatient.complex_chronic_condition_ind,
+        stg_encounter_outpatient.medically_complex_ind,
+        stg_encounter_outpatient.tech_dependent_ind,
+        -- Ensures this was a billed encounter, where patient saw provider
+        stg_encounter_outpatient.physician_service_level_ind,
+        stg_encounter_outpatient.appointment_ind,
+        stg_encounter_outpatient.office_visit_ind,
+        stg_encounter_outpatient.recurring_outpatient_ind,
+        stg_encounter_outpatient.well_visit_ind,
+        stg_encounter_outpatient.sick_visit_ind,
+        --indicator for telehealth visit
+        stg_encounter_outpatient.telehealth_ind,
+        stg_encounter_outpatient.walkin_ind,
+        stg_encounter_outpatient.online_scheduled_ind,
+        --indicator for appointments scheduled through mychop
+        stg_encounter_outpatient.mychop_scheduled_ind,
+        stg_encounter_outpatient.international_ind,
+        -- at first visit of patients under 1 month old
+        stg_encounter_outpatient.first_newborn_encounter_ind,
+        stg_encounter_outpatient.new_patient_3yr_ind as new_pc_patient_ind,
+        stg_encounter_outpatient.npv_lag_incl_ind,
+        stg_encounter_outpatient.pat_key,
+        stg_encounter_outpatient.dept_key,
+        stg_encounter_outpatient.payor_key,
+        stg_encounter_outpatient.prov_key,
+        coalesce(stg_hsp_acct_xref.hsp_acct_key, 0) as hsp_acct_key
+    from
+        {{ref('stg_encounter_outpatient')}} as stg_encounter_outpatient
+        left join {{ref('stg_hsp_acct_xref')}} as stg_hsp_acct_xref
+            on stg_hsp_acct_xref.encounter_key = stg_encounter_outpatient.encounter_key
+    where
+        stg_encounter_outpatient.primary_care_ind = '1'

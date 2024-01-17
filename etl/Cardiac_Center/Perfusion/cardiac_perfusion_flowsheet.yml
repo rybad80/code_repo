@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: cardiac_perfusion_flowsheet
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [fs_rec_key, flowsheet_id,recorded_date]
+          tags: ['failing']
+    columns:
+      - name: fs_rec_key

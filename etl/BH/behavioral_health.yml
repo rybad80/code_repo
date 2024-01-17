@@ -1,0 +1,118 @@
+version: 2
+
+models:
+  - name: antipsychotic_health_monitoring
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, hm_topic_name]
+  - name: bh_dcapbs_encounters
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: dept_key
+        tests:
+          - relationships:
+              to: ref('bh_departments')
+              field: dept_key
+              tags: ['ignore']
+  - name: bh_hm_plan
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_id, pat_key, hm_topic_id]
+  - name: cssrs_survey
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+  - name: bh_screenings_summary
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key 
+        tests:
+          - relationships:
+              to: ref('stg_bh_screenings')
+              field: visit_key
+              tags: ['ignore']
+          - relationships:
+              to: ref('cssrs_survey')
+              field: visit_key
+              tags: ['ignore']
+  - name: stg_bh_screenings
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, bh_screening_qa_id, bh_screening_seq_num, bh_screening_question_id]
+  - name: bh_cssrs_safety_plan_compliance
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key 
+        tests:
+          - relationships:
+              to: ref('stg_bh_cssrs_safety_plan_compliance')
+              field: visit_key
+              tags: ['ignore']
+          - relationships:
+              to: ref('cssrs_survey')
+              field: visit_key
+              tags: ['ignore']
+  - name: bh_adolescent_med_qi
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+          tags: ['failing']
+  - name: bh_hospital_encounters
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key 
+        tests:
+          - relationships:
+              to: ref('bh_notes')
+              field: visit_key
+              tags: ['ignore']
+      - name: bh_prov_key
+        test:
+          - relationships:
+              to: ref('bh_notes')
+              field: prov_key
+              tags: ['ignore']
+  - name: bh_provider_fte
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [redcap_id]
+  - name: bh_workers
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_id]
+  - name: bh_patients 
+    columns:
+      - name: pat_key
+        tests:
+          - relationships:
+              to: ref('bh_dcapbs_encounters')
+              field: pat_key
+              tags: ['ignore']
+          - relationships:
+              to: ref('bh_orders')
+              field: pat_key
+              tags: ['ignore']
+          - relationships:
+              to: ref('bh_screenings_summary')
+              field: pat_key
+              tags: ['ignore']
+          - relationships:
+              to: ref('bh_notes')
+              field: pat_key
+              tags: ['ignore']
+          - relationships:
+              to: ref('bh_meds')
+              field: pat_key
+              tags: ['ignore']
+          - relationships:
+              to: ref('stg_bh_diagnoses')
+              field: pat_key
+              tags: ['ignore']

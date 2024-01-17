@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: rpm_preferred_communications
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [patient_key]

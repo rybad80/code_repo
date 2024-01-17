@@ -1,0 +1,54 @@
+version: 2
+models:
+  - name: diabetes_t1y1
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [new_diabetes_date, patient_key]
+  - name: diabetes_visit_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [encounter_key]
+  - name: diabetes_patient_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diabetes_reporting_month, patient_key]
+  - name: diabetes_bh_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diabetes_reporting_month, patient_key]
+  - name: diabetes_ed_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diabetes_reporting_month, encounter_key]
+  - name: diabetes_inpatient_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diabetes_reporting_month, encounter_key]
+  - name: diabetes_lab_result
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diabetes_reporting_month, patient_key]
+  - name: diabetes_nutrition_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diabetes_reporting_month, patient_key]
+  - name: diabetes_patient_info
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [patient_key, race]
+  - name: diabetes_psychology_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diabetes_reporting_month, psychology_visit_key]
+  - name: diabetes_depression_screening
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diabetes_reporting_month, patient_key]         
+  - name: diabetes_sw_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diabetes_reporting_month, patient_key]
+  - name: diabetes_tech_use
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diabetes_reporting_month, patient_key, final_encounter_date]

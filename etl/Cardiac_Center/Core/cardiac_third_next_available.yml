@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: cardiac_third_next_available
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [dept_key,prov_key]   
+    columns:          
+      - name: slot_start_tm
+        tests:
+          - not_null    
+          - dbt_chop_utils.date_in_past:
+              tags: ['failing']

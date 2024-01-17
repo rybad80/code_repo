@@ -1,0 +1,33 @@
+version: 2
+
+models:        
+  - name: additional_children_served
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mrn, service_date]
+    columns:
+      - name: fy
+      - name: mrn
+        tests:
+          - not_null:
+              severity: warn
+      - name: patient_name
+      - name: service_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - not_null:
+              severity: warn
+      - name: care_setting
+      - name: zip
+      - name: chop_market
+      - name: newborn_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: new_enterprise_patient_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: first_post_date
+        tests:
+          - dbt_chop_utils.date_in_past
+          - not_null:
+              severity: warn

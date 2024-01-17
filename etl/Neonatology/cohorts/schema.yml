@@ -1,0 +1,53 @@
+version: 2
+
+models:
+ - name: stg_neo_nicu_diagnosis_group
+   columns:
+     - name: cohort_group_name
+       tests:
+         - relationships:
+             to: ref('lookup_neo_nicu_diagnosis')
+             field: diagnosis_name
+     - name: cohort_group_display_name
+       tests:
+         - relationships:
+             to: ref('lookup_neo_nicu_diagnosis')
+             field: diagnosis_display_name
+ - name: stg_neo_nicu_surgery_group
+   tests:
+    - dbt_chop_utils.recency:
+        column_name: cohort_group_enter_date
+        datepart: day
+        interval: 15
+        tags: ['failing']
+   columns:
+     - name: cohort_group_name
+       tests:
+         - relationships:
+             to: ref('lookup_neo_nicu_or_procedures')
+             field: procedure_name
+     - name: cohort_group_display_name
+       tests:
+         - relationships:
+             to: ref('lookup_neo_nicu_or_procedures')
+             field: procedure_display_name
+ - name: neo_nicu_cohort_group
+   tests:
+      - dbt_utils.expression_is_true:
+          expression: "lower(cohort_group_name) = lower(cohort_group_display_name)"
+      - dbt_chop_utils.recency:
+          column_name: cohort_group_enter_date
+          datepart: day
+          interval: 5
+          tags: ['failing']
+   columns:
+     - name: cohort_group_name
+       tests:
+         - not_null
+     - name: cohort_group_display_name
+       tests:
+         - not_null
+     - name: cohort_group_enter_date
+       tests:
+         - not_null
+         - dbt_chop_utils.date_in_past

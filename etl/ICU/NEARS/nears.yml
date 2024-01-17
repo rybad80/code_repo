@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: stg_nears_redcap
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [course_id]
+    columns:
+      - name: encounter_id
+        tests:
+          - not_null
+      - name: encounter_datetime
+        tests:
+          - not_null
+      - name: center_name
+        tests:
+          - not_null
+      - name: enrollment_center
+        tests:
+          - not_null
+  - name: icu_tiae_metrics
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [location_month_key]
+    columns:
+      - name: location_of_intubation
+        tests:
+          - not_null
+      - name: encounter_month
+        tests:
+          - not_null

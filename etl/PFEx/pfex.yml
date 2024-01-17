@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: pfex_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [survey_key]
+    columns:
+      - name: survey_key
+      - name: pfex_all_replacement
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [survey_key]
+    columns:
+      - name: survey_key
+  - name: stg_pfex_duplicate_surveys
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, survey_line_id, question_id, cdw_updated_date]  
+          tags: ['failing']
+    columns:
+      - name: visit_key

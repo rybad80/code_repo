@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: global_patient_services
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [patient_enroll_date_key]

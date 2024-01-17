@@ -1,0 +1,113 @@
+version: 2
+
+models:
+  - name: neuro_encounter
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: brain_tumor_patient_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: epilepsy_seizure_visit_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: headache_migraine_visit_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: inpatient_census_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: office_visit_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: notes_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: neurology_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: neurosurgery_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+      - name: leukodystrophy_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - not_null
+  - name: stg_neuro_brain_tumor_patients
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key, encounter_date]
+    columns:
+      - name: primary_key
+  - name: stg_neuro_cohorts
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, dx_grouping, subgrouping]
+    columns:
+      - name: primary_key
+  - name: stg_neuro_cont_eeg_patient
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key, service_date, drill_down]
+    columns:
+      - name: primary_key
+  - name: stg_neuro_cont_eeg_volume
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key, service_date, drill_down]
+    columns:
+      - name: primary_key
+  - name: stg_neuro_cont_eeg
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [count_eeg_days_id, visit_key, cpt_code, visit_type_nm]
+          tags: ['failing']
+    columns:
+      - name: primary_key
+  - name: stg_neuro_encounter
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: stg_neuro_epilepsy_surgery
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, surgery_date]
+    columns:
+      - name: visit_key
+  - name: stg_neuro_neurosurgical_los
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, cpt_code]
+          tags: ['failing']
+    columns:
+      - name: visit_key
+  - name: stg_neuro_pfex
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [survey_key]
+    columns:
+      - name: survey_key
+  - name: stg_neuro_internal_mobility
+    tests:
+        - dbt_chop_utils.is_primary_key:
+            column_names: [primary_key]
+    columns:
+      - name: primary_key
+  - name: stg_neuro_surgical_cases
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_key, cpt_code, procedure_seq_num]
+          tags: ['failing']
+    columns:
+      - name: or_key

@@ -1,0 +1,239 @@
+---
+title: "STS - OR Case Cleanup"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill 
+    logo: https://github.research.chop.edu/pages/CQI/flexdashboard-theme/images/logo/chop-icon-header.png
+    css: 
+        - https://github.research.chop.edu/pages/CQI/chop-bootstrap/bootstrap-3/bootstrap.min.css
+        - https://github.research.chop.edu/pages/CQI/flexdashboard-theme/css/flexdashboard.min.css
+runtime: shiny    
+    
+---
+
+<style type="text/css">
+.value-box .caption {
+    font-size: 24px;
+}
+.value-box .value {
+    font-size: 35px;
+}
+</style>
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(DT)
+library(plotly)
+library(odbc)
+library(dplyr)
+library(stringr)
+library(methods)
+library(lubridate)
+library(data.table)
+library(sqldf)
+library(RODBC)
+library(rjson)
+library(RJSONIO)
+library(RCurl)
+library(httr)
+library(jsonlite)
+library(shiny)
+```
+
+
+```{r data-load, include=FALSE}
+
+# Connect to CDW
+sqlcon <- DBI::dbConnect(odbc::odbc(),
+                 Driver = "SQL Server",
+                 Server = "PSQLA012",
+                 Database = "Centripetus",
+                 UID = "CrTableCent",
+                 PWD = "Spring4CP",
+                 #PWD = rstudioapi::askForPassword("Database password"),
+                Port = 1433)
+ 
+                 
+#my_server="PSQLA012"
+#my_db="Centripetus"
+#y_username="CrTableCent"
+#my_pwd="Spring4CP"
+
+
+#sqlcon <- odbcDriverConnect(paste0("DRIVER={SQL Server};
+#                                 server=",my_server,";
+#                                 database=",my_db,";
+#                                 uid=",my_username,";
+#                                 pwd=",my_pwd))
+ 
+ # SQL setup
+ sql_code <- c("
+                  select   casenumber
+                          ,CASELINKNUM
+                      		,pt.medrecn
+                      		,surgdt
+                      		,cast(surgdt as date) surgery_date
+                          , ORENTRYT
+                      		, SISTARTT
+                      		, SISTOPT
+                      		, OREXITT --select *
+                          , case when len(caselinknum) = 0 then 1 ELSE 0 end as MISSING_CASELINKNUM
+                          , case when ORENTRYT is null or SISTARTT is null or SISTOPT is null or OREXITT is null then 1 else 0 end as MISSING_OR_TIMES
+                      	  , row_number() over (partition by pt.medrecn, cast(surgdt as date) order by casenumber) or_order
+                         from 
+                              cases stssurg 
+                              join hospitalization on stssurg.HospitalizationID = hospitalization.HospitalizationID
+                              join demographics pt on pt.patid = hospitalization.patid
+                         where 
+                               cast(surgdt as date) > '2019-01-01'
+                           and (len(caselinknum) =0
+                      	     or orentryt is null
+                      		 or sistartt is null
+                      		 or sistopt is null
+                      		 or orexitt is null)
+                      order by 4
+                                
+          ")
+          
+ #Write sql to a data frame
+ sql_table <- dbGetQuery(sqlcon, sql_code)
+ #sql_table$surgery_date <- as.Date(sql_table$surgery_date , "%Y-%m-%d")
+ 
+
+ # Connect to CDW
+ cdwcon <- odbcConnect("CDWPRD",uid = "rybad", pwd="Summer2019")
+ 
+ # SQL setup
+ cdw_sql <- c("
+                   select LOG_ID
+                    		,PAT_MRN_ID
+                    		,SCHED_START_DT
+                    		,surgery_date
+                    		,CAST(REPLACE(SUBSTRING(CAST(IN_ROOM AS VARCHAR(19)),12,5),':','') AS VARCHAR(4)) IN_ROOM
+                    		,CAST(REPLACE(SUBSTRING(CAST(PROC_START_INCISION AS VARCHAR(19)),12,5),':','') AS VARCHAR(4))  PROC_START_INCISION
+                    		,CAST(REPLACE(SUBSTRING(CAST(PROC_CLOSE_INCISION AS VARCHAR(19)),12,5),':','') AS VARCHAR(4))  PROC_CLOSE_INCISION
+                    		,CAST(REPLACE(SUBSTRING(CAST(OUT_ROOM AS VARCHAR(19)),12,5),':','') AS VARCHAR(4)) OUT_ROOM
+                    		,or_order
+                  from 
+                    		(
+                         select 
+                    		      or_log.log_id  
+                    			   ,pat.pat_key
+                    			   ,pat.pat_mrn_id
+                    			   ,or_log.SCHED_START_DT
+                    			   ,date(sched_start_dt) surgery_date
+                    			   ,min(case when d_case_times.src_id = 5 then event_in_dt end) as in_room
+                    			   ,min(case when d_case_times.src_id = 7 then event_in_dt end) as proc_start_incision
+                    			   ,min(case when d_case_times.src_id = 8 then event_in_dt end) as proc_close_incision
+                    			   ,min(case when d_case_times.src_id = 10 then event_in_dt end) as out_room
+                    			   ,row_number() over (partition by pat.pat_key, date(sched_start_dt) order by sched_start_dt) or_order
+                    			   
+                    		from  
+                               or_case 
+                    		       inner join or_log on or_case.log_key = or_log.log_key
+                    		 	     left join patient pat on pat.pat_key = or_case.pat_key
+                    	 		     join or_log_anes_staff anesstaff on anesstaff.log_key = or_log.log_key
+                    			     join or_log_case_times ortimes on ortimes.log_key = or_log.log_key
+                    		       join cdw_dictionary d_case_times on d_case_times.dict_key = ortimes.dict_or_pat_event_key
+
+                  		group by  or_log.log_id       
+                    		       ,pat.pat_key
+                    			     ,pat.pat_mrn_id
+                    				   ,or_log.SCHED_START_DT
+                    		)a		
+                    
+                order by 
+                         surgery_date
+                                
+          ")
+          
+ # Write sql to a data frame
+ cdw_table <- sqlQuery(cdwcon, cdw_sql,believeNRows=FALSE)
+ #cdw_table$PAT_MRN_ID <- as.character(cdw_table$PAT_MRN_ID)
+ 
+ missing_data <- merge(sql_table,cdw_table,by.x=c("medrecn","surgdt","or_order"),by.y=c("PAT_MRN_ID","SURGERY_DATE","OR_ORDER"))
+ 
+ missing_data_display <- missing_data %>%
+  select("casenumber", "LOG_ID","medrecn","surgery_date","IN_ROOM","PROC_START_INCISION","PROC_CLOSE_INCISION","OUT_ROOM")
+ 
+ 
+ 
+#sqlUpdate(sqlcon,missing_data_display,'CHOP_STS_CASES')
+
+  
+```
+
+
+
+Row
+-----------------------------------------------------------------------
+
+### Total Records Missing Data
+```{r}
+tot_err <- length(unique(sql_table$casenumber))
+valueBox(tot_err, icon = "fa-pencil")
+```
+
+### Cases Missing CaseLinkNum
+```{r}
+casenum_tbl <- sql_table[which(sql_table$MISSING_CASELINKNUM == 1),]
+tot_casenum <- length(unique(casenum_tbl$casenumber)) 
+valueBox(tot_casenum, icon = "fa-list")
+```
+
+### Cases Missing OR Milestone Times
+```{r}
+ortime_tbl <- sql_table[which(sql_table$MISSING_OR_TIMES == 1),]
+tot_ortime <- length(unique(ortime_tbl$casenumber)) 
+valueBox(tot_ortime, icon = "fa-list")
+```
+
+### Cases w/ Data Found in CDW
+```{r}
+cases_fnd <- length(unique(missing_data$casenumber))
+valueBox(cases_fnd, icon = "fa-pencil")
+
+```
+
+
+Row 
+-----------------------------------------------------------------------
+
+
+### STS Cases Missing Data
+```{r display-sts-detail}
+actionButton("stg_button", "Load Staging Table")
+sts_cols = c("casenumber","CASELINKNUM", "medrecn","surgery_date", "ORENTRYT","SISTARTT","SISTOPT","OREXITT")
+display_table <- sql_table[sts_cols]
+display_table %>%
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE,
+                                                 columnDefs = list(list(width = '12px', targets = c(0,1,2,3,4,5,6,7))),pageLength = 500, initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'font-size': '60%'});",
+    "}"))) %>%
+  DT::formatStyle(columns = c(0,1,2,3,4,5,6,7), fontSize = '60%')
+
+
+#sql_add_drop <- sqlDrop(sqlcon,'CHOP_STS_CASES1')
+#observeEvent(stg_button$click,sql_add_drop)
+
+```
+
+
+### Missing Data Found in CDW
+```{r display-cdw-detail}
+actionButton("load_button", "Load Missing Data")
+
+#cdw_cols = c("LOG_ID", "PAT_MRN_ID","SCHED_START_DT", "IN_ROOM","PROC_START_INCISION","PROC_CLOSE_INCISION","OUT_ROOM")
+display_table <- missing_data_display
+display_table %>%
+  DT::datatable(rownames = FALSE, options = list(autoWidth = TRUE,
+                                                 columnDefs = list(list(width = '12px', targets = c(0,1,2,3,4,5,6,7))),pageLength = 500, initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'font-size': '60%'});",
+    "}"))) %>%
+  DT::formatStyle(columns = c(0,1,2,3,4,5,6,7), fontSize = '60%')
+
+```

@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: scorecard_metrics
+    tests:
+      - chop_data_blocks.equality:
+          expected_model: ref('testing_output__scorecard_metrics')
+          tags: ['failing']
+    columns:
+      - name: visual_month
+        tests:
+          - not_null
+      - name: domain
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['clinical', 'research', 'operational']
+      - name: subdomain
+        tests:
+          - accepted_values:
+              values: ['finance', 'pfex', 'access center', 'hr']
+              tags: ['failing']
+      - name: metric_name
+        tests:
+          - not_null
+      - name: drill_down_one
+        tests:
+          - not_null:
+              tags: ['failing']
+      - name: drill_down_two
+        tests:
+          - not_null:
+              tags: ['failing']
+      - name: metric_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['avg', 'count', 'median', 'percentage', 'percentile', 'rate', 'dollar']
+      - name: desired_direction
+        tests:
+            - not_null:
+                tags: ['failing']
+            - accepted_values:
+                values: ['up', 'down']
+      - name: target_ytd
+      - name: red_threshold
+      - name: interpretation_fy_target
+        tests:
+          - accepted_values:
+              values: ['target achieved', 'target not achieved', 'not evaluated']
+      - name: interpretation_fy_status
+        tests:
+            - accepted_values:
+                values: [1, 2, 3]
+  - name: stg_scorecard_data_up_to_date
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [metric_id, drill_down_one, drill_down_two, full_dt]
+          tags: ['failing']
+    columns:
+      - name: metric_id
+  - name: scorecard_detail
+    columns:
+      - name: num_calculation
+        tests:
+            - accepted_values:
+                values: ['sum', 'count', 'median', 'avg', 'percentile_25', 'percentile_75', 'count_2.5x']
+  - name: stg_scorecard_data
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [metric_id, drill_down_one, drill_down_two, metric_date, primary_key]
+          where: "num_calculation != 'count'"
+          tags: ['failing']

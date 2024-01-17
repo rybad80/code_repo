@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: urology_usnews_calendar_and_codes
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [submission_year, question, code_type, code]
+          tags: ['failing']
+  - name: urology_usnews_procedure
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [urology_usnews_procedure_question_key]

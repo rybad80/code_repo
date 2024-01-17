@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: telehealth_encounter_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: telehealth_evisit_encounter
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: telehealth_interpreter_encounter
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: telehealth_kaps_events
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [file_id]
+    columns:
+      - name: file_id
+  - name: telehealth_pfex_outpatient
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: telehealth_survey_provider
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [survey_key]
+    columns:
+      - name: survey_key

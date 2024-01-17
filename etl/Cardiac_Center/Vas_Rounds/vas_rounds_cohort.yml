@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: vas_rounds_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, visit_key, csn_number]
+          tags: ['failing']

@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: ortho_surgery_scoliosis_procedures
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_key, or_proc_id]
+    columns:
+      - name: or_key
+        tests:
+          - not_null
+      - name: or_proc_id
+        tests:
+          - not_null

@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: hdms_ar_transactions
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [hdms_account,mrn,hdms_provider_identifier,hdms_transaction_date,hdms_transaction_nbr,hdms_transaction_type,hdms_product_code,hdms_billing_code,hdms_category_description,hdms_item_type,hdms_payer_identifier]  
+    columns:
+      - name: hdms_account
+      - name: mrn
+      - name: hdms_provider_identifier
+      - name: hdms_transaction_date
+      - name: hdms_transaction_nbr
+      - name: hdms_transaction_type
+      - name: hdms_product_code
+      - name: hdms_billing_code
+      - name: hdms_category_description
+      - name: hdms_item_type
+      - name: hdms_payer_identifier
+  - name: home_care_pr_statistics_by_day
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [homecare_source_system,entity_code,department_code,account_code,start_date,cost_center_site_id]
+    columns:
+      - name: homecare_source_system
+      - name: entity_code
+      - name: department_code
+      - name: account_code
+      - name: start_date
+      - name: cost_center_site_id
+  - name: home_care_unbilled_reason_daily
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [unbilled_reason_unique_key]
+    columns:
+      - name: unbilled_reason_unique_key
+      - name: hdms_unbilled_reason
+      - name: unbilled_date
+      - name: total_daily_unbilled_reason_revenue
+  - name: home_care_unbilled_team_daily
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [unbilled_team_unique_key]
+    columns:
+      - name: unbilled_team_unique_key
+      - name: hdms_unbilled_team
+      - name: unbilled_date
+      - name: total_daily_unbilled_team_revenue

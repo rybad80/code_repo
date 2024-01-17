@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: smart_data_element_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [sde_key, seq_num]
+          tags: ['failing']
+      - dbt_utils.expression_is_true:
+          expression: "note_key != 0"
+          condition: "lower(linked_field) = 'note_info.note_key'"
+      - dbt_utils.expression_is_true:
+          expression: "concept_key <> 0"
+          condition: "lower(linked_field) = 'clinical_concept.concept_key'"
+    columns:
+      - name: linked_field
+        tests:
+          - not_null:
+              tags: ['failing']
+      - name: concept_key
+      - name: visit_key
+        tests:
+          - dbt_utils.relationships_where:
+              to: ref('stg_encounter')
+              field: visit_key
+              from_condition: visit_key not in (0, -1)
+              tags: ['failing']
+      - name: pat_key
+        tests:
+          - relationships:
+              to: ref('stg_patient')
+              field: pat_key   
+              warn_if: ">0"
+              error_if: ">375"
+  - name: smart_data_element_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [smart_data_history_key]
+     
+                    

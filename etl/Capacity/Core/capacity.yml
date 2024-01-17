@@ -1,0 +1,466 @@
+version: 2
+
+models:
+  - name: capacity_ip_census_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]           
+    columns:
+      - name: visit_key
+        tests:     
+          - not_null  
+      - name: visit_event_key
+        tests:     
+          - not_null
+      - name: pat_key
+        tests:     
+          - not_null  
+      - name: dept_key
+        tests:     
+          - not_null              
+      - name: admission_source
+        tests:     
+          - not_null
+      - name: admission_service
+        tests:     
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 95
+      - name: hospital_admit_date
+        tests:     
+          - not_null
+          - dbt_chop_utils.date_in_past
+      - name: inpatient_census_admit_date
+        tests:     
+          - not_null
+          - dbt_chop_utils.date_in_past
+      - name: ed_ind
+        tests:
+          - dbt_chop_utils.is_indicator      
+          - not_null  
+      - name: discharge_order_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 90
+      - name: hospital_discharge_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 90
+      - name: admission_department_name
+        tests:     
+          - not_null:
+              tags: ['failing']
+      - name: admission_department_group_name
+        tests:     
+          - not_null:
+              tags: ['failing']
+      - name: admission_location_group_name
+        tests:     
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 90
+      - name: admission_bed_care_group
+        tests:     
+          - not_null:
+              tags: ['failing']
+      - name: admission_department_center_abbr
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 90     
+      - name: discharge_department_name
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: "hospital_discharge_date is not null"
+      - name: discharge_department_group_name
+        tests:     
+          - dbt_chop_utils.not_null_when:
+              expression: "hospital_discharge_date is not null"
+      - name: discharge_location_group_name
+        tests:     
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 90
+      - name: discharge_bed_care_group
+        tests:     
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 90
+      - name: discharge_department_center_abbr
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 90
+      - name: discharge_order_to_discharge_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0"
+              tags: ['failing']
+      - name: discharge_order_to_discharge_target_ind
+        tests:
+          - dbt_chop_utils.is_indicator      
+      - name: discharge_before_noon_ind
+        tests:
+          - dbt_chop_utils.is_indicator      
+          - not_null  
+      - name: inpatient_los_days
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: "hospital_discharge_date is not null"
+      - name: hospital_los_days
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: "hospital_discharge_date is not null"
+      - name: drg
+  - name: capacity_ed_ip_admit_intervals
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key]
+    columns:  
+      - name: ed_mrft_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 99
+      - name: admit_unit_assigned_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 99
+      - name: admit_bed_assigned_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 95
+      - name: admit_bed_approval_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 75
+      - name: rn_handoff_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 40
+              warn_if: ">0"
+              error_if: ">1"
+      - name: md_handoff_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 90
+      - name: admit_from_ed_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 99
+      - name: admit_bed_approval_to_rn_handoff_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0"
+      - name: admit_bed_approval_to_md_handoff_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0"
+      - name: admit_bed_assigned_to_bed_approval_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0"
+      - name: admit_unit_assigned_to_bed_assigned_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0"
+      - name: ed_mrft_to_unit_assigned_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0"
+      - name: ed_mrft_to_admit_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0"
+      - name: admit_bed_assigned_to_rn_handoff_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: admit_unit_assigned_to_md_handoff_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0"
+      - name: ed_mrft_to_admit_target_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - dbt_chop_utils.not_null_when:
+              expression: "ed_mrft_to_admit_mins is not null"
+  - name: capacity_intercampus_transfers
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [sending_visit_event_key]
+  - name: capacity_transport_admit_intervals
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]  
+    columns: 
+      - name: intake_date
+        tests:    
+          - not_null  
+      - name: service_accepted_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 95
+      - name: transport_assigned_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 90
+      - name: enroute_date
+        tests:    
+          - not_null  
+      - name: depart_referring_facility_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 95
+              warn_if: ">0"
+              error_if: ">1"
+      - name: hospital_admit_date
+        tests:    
+          - not_null  
+      - name: inpatient_census_admit_date
+        tests:    
+          - not_null  
+      - name: ed_ind
+        tests:
+          - dbt_chop_utils.is_indicator      
+          - not_null
+      - name: team_available_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 90
+      - name: intake_to_assigned_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: intake_to_enroute_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: assigned_to_enroute_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: accepted_to_enroute_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: bedside_arrive_to_bedside_depart_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: facility_arrive_to_facility_depart_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: intake_to_available_mins
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: intake_to_enroute_target_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - dbt_chop_utils.not_null_when:
+              expression: "intake_to_enroute_mins is not null"
+  - name: capacity_ip_transfer_intervals
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key]  
+    columns: 
+      - name: dept_key
+        tests:    
+          - not_null  
+      - name: department_name
+      - name: department_group_name
+      - name: bed_care_care_group_name
+      - name: next_dept_key
+        tests:    
+          - not_null  
+      - name: next_department_name
+      - name: next_department_group_name
+      - name: next_bed_care_group
+      - name: enter_date
+        tests:    
+          - not_null  
+  - name: capacity_bed_clean_request_intervals
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key]  
+    columns:
+      - name: dept_key
+        tests:    
+          - not_null
+      - name: bed_key
+        tests:    
+          - not_null
+      - name: bed_name
+      - name: department_name
+      - name: department_group_name
+      - name: location_group_name
+      - name: bed_care_group
+      - name: clean_request_date
+        tests:    
+          - not_null
+      - name: clean_in_progress_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 85
+      - name: clean_date
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 85
+      - name: clean_request_to_in_progress_mins
+        tests:  
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: clean_in_progess_to_clean_mins
+        tests:  
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: clean_request_to_clean_mins
+        tests:  
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: "0" 
+      - name: clean_request_to_in_progress_target_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - dbt_chop_utils.not_null_when:
+              expression: "clean_request_to_in_progress_mins is not null"    
+      - name: clean_in_progress_to_clean_target_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - dbt_chop_utils.not_null_when:
+              expression: "clean_in_progess_to_clean_mins is not null"   
+      - name: clean_request_to_clean_target_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+          - dbt_chop_utils.not_null_when:
+              expression: "clean_request_to_clean_mins is not null"   
+  - name: capacity_ip_hourly_census
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key, census_date, census_hour]
+      - dbt_chop_utils.recency:
+          column_name: census_date        
+    columns:  
+      - name: census_dept_key
+        tests:    
+          - not_null      
+      - name: census_date
+        tests:    
+          - not_null
+      - name: census_hour
+        tests:    
+          - not_null
+      - name: service
+        tests:    
+          - not_null
+      - name: department_name
+        tests:    
+          - not_null
+      - name: department_group_name
+        tests:    
+          - not_null
+      - name: location_group_name
+        tests:    
+          - not_null
+      - name: bed_care_group
+        tests:    
+          - not_null
+      - name: department_center_abbr
+        tests:    
+          - not_null
+  - name: capacity_ip_midnight_census 
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key, midnight_date] 
+      - dbt_chop_utils.recency:
+          column_name: midnight_date
+    columns:  
+      - name: census_dept_key
+        tests:    
+          - not_null
+      - name: service
+        tests:    
+          - not_null
+      - name: department_name
+        tests:    
+          - not_null
+      - name: department_group_name
+        tests:    
+          - not_null
+      - name: location_group_name
+        tests:    
+          - not_null
+      - name: bed_care_group
+        tests:    
+          - not_null
+      - name: department_center_abbr
+        tests:    
+          - not_null
+  - name: capacity_occupancy_hospital_hourly 
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [census_hour, census_date, department_center_abbr]
+    columns:
+      - name: occupancy
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: "department_center_abbr in ('PHL IP Cmps', 'KOPH IP Cmps')"
+              tags: ['failing']
+  - name: capacity_occupancy_hospital_daily_peak
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [census_date, department_center_abbr]
+    columns:
+      - name: peak_occupancy
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: "department_center_abbr in ('PHL IP Cmps', 'KOPH IP Cmps')"
+              tags: ['failing']
+          - dbt_chop_utils.within_range:
+              min_value: .1
+              max_value: 1.2
+              tags: ['failing']
+  - name: capacity_occupancy_enterprise_daily_peak
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [census_date]
+    columns:
+      - name: peak_occupancy
+        tests:
+          - not_null:
+              tags: ['failing']
+          - dbt_chop_utils.within_range:
+              min_value: 0
+              max_value: 1.2    
+  - name: capacity_licensed_bed_cost_center
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [workday_cost_cntr_key, bed_count_date]
+    columns:
+      - name: workday_cost_cntr_key
+  - name: capacity_ip_census_features
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, census_date]
+          tags: ['failing']
+    columns:
+      - name: visit_key
+  - name: capacity_licensed_bed_department
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [bed_count_date_key, dept_key]
+    columns:
+      - name: bed_count_date_key
+  - name: capacity_transfer_delay_survey
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [project_id, record_id]
+    columns:
+      - name: primary_delay
+        tests:
+          - not_null
+      - name: secondary_delay_1
+        tests:
+          - not_null
+      - name: secondary_delay_2
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: secondary_delay_3 is not null
+  - name: stg_capacity_transfers
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key]

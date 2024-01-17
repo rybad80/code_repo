@@ -1,0 +1,38 @@
+version: 2
+models:
+  - name: diabetes_patient_all_historical
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [report_point, pat_key]
+    columns:
+      - name: report_point
+      - name: pat_key
+        tests:
+          - not_null
+  - name: diabetes_t1y1_historical
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key]
+    columns:
+      - name: pat_key
+        tests:
+          - not_null
+  - name: diabetes_visit_cohort_historical
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+        tests:
+          - not_null
+  - name: diabetes_icr_active_flowsheets_historical
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key, recorded_date, fs_type, meas_val]
+          tags: ['failing']
+    columns:
+      - name: visit_key
+      - name: recorded_date
+      - name: fs_type
+        tests:
+          - not_null

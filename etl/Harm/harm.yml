@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: outpatient_central_line_days
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, month_dt]
+  - name: outpatient_central_line_days_by_division
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, month_dt, display_specialty]
+  - name: ambulatory_clabsi_events
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [inf_surv_id]
+  - name: ambulatory_clabsi_hospital_rate
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [month_dt]
+  - name: ambulatory_clabsi_division_rate
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [month_dt, display_specialty]

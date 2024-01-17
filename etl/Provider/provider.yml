@@ -1,0 +1,9 @@
+version: 2
+models:
+  - name: provider_encounter_care_team
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [csn, provider_care_team_name, provider_care_team_start_date]
+          tags: ['failing']
+    columns:
+      - name: provider_care_team_name

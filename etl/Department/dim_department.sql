@@ -1,0 +1,30 @@
+select
+    department_key,
+    dept_key,
+    department_id,
+    department_name,
+    department_abbr,
+    department_center_id,
+    department_center_abbr,
+    department_center_name,
+    specialty_name,
+    intended_use_id,
+    intended_use_abbr,
+    intended_use_name,
+    care_area_id,
+    care_area_abbr,
+    care_area_name,
+    addl_care_area_1_id,
+    addl_care_area_1_abbr,
+    addl_care_area_1_name,
+    addl_care_area_2_id,
+    addl_care_area_2_abbr,
+    addl_care_area_2_name,
+    addl_care_area_3_id,
+    addl_care_area_3_abbr,
+    addl_care_area_3_name,
+    record_status_active_ind
+from
+    {{ref('stg_department_all')}}
+where
+    intended_use_id is not null

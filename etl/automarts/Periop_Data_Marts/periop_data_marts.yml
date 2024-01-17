@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: fact_periop
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+    columns:
+      - name: log_key
+  - name: fact_periop_arc_preplan
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+    columns:
+      - name: log_key
+  - name: fact_periop_available_block_time
+       # PK difficult to find, will consult with experts
+   #tests:
+   #   - dbt_chop_utils.is_primary_key:
+   #       column_names: [log_key]
+    columns:
+      - name: log_key
+  - name: fact_periop_delay_rsns
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+    columns:
+      - name: log_key
+  - name: fact_periop_pre_post_dept
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+    columns:
+      - name: log_key
+  - name: fact_periop_sched_cases
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [or_case_id]
+    columns:
+      - name: or_case_id
+  - name: fact_periop_timestamps
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+    columns:
+      - name: log_key
+  - name: fact_periop_turnaround_time
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [log_key]
+    columns:
+      - name: log_key
+  - name: fact_periop_used_block_time
+   # PK difficult to find, will consult with experts
+   # tests:
+   #   - dbt_chop_utils.is_primary_key:
+   #       column_names: [log_key]
+    columns:
+      - name: log_key

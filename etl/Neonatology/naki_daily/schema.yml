@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: naki_daily
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mrn, naki_list_date]
+      - dbt_chop_utils.recency:
+          column_name: naki_list_date
+          datepart: day
+          interval: 3
+          tags: ['failing']
+    columns:
+      - name: mrn
+        tests:
+          - not_null
+      - name: naki_list_date
+        tests:
+          - not_null
+          - dbt_chop_utils.date_in_past

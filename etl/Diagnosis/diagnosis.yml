@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: diagnosis_encounter_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [encounter_key, diagnosis_key]
+    columns:
+      - name: diagnosis_key
+        tests:
+          - relationships:
+              to: ref('dim_diagnosis')
+              field: diagnosis_key
+  - name: diagnosis_medically_complex
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key

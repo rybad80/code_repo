@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: cardiac_surgery
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cardiac_study_id]   
+    columns:          
+      - name: surg_date
+        tests:
+          - not_null    
+          - dbt_chop_utils.date_in_past
+      - name: surgeon
+        tests:
+          - not_null:
+              where: "surg_date >= '2000-01-01 00:00:00'"
+      - name: proc_name
+        tests:
+          - not_null    
+      - name: asd_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: vsd_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: tof_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: avc_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: aso_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: aso_vsd_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: glenn_hemi_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: fontan_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: truncus_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: norwood_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: coarc_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: heart_tx_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: heart_lung_tx_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: lung_tx_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: vad_implant_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: ecmo_cannulation_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: delayed_sternal_closure_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: skin_incs_open_date
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: skin_incs_closed_date is not null
+              tags: ['failing']
+      - name: or_entry_date
+        tests:
+          - dbt_chop_utils.not_null_when:
+              expression: or_exit_date is not null
+              tags: ['failing']

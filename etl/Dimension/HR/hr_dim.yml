@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: dim_department_staffing_current
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [department_staffing_key]
+    columns:
+      - name: department_staffing_key
+        description: PK
+      - name: department_id
+        tests:
+          - unique

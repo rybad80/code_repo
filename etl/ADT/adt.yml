@@ -1,0 +1,99 @@
+version: 2
+
+models:
+  - name: adt_department
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key]
+    columns:
+      - name: hsp_acct_key
+        tests:
+          - dbt_chop_utils.fill_rate:
+              min_percent_not_null: 12
+      - name: currently_admitted_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: last_department_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: exit_date
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: enter_date
+              tags: ['failing']
+  - name: adt_department_group
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key] 
+    columns:
+      - name: currently_admitted_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: last_department_group_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: exit_date
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: enter_date
+              tags: ['failing']
+  - name: adt_bed
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key]
+      - dbt_chop_utils.recency:
+          column_name: enter_date
+          datepart: day
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: currently_admitted_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: last_bed_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: exit_date
+        tests:
+          - dbt_chop_utils.is_greater_or_equal_to:
+              expression: enter_date
+              tags: ['failing']
+      - name: bed_name
+        tests:
+          - not_null 
+      - name: department_group_name
+        tests:
+          - not_null
+  - name: adt_service
+    tests:
+       - dbt_chop_utils.is_primary_key:
+           column_names: [visit_event_key]
+       - dbt_chop_utils.recency:
+          column_name: service_end_datetime
+          datepart: day
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: service_start_datetime
+        tests:
+          - not_null
+          - dbt_chop_utils.date_in_past:
+              tags: ['failing']
+      - name: service
+        tests:
+         - not_null
+      - name: service_end_datetime
+        tests:
+         - dbt_chop_utils.is_greater_or_equal_to:
+             expression: service_start_datetime
+  - name: adt_service_itcu
+    tests:
+       - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key, itcu_service_number]
+       - dbt_chop_utils.recency:
+          column_name: itcu_service_end_datetime
+          datepart: day
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: visit_event_key

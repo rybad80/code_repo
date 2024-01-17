@@ -1,0 +1,333 @@
+version: 2
+models:
+  - name: scheduling_specialty_care_appointments
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]        
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: days
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: patient_name    
+      - name: mrn
+      - name: dob
+      - name: csn
+        tests:
+          - not_null
+      - name: encounter_date
+        tests:
+          - not_null
+      - name: appointment_date
+      - name: appointment_made_date
+      - name: appointment_entry_employee
+      - name: appointment_entry_employee_id
+      - name: appointment_cancel_date
+      - name: appointment_lag_days
+      - name: npv_appointment_lag_days
+      - name: specialty_name
+        tests:
+          - not_null
+      - name: department_name
+        tests:
+          - not_null
+      - name: department_id
+        tests:
+          - not_null
+      - name: revenue_location_group
+      - name: provider_name
+        tests:
+          - not_null:
+              tags: ['failing']
+      - name: provider_id
+        tests:
+          - not_null
+      - name: provider_type
+      - name: secondary_provider_name
+      - name: secondary_provider_type
+      - name: secondary_prov_key
+      - name: visit_type
+        tests:
+          - not_null
+      - name: visit_type_id
+        tests:
+          - not_null
+      - name: appointment_status
+        tests:
+          - not_null
+      - name: appointment_status_id
+        tests:
+          - not_null
+      - name: last_specialty_completed_visit_key
+      - name: last_specialty_completed_encounter_date
+      - name: next_specialty_visit_key
+      - name: next_specialty_encounter_date
+      - name: next_specialty_provider_name
+      - name: next_specialty_department_name
+      - name: next_specialty_visit_type
+      - name: next_specialty_visit_type_id
+      - name: appointment_note_text
+      - name: reason_for_visit
+      - name: follow_up_disposition
+      - name: disposition_return_note
+      - name: follow_up_date
+      - name: follow_up_no_date_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: cancel_24hr_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: cancel_48hr_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: past_appointment_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: video_visit_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: telephone_visit_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: video_telephone_visit_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: scc_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: new_to_specialty_3_yr_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: npv_lag_incl_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: pat_key
+        tests:
+          - not_null
+      - name: dept_key
+        tests:
+          - not_null
+      - name: prov_key
+        tests:
+          - not_null
+      - name: visit_key
+        tests:
+          - not_null
+  - name: scheduling_provider_slot_status
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [prov_key, slot_start_time, dept_key]
+      - dbt_chop_utils.recency:
+          column_name: encounter_date
+          datepart: days
+          interval: 2
+          tags: ['failing']
+    columns:
+      - name: slot_start_time
+        tests:
+          - not_null
+      - name: prov_key
+        tests:
+          - not_null
+      - name: dept_key
+        tests:
+          - not_null
+      - name: encounter_date
+        tests:
+          - not_null
+      - name: slot_length_minute
+        tests:
+          - not_null
+      - name: revenue_location_group
+      - name: specialty_name
+        tests:
+          - not_null
+      - name: department_name
+        tests:
+          - not_null
+      - name: department_id
+        tests:
+          - not_null
+      - name: provider_name
+        tests:
+          - not_null
+      - name: provider_type
+        tests:
+          - not_null:
+              tags: ['failing']
+      - name: provider_id
+        tests:
+          - not_null
+      - name: csn
+        tests:
+          - not_null
+      - name: visit_key
+        tests:
+          - not_null
+      - name: visit_type
+        tests:
+          - not_null
+      - name: visit_type_id
+        tests:
+          - not_null
+      - name: slot_appointment_status
+      - name: slot_appointment_status_id
+        tests:
+          - not_null
+      - name: slot_appointment_block
+      - name: slot_status
+        tests:
+          - not_null
+      - name: unavailable_reason
+      - name: hold_reason
+      - name: slot_status_detail
+        tests:
+          - not_null
+      - name: unavailable_hold_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: day_unavailable_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator:
+              config:
+                severity: warn
+      - name: time_unavailable_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator:
+              config:
+                severity: warn
+      - name: available_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: open_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: scheduled_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: specialty_care_slot_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: primary_care_slot_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+      - name: fill_rate_incl_ind
+        tests:
+          - not_null
+          - dbt_chop_utils.is_indicator
+  - name: scheduling_resource_slot_status
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [prov_key, slot_start_time, dept_key]
+    columns:
+      - name: patient_name
+  - name: scheduling_cancel_slot_refills
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [dept_key, prov_key, eff_dt]
+          tags: ['failing']
+    columns:
+      - name: dept_key
+        tests:
+          - not_null
+      - name: prov_key
+        tests:
+          - not_null
+      - name: eff_dt
+        tests:
+          - not_null
+  - name: scheduling_provider_slot_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [prov_id, department_id, slot_begin_time, appt_block_c, dbt_valid_from, dbt_valid_to]
+    columns:
+      - name: prov_id
+        tests: 
+          - not_null
+      - name: department_id
+        tests: 
+          - not_null
+      - name: slot_begin_time
+        tests: 
+          - not_null
+      - name: appt_block_c
+        tests: 
+          - not_null
+      - name: dbt_valid_from
+        tests: 
+            - not_null
+      - name: dbt_valid_to
+        tests: 
+          - not_null
+  - name: stg_tna_valid_slot_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: ['prov_id', 'department_id', 'slot_begin_time', appt_block_c, 'as_of_date', valid_from_date_key, valid_to_date_key]
+    columns:
+      - name: prov_id
+        tests: 
+          - not_null
+      - name: department_id
+        tests: 
+          - not_null
+      - name: slot_begin_time
+        tests: 
+          - not_null
+      - name: appt_block_c
+        tests: 
+          - not_null
+      - name: as_of_date
+        tests: 
+            - not_null
+      - name: valid_from_date_key
+        tests: 
+          - not_null
+      - name: valid_to_date_key
+        tests: 
+          - not_null
+  - name: stg_tna_valid_grouped_slot_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [slot_prov_dept_key]
+    columns:
+      - name: slot_prov_dept_key
+        tests:
+          - not_null
+  - name: tna_outpatient_available_slot_history
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [as_of_date, department_id, prov_id, slot_begin_time, group_by]
+    columns:
+      - name: as_of_date
+        tests:
+          - not_null
+      - name: department_id
+        tests:
+          - not_null
+      - name: prov_id
+        tests:
+          - not_null
+      - name: slot_begin_time
+        tests:
+          - not_null
+      - name: group_by
+        tests:
+          - not_null

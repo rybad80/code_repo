@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: dim_diagnosis
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diagnosis_key]
+  - name: lookup_diagnosis_icd10
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [icd10_code]
+    columns:
+      - name: icd10_code

@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: ipc_interaction_patient_provider
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [action_key, action_seq_num, emp_key, visit_key, event_description]
+    columns:
+      - name: employee_name
+        tests:
+          - not_null
+  - name: ipc_interaction_patient_patient
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [index_patient_visit_key, action_key, action_seq_num]
+    columns:
+      - name: index_patient_visit_key
+        tests:
+          - not_null

@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: cardiac_perfusion_surgery
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [anes_visit_key]   
+    columns:
+      - name: patient_name
+        tests:
+          - not_null    
+      - name: dob
+        tests:
+          - dbt_chop_utils.date_in_past
+          - not_null
+      - name: mrn
+        tests:
+          - not_null    
+          - dbt_chop_utils.number_of_characters:
+              min_length: 8
+              condition: MRN not in ('INVALID')            
+      - name: csn
+        tests:
+          - dbt_chop_utils.number_of_characters:
+              min_length: 14
+      - name: perfusion_date
+        tests:
+          - not_null    
+          - dbt_chop_utils.date_in_past  
+      - name: weight_kg
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0
+              max_value: 300
+      - name: height_cm
+        tests:
+          - dbt_chop_utils.within_range:
+              min_value: 0
+              max_value: 250              

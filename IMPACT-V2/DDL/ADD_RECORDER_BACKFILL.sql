@@ -1,0 +1,286 @@
+--select * into bkp_CHOP_IMPACT_CATHDATA from CHOP_IMPACT_CATHDATA
+--select * from bkp_CHOP_IMPACT_CATHDATA
+--drop table CHOP_IMPACT_CATHDATA
+
+
+CREATE TABLE [dbo].[CHOP_IMPACT_CATHDATA](
+	[SURG_ENC_ID] [nvarchar](50) NOT NULL,
+	[CATH_CASE_ID] [nvarchar](50) NULL,
+	[PROCDXCATH] [int] NULL,
+	[PROCASD] [int] NULL,
+	[HEIGHT] [decimal](5, 2) NULL,
+	[WEIGHT] [decimal](5, 2) NULL,
+	[PREPROCHGB] [decimal](4, 2) NULL,
+	[PREPROCCREAT] [decimal](4, 2) NULL,
+	[PREPROCO2] [int] NULL,
+	[NEC] [int] NULL,
+	[SEPSIS] [int] NULL,
+	[PREG] [int] NULL,
+	[PREPROCANTIARR] [int] NULL,
+	[PREPROCANTICOAG] [int] NULL,
+	[PREPROCANTIHYP] [int] NULL,
+	[PREPROCANTIPLATELET] [int] NULL,
+	[PREPROCBB] [int] NULL,
+	[PREPROCDIURETIC] [int] NULL,
+	[PREPROCPROSTA] [int] NULL,
+	[PREPROCVASO] [int] NULL,
+	[PREPROCSINUS] [int] NULL,
+	[PREPROCAET] [int] NULL,
+	[PREPROCSVT] [int] NULL,
+	[PREPROCAFIB] [int] NULL,
+	[PREPROCJUNCT] [int] NULL,
+	[PREPROCIDIO] [int] NULL,
+	[PREPROCAVB2] [int] NULL,
+	[PREPROCAVB3] [int] NULL,
+	[PREPROCPACED] [int] NULL,
+	[PROCCOARC] [int] NULL,
+	[PROCAORTICVALV] [int] NULL,
+	[PROCPULMONARYVALV] [int] NULL,
+	[PROCPDA] [int] NULL,
+	[PROCPROXPASTENT] [int] NULL,
+	[HOSPSTATUS] [int] NULL,
+	[PROCSTATUS] [int] NULL,
+	[TRAINEE] [int] NULL,
+	[OPERATORID] [int] NULL,
+	[ANESPRESENT] [int] NULL,
+	[ANESCALLEDIN] [int] NULL,
+	[SEDATION] [int] NULL,
+	[AIRMNGLMA] [int] NULL,
+	[AIRMNGTRACH] [int] NULL,
+	[AIRMNGBAGMASK] [int] NULL,
+	[AIRMNGCPAP] [int] NULL,
+	[AIRMNGELECINTUB] [int] NULL,
+	[AIRMNGPREVINTUB] [int] NULL,
+	[ACCESSLOC] [int] NULL,
+	[VENACCESS] [int] NULL,
+	[VENLARGSHEATH] [int] NULL,
+	[VENCLOSUREMETHODND] [int] NULL,
+	[ARTACCESS] [int] NULL,
+	[ARTLARGSHEATH] [int] NULL,
+	[ARTCLOSUREMETHODND] [int] NULL,
+	[FLUOROTIME] [decimal](4, 1) NULL,
+	[CONTRASTVOL] [int] NULL,
+	[SYSHEPARIN] [int] NULL,
+	[ACTMONITOR] [int] NULL,
+	[ACTPEAK] [int] NULL,
+	[INOTROPE] [int] NULL,
+	[INOTROPEUSE] [int] NULL,
+	[ECMOUSE] [int] NULL,
+	[LVADUSE] [int] NULL,
+	[AUX5] [nvarchar](50) NULL,
+	[SCHEDARRIVALDATE] [datetime] NULL,
+	[PROCOTHER] [int] NULL,
+	[RECORDER] [int] NULL,
+	[PREPROCHGBND] [int] NULL,
+	[PREPROCCREATND] [int] NULL,
+	[SVDEFECT] [int] NULL,
+	[PREPROCMED] [int] NULL,
+	[PROCEPCATH] [int] NULL,
+	[PROCEPABLATION] [int] NULL,
+	[PROCTPVR] [int] NULL,
+	[SECONDPARTICIPATING] [int] NULL,
+	[PROCSTARTDATE] [datetime] NULL,
+	[PROCSTARTTIME] [datetime] NULL,
+	[PROCENDDATE] [datetime] NULL,
+	[PROCENDTIME] [datetime] NULL,
+	[AIRMNG] [int] NULL,
+	[IABPUSE] [int] NULL,
+	[PLANEUSED] [int] NULL,
+	[FLUORODOSEKERM] [int] NULL,
+	[FLUORODOSEKERM_UNITS] [int] NULL,
+	[FLUORODOSEDAP] [int] NULL,
+	[FLUORODOSEDAP_UNITS] [int] NULL,
+	[LOADDT] [datetime] NOT NULL,
+	[MD5] [varchar](50) NOT NULL,
+	[PENDINGIMPORT] [int] NOT NULL,
+ CONSTRAINT [PK_CHOP_IMPACT_CATHDATA] PRIMARY KEY CLUSTERED 
+(
+	[SURG_ENC_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+USE [Centripetus]
+GO
+
+INSERT INTO [dbo].[CHOP_IMPACT_CATHDATA]
+           ([SURG_ENC_ID]
+           ,[CATH_CASE_ID]
+           ,[PROCDXCATH]
+           ,[PROCASD]
+           ,[HEIGHT]
+           ,[WEIGHT]
+           ,[PREPROCHGB]
+           ,[PREPROCCREAT]
+           ,[PREPROCO2]
+           ,[NEC]
+           ,[SEPSIS]
+           ,[PREG]
+           ,[PREPROCANTIARR]
+           ,[PREPROCANTICOAG]
+           ,[PREPROCANTIHYP]
+           ,[PREPROCANTIPLATELET]
+           ,[PREPROCBB]
+           ,[PREPROCDIURETIC]
+           ,[PREPROCPROSTA]
+           ,[PREPROCVASO]
+           ,[PREPROCSINUS]
+           ,[PREPROCAET]
+           ,[PREPROCSVT]
+           ,[PREPROCAFIB]
+           ,[PREPROCJUNCT]
+           ,[PREPROCIDIO]
+           ,[PREPROCAVB2]
+           ,[PREPROCAVB3]
+           ,[PREPROCPACED]
+           ,[PROCCOARC]
+           ,[PROCAORTICVALV]
+           ,[PROCPULMONARYVALV]
+           ,[PROCPDA]
+           ,[PROCPROXPASTENT]
+           ,[HOSPSTATUS]
+           ,[PROCSTATUS]
+           ,[TRAINEE]
+           ,[OPERATORID]
+           ,[ANESPRESENT]
+           ,[ANESCALLEDIN]
+           ,[SEDATION]
+           ,[AIRMNGLMA]
+           ,[AIRMNGTRACH]
+           ,[AIRMNGBAGMASK]
+           ,[AIRMNGCPAP]
+           ,[AIRMNGELECINTUB]
+           ,[AIRMNGPREVINTUB]
+           ,[ACCESSLOC]
+           ,[VENACCESS]
+           ,[VENLARGSHEATH]
+           ,[VENCLOSUREMETHODND]
+           ,[ARTACCESS]
+           ,[ARTLARGSHEATH]
+           ,[ARTCLOSUREMETHODND]
+           ,[FLUOROTIME]
+           ,[CONTRASTVOL]
+           ,[SYSHEPARIN]
+           ,[ACTMONITOR]
+           ,[ACTPEAK]
+           ,[INOTROPE]
+           ,[INOTROPEUSE]
+           ,[ECMOUSE]
+           ,[LVADUSE]
+           ,[AUX5]
+           ,[SCHEDARRIVALDATE]
+           ,[PROCOTHER]
+           ,[PREPROCHGBND]
+           ,[PREPROCCREATND]
+           ,[SVDEFECT]
+           ,[PREPROCMED]
+           ,[PROCEPCATH]
+           ,[PROCEPABLATION]
+           ,[PROCTPVR]
+           ,[SECONDPARTICIPATING]
+           ,[PROCSTARTDATE]
+           ,[PROCSTARTTIME]
+           ,[PROCENDDATE]
+           ,[PROCENDTIME]
+           ,[AIRMNG]
+           ,[IABPUSE]
+           ,[PLANEUSED]
+           ,[FLUORODOSEKERM]
+           ,[FLUORODOSEKERM_UNITS]
+           ,[FLUORODOSEDAP]
+           ,[FLUORODOSEDAP_UNITS]
+           ,[LOADDT]
+           ,[MD5]
+           ,[PENDINGIMPORT])
+
+SELECT [SURG_ENC_ID]
+      ,[CATH_CASE_ID]
+      ,[PROCDXCATH]
+      ,[PROCASD]
+      ,[HEIGHT]
+      ,[WEIGHT]
+      ,[PREPROCHGB]
+      ,[PREPROCCREAT]
+      ,[PREPROCO2]
+      ,[NEC]
+      ,[SEPSIS]
+      ,[PREG]
+      ,[PREPROCANTIARR]
+      ,[PREPROCANTICOAG]
+      ,[PREPROCANTIHYP]
+      ,[PREPROCANTIPLATELET]
+      ,[PREPROCBB]
+      ,[PREPROCDIURETIC]
+      ,[PREPROCPROSTA]
+      ,[PREPROCVASO]
+      ,[PREPROCSINUS]
+      ,[PREPROCAET]
+      ,[PREPROCSVT]
+      ,[PREPROCAFIB]
+      ,[PREPROCJUNCT]
+      ,[PREPROCIDIO]
+      ,[PREPROCAVB2]
+      ,[PREPROCAVB3]
+      ,[PREPROCPACED]
+      ,[PROCCOARC]
+      ,[PROCAORTICVALV]
+      ,[PROCPULMONARYVALV]
+      ,[PROCPDA]
+      ,[PROCPROXPASTENT]
+      ,[HOSPSTATUS]
+      ,[PROCSTATUS]
+      ,[TRAINEE]
+      ,[OPERATORID]
+      ,[ANESPRESENT]
+      ,[ANESCALLEDIN]
+      ,[SEDATION]
+      ,[AIRMNGLMA]
+      ,[AIRMNGTRACH]
+      ,[AIRMNGBAGMASK]
+      ,[AIRMNGCPAP]
+      ,[AIRMNGELECINTUB]
+      ,[AIRMNGPREVINTUB]
+      ,[ACCESSLOC]
+      ,[VENACCESS]
+      ,[VENLARGSHEATH]
+      ,[VENCLOSUREMETHODND]
+      ,[ARTACCESS]
+      ,[ARTLARGSHEATH]
+      ,[ARTCLOSUREMETHODND]
+      ,[FLUOROTIME]
+      ,[CONTRASTVOL]
+      ,[SYSHEPARIN]
+      ,[ACTMONITOR]
+      ,[ACTPEAK]
+      ,[INOTROPE]
+      ,[INOTROPEUSE]
+      ,[ECMOUSE]
+      ,[LVADUSE]
+      ,[AUX5]
+      ,[SCHEDARRIVALDATE]
+      ,[PROCOTHER]
+      ,[PREPROCHGBND]
+      ,[PREPROCCREATND]
+      ,[SVDEFECT]
+      ,[PREPROCMED]
+      ,[PROCEPCATH]
+      ,[PROCEPABLATION]
+      ,[PROCTPVR]
+      ,[SECONDPARTICIPATING]
+      ,[PROCSTARTDATE]
+      ,[PROCSTARTTIME]
+      ,[PROCENDDATE]
+      ,[PROCENDTIME]
+      ,[AIRMNG]
+      ,[IABPUSE]
+      ,[PLANEUSED]
+      ,[FLUORODOSEKERM]
+      ,[FLUORODOSEKERM_UNITS]
+      ,[FLUORODOSEDAP]
+      ,[FLUORODOSEDAP_UNITS]
+      ,[LOADDT]
+      ,[MD5]
+      ,[PENDINGIMPORT]
+  FROM [dbo].[bkp_CHOP_IMPACT_CATHDATA]
+
+
+  --DROP TABLE bkp_CHOP_IMPACT_CATHDATA

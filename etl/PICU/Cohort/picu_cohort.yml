@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: picu_episode_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [vps_episode_key]
+    columns:
+      - name: vps_episode_key
+        tests:
+          - unique
+          - not_null
+      - name: case_id
+        tests:
+          - not_null
+  - name: picu_procedure_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [procedure_vps_episode_key]
+    columns:
+      - name: vps_episode_key
+        tests:
+          - not_null
+      - name: case_id
+        tests:
+          - not_null
+      - name: procedure_id
+        tests:
+          - unique
+          - not_null
+  - name: picu_diagnosis_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [diagnosis_vps_episode_key]
+          tags: ['failing']
+    columns:
+      - name: vps_episode_key
+        tests:
+          - not_null
+      - name: case_id
+        tests:
+          - not_null
+      - name: diagnosis_id
+        tests:
+          - not_null

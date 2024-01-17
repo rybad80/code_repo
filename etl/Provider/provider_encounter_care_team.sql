@@ -1,0 +1,14 @@
+select
+    csn,
+    visit_key,
+    encounter_key,
+    provider_care_team_start_date,
+    provider_care_team_end_date,
+    provider_care_team_name,
+    provider_care_team_group_name,
+    provider_care_team_group_category,
+    care_team_id,
+    provider_id,
+    source_summary
+from
+    {{ref('stg_provider_encounter_care_team')}}

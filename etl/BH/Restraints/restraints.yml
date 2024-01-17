@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: restraints_descriptive
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [restraint_episode_key]
+    columns:
+      - name: restraint_episode_key
+        tests:
+          - not_null
+  - name: violent_restraints
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [restraint_episode_key]
+    columns:
+      - name: restraint_episode_key
+        tests:
+          - not_null
+  - name: stg_restraints
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [restraint_episode_key]
+  - name: stg_restraints_provider_notes
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [note_key, seq_num]

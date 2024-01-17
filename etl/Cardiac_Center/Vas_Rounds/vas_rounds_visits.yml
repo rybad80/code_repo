@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: vas_rounds_visits
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mrn, visit_key, csn_number]

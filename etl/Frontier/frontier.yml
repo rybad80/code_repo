@@ -1,0 +1,113 @@
+version: 2
+
+models:
+  - name: frontier_all_load_demo
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [primary_key]
+    columns:
+      - name: primary_key
+  - name: frontier_airway_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_hi_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+          tags: ['failing']
+    columns:
+      - name: visit_key
+  - name: frontier_food_allergy_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_ctis_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_lymphatics_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_motility_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+          tags: ['failing']
+    columns:
+      - name: visit_key
+  - name: frontier_id_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_engin_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_thyroid_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_minds_matter_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_cva_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_heart_valve_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_rare_lung_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_drof_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_n_o_t_bleeding_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_act_hf_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
+  - name: frontier_ccpm_encounter_cohort
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: visit_key
