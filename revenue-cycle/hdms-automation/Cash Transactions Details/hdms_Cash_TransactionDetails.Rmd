@@ -1,0 +1,58 @@
+---
+title: "HDMS Cash Transactions"
+author: "`r Sys.getenv('USERNAME')`"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+    html_document:
+        anchor_sections: TRUE
+        df_print: kable
+        css: https://github.research.chop.edu/pages/CQI/chop-bootstrap/bootstrap-3/bootstrap.min.css
+---
+
+```{r workspace, include=FALSE}
+# Prevent code chunks from printing text
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(dplyr)
+library(rocqi)
+library(DT)
+library(shiny)
+library(glue)
+library(downloadthis)
+library(lubridate)
+library(stringr)
+library(writexl)
+```
+
+```{r set-variables}
+#setup variables
+save_path <- "//Chop.edu/DepartmentShare/DS6/HomeCare/CHHC_Staff/Reimbursement/Management Tools/Weekly HDMS Spreadsheets"
+#save_path <- "//cissqlqw1/G/HV_Export"
+#save_path <- "//chop.edu/departmentshare/DS6/Analytics_Reporting"
+sql_filename <- "hdms_Cash_TransactionDetails.sql"
+excel_filename <- 'DS_CASH_TRANSACTIONDETAILS'
+todaysdate <- format(Sys.Date(), "%Y%m%d")
+excel_file <- glue('{excel_filename}_{todaysdate}.xlsx')
+
+```
+
+
+
+                    
+```{r run-query-send-data}
+
+# Assemble file name
+save_file_path <- paste(save_path,excel_file, sep ="\\")
+
+# Connect to database and run SQL
+
+result_df <-rocqi::run_sql_file(
+  sql_filename
+)
+
+# Change date formats
+final_df <- result_df %>%
+  mutate(across(contains("date"), ~ as.character.Date(.x, format = "%Y-%m-%d")))
+
+# Save the dataframe to an Excel file
+write_xlsx(final_df, save_file_path)
+```

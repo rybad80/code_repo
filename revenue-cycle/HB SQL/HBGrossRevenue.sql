@@ -1,0 +1,33 @@
+WITH STEP1 AS (
+SELECT 
+last_day(MASTER_DATE.FULL_DT) AS POST_DATE,
+Sum(FACT_TRANSACTION_HB.CHRG_AMT) AS AMT
+FROM 
+CDWPRD.ADMIN.FACT_TRANSACTION_HB 
+LEFT JOIN CDWPRD.ADMIN."PROCEDURE" ON FACT_TRANSACTION_HB.PROC_KEY = "PROCEDURE".PROC_KEY 
+LEFT JOIN CDWPRD.ADMIN.MASTER_DATE ON FACT_TRANSACTION_HB.POST_DT_KEY = MASTER_DATE.DT_KEY
+WHERE 
+MASTER_DATE.FULL_DT between add_months(date_trunc('month',current_date),-24) and add_months(last_day(current_date),-1)
+AND 
+"PROCEDURE".PROC_TYPE= 'Charge'
+GROUP BY 1
+)
+,
+
+STEP2 AS (
+
+SELECT 
+POST_DATE as POST_MONTH,
+AMT as GROSS_REVENUE,
+TRUNC(AVG(AMT) OVER(ORDER BY POST_DATE ROWS BETWEEN 3 PRECEDING AND 1 PRECEDING), 2) AS AMT
+FROM STEP1
+WHERE POST_DATE between add_months(date_trunc('month',current_date),-24) and add_months(last_day(current_date),-1)
+)
+
+SELECT 
+POST_MONTH,
+GROSS_REVENUE,
+AMT
+FROM STEP2
+WHERE POST_MONTH between add_months(date_trunc('month',current_date),-16) and add_months(last_day(current_date),-1)
+;
