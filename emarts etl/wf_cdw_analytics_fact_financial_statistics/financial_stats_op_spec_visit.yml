@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: fact_financial_statistics_op_spec_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [acct_key, bill_prov_key, dept_key, det_type_key, loc_key, mstr_op_spec_visit_cat_key, orig_svc_dt_key, pat_key, proc_key, post_dt_key, pos_key, chrg_tx_id]
+    columns:
+      - name: acct_key
+        tests:
+          - relationships:
+              to: source('cdw','account')
+              field: acct_key
+      - name: bill_prov_key
+        tests:
+          - relationships:
+              to: source('cdw','provider')
+              field: prov_key
+      - name: dept_key
+        tests:
+          - relationships:
+              to: source('cdw','department')
+              field: dept_key
+      - name: det_type_key
+        tests:
+          - relationships:
+              to: source('cdw','master_detail_type')
+              field: det_type_key
+      - name: loc_key
+        tests:
+          - relationships:
+              to: source('cdw','location')
+              field: loc_key
+      - name: mstr_op_spec_visit_cat_key
+        tests:
+          - relationships:
+              to: source('cdw_analytics','master_op_spec_visit_category')
+              field: mstr_op_spec_visit_cat_key
+      - name: orig_svc_dt_key
+        tests:
+          - relationships:
+              to: source('cdw','master_date')
+              field: dt_key
+      - name: pat_key
+        tests:
+          - relationships:
+              to: source('cdw','patient')
+              field: pat_key
+      - name: proc_key
+        tests:
+          - relationships:
+              to: source('cdw','procedure')
+              field: proc_key
+      - name: post_dt_key
+        tests:
+          - relationships:
+              to: source('cdw','master_date')
+              field: dt_key
+      - name: pos_key
+        tests:
+          - relationships:
+              to: source('cdw','place_of_service')
+              field: pos_key

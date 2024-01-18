@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: fact_census_in_use_licensed_bed_acute_ip_ped_chop
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [bed_cnt_dt_key]
+    columns:
+      - name: bed_cnt_dt_key
+        tests:
+          - not_null
+  - name: fact_department_rollup
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [dept_key, dept_align_dt]
+    columns:
+      - name: dept_key
+        tests:
+          - not_null
+      - name: dept_id
+        tests:
+          - not_null
+      - name: dept_nm
+        tests:
+          - not_null
+      - name: dept_abbr
+        tests:
+          - not_null
+  - name: fact_department_rollup_summary
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [dept_key, min_dept_align_dt]
+    columns:
+      - name: dept_key
+        tests:
+          - not_null
+      - name: dept_id
+        tests:
+          - not_null
+      - name: dept_nm
+        tests:
+          - not_null
+      - name: dept_abbr
+        tests:
+          - not_null
+  - name: master_department_group
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [mstr_dept_grp_key]
+  - name: department_group
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [dept_key]
+  - name: s_cdw_department_rollup_summary
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [dbt_scd_id]

@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: bugsy_custom_infect_vw
+    columns:
+      - name: c02_mrn
+        tests:
+          - not_null  
+  - name: bugsy_custom_infection_classes
+    columns:
+      - name: pat_mrn_id
+        tests:
+          - not_null

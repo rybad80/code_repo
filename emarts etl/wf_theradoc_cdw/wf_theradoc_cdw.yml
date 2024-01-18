@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: infection_surveillance
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [inf_surv_id]
+  - name: infection_surveillance_class
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [inf_surv_id]
+  - name: infection_surveillance_micro
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [inf_surv_id]
+  - name: infection_surveillance_surgery
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [inf_surv_id]
+  - name: infection_surveillance_visit
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [inf_surv_id]
+  - name: metrics_hai
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [eventid]

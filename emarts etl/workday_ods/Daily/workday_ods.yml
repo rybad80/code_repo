@@ -1,0 +1,266 @@
+version: 2
+
+models:
+  - name: cost_center_site_cost_center_site_hierarchy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_site_wid, cost_center_site_hierarchy_wid]
+    columns:
+      - name: cost_center_site_wid
+      - name: cost_center_site_hierarchy_wid
+  - name: cost_center_site_hierarchy_levels
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_site_hierarchy_wid]
+    columns:
+      - name: cost_center_site_hierarchy_wid
+  - name: cost_center_site_hierarchy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_site_hierarchy_wid]
+    columns:
+      - name: cost_center_site_hierarchy_wid
+  - name: cost_center_site
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [cost_center_site_wid]
+    columns:
+      - name: cost_center_site_wid
+  - name: expense_item_group
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [expense_item_group_wid]
+    columns:
+      - name: expense_item_group_wid
+  - name: expense_item
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [expense_item_wid]
+    columns:
+      - name: expense_item_wid
+  - name: glcode
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [glcode_wid]
+    columns:
+      - name: glcode_wid
+  - name: job_family_group
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_family_group_wid]
+    columns:
+      - name: job_family_group_wid
+  - name: job_family
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_family_wid]
+    columns:
+      - name: job_family_wid
+  - name: job_position
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [position_wid]
+    columns:
+      - name: position_wid
+  - name: job_profile
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [job_profile_wid]
+    columns:
+      - name: job_profile_wid
+  - name: location_address
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [location_wid, address_id]
+    columns:
+      - name: location_wid
+      - name: address_id
+  - name: location
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [location_wid]
+    columns:
+      - name: location_wid
+  - name: pay_group
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pay_group_wid]
+    columns:
+      - name: pay_group_wid
+  - name: payment_type
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [payment_type_wid]
+    columns:
+      - name: payment_type_wid
+  - name: payor_hierarchy_levels
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [payor_hierarchy_wid]
+    columns:
+      - name: payor_hierarchy_wid
+  - name: payor_hierarchy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [payor_hierarchy_wid]
+    columns:
+      - name: payor_hierarchy_wid
+  - name: payor
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [payor_wid]
+    columns:
+      - name: payor_wid
+  - name: project_hierarchy_levels
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [project_hierarchy_wid]
+    columns:
+      - name: project_hierarchy_wid
+  - name: project_hierarchy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [project_hierarchy_wid]
+    columns:
+      - name: project_hierarchy_wid
+  - name: project_project_hierarchy
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [project_wid, project_hierarchy_wid]
+    columns:
+      - name: project_wid
+      - name: project_hierarchy_wid
+  - name: project
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [project_wid]
+    columns:
+      - name: project_wid
+  - name: provider
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [provider_wid]
+    columns:
+      - name: provider_wid
+  - name: purchase_item_inventory_attributes
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [purchase_item_wid, inventory_site_location_wid]
+    columns:
+      - name: purchase_item_wid
+      - name: inventory_site_location_wid
+  - name: purchase_item_supplier_item_data
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [purchase_item_wid, supplier_wid, supplier_item_id]
+    columns:
+      - name: purchase_item_wid
+      - name: supplier_wid
+      - name: supplier_item_id
+  - name: purchase_item_unit_of_measure_data
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [purchase_item_wid, purchase_item_id, purchase_item_unit_of_measure_data_uom_reference_wid]
+    columns:
+      - name: purchase_item_wid
+      - name: purchase_item_id
+      - name: purchase_item_unit_of_measure_data_uom_reference_wid
+  - name: purchase_item
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [purchase_item_wid, purchase_item_group_id]
+    columns:
+      - name: purchase_item_wid
+      - name: purchase_item_group_id
+  - name: supervisory_department
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [supervisory_department_wid]
+    columns:
+      - name: supervisory_department_wid
+  - name: supervisory_department_levels
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [supervisory_department_wid]
+    columns:
+      - name: supervisory_department_wid
+  - name: supplier_category
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [supplier_category_wid]
+    columns:
+      - name: supplier_category_wid
+  - name: supplier_classification_field_choice
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [supplier_classification_field_choice_wid]
+    columns:
+      - name: supplier_classification_field_choice_wid
+  - name: supplier_classification
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [supplier_classification_wid]
+    columns:
+      - name: supplier_classification_wid
+  - name: supplier_group
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [supplier_group_wid]
+    columns:
+      - name: supplier_group_wid
+  - name: supplier_supplier_group
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [supplier_group_wid, supplier_wid]
+    columns:
+      - name: supplier_group_wid
+      - name: supplier_wid
+  - name: worker_address
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_wid, address_id, communication_usage_behavior_id, communication_usage_type_id, effective_date]
+    columns:
+      - name: worker_wid
+      - name: address_id
+      - name: communication_usage_behavior_id
+      - name: communication_usage_type_id
+      - name: effective_date
+  - name: worker_compensation
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_wid]
+    columns:
+      - name: worker_wid
+  - name: worker_email
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_wid, email_id]
+    columns:
+      - name: worker_wid
+      - name: email_id
+  - name: worker_employment
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_wid]
+    columns:
+      - name: worker_wid
+  - name: worker_organization
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_wid, location_hierarchy_id]
+    columns:
+      - name: worker_wid
+      - name: location_hierarchy_id
+  - name: worker_phone
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_wid, phone_id]
+    columns:
+      - name: worker_wid
+      - name: phone_id
+  - name: worker
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [worker_wid]
+    columns:
+      - name: worker_wid

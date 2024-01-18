@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: stg_visit_fastrack
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]

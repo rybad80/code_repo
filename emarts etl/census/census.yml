@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: fact_census
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_event_key, dt_key, time_key]

@@ -1,0 +1,521 @@
+version: 2
+
+sources:
+  - name: cdw_customer
+    database: "{{ env_var('CDW_CUSTOMER_DB', 'CDW_CUSTOMER_UAT')}}"
+    schema: CAG
+    tables:
+      - name: cohort_cag_mrn
+  - name: cdw_stage
+    database: "{{ env_var('CDW_STG_DB', 'CDW_STG_UAT')}}"
+    schema: CDWSTG
+    tables:
+      - name: s_cl_audit_itm_pat_enc
+      - name: s_cl_hsp_acct_pat_csn
+      - name: s_cl_pat_enc_stat_hx
+      - name: s_cl_pat_enc_hsp
+      - name: s_pat_enc
+      - name: s_hsp_account
+  - name: cdw
+    database: "{{ env_var('CDW_DB', 'CDWUAT')}}"
+    schema: CDW
+    tables:
+      - name: account
+      - name: anesthesia_encounter_link
+      - name: bed_event
+      - name: bed_event_hist
+      - name: bed_event_history_detail
+      - name: benefit_plan
+      - name: budget
+      - name: bugsy_custom_infection_classes
+      - name: cdw_dictionary
+      - name: clinical_concept
+      - name: cohort_cag_mrn
+      - name: collection_agency
+      - name: compurecord_report_001
+      - name: compurecord_report_003
+      - name: cost_center
+      - name: coverage
+      - name: department
+      - name: department_geographical_spatial_info
+      - name: diagnosis
+      - name: diagnosis_group
+      - name: dim_bed_clean_delay_reason
+      - name: dim_bed_clean_hold_reason
+      - name: dim_event_notification_type
+      - name: dim_order_acknowledgment
+      - name: dim_override_link_status
+      - name: dim_patient_class
+      - name: dim_phone_reminder_status
+      - name: dim_product_hc
+      - name: dim_reason_for_discharge
+      - name: dim_routed_msg_priority
+      - name: dim_supervisor_provider_type
+      - name: dim_visit_cncl_rsn
+      - name: document_info
+      - name: echo_study
+      - name: echo_study_aorta_calcs
+      - name: echo_study_aortic_valve_calcs
+      - name: echo_study_arteries
+      - name: echo_study_atria
+      - name: echo_study_comments
+      - name: echo_study_inlets
+      - name: echo_study_left_ventricle_calcs
+      - name: echo_study_lvot_calcs
+      - name: echo_study_mitral_calcs
+      - name: echo_study_other
+      - name: echo_study_outlets
+      - name: echo_study_pulmonary_arteries_calcs
+      - name: echo_study_pulmonary_valve_calcs
+      - name: echo_study_quality_improvement
+      - name: echo_study_right_ventricle_calcs
+      - name: echo_study_rvot_calcs
+      - name: echo_study_surgeries
+      - name: echo_study_tricuspid_calcs
+      - name: echo_study_ventricles
+      - name: ed_area
+      - name: employee
+      - name: epic_grouper_department
+      - name: epic_grouper_diagnosis
+      - name: epic_grouper_item
+      - name: epic_grouper_medication
+      - name: epic_grouper_procedure
+      - name: event_notification_history
+      - name: fact_census_occ
+      - name: fact_financial_statistic
+      - name: fact_ip_lda_foley
+      - name: fact_ip_ssi_or_procedures
+      - name: fact_transaction
+      - name: fact_transaction_hc
+      - name: fact_transport_log
+      - name: fact_visit
+      - name: fact_visit_extension
+      - name: fact_transaction_hb
+      - name: fee_schedule
+      - name: financial_class
+      - name: financial_statistics_control_hc
+      - name: flowsheet
+      - name: flowsheet_group
+      - name: flowsheet_lda_group
+      - name: flowsheet_measure
+      - name: flowsheet_record
+      - name: flowsheet_template
+      - name: flowsheet_template_group
+      - name: hai_population_days
+      - name: hospital_account
+      - name: hospital_account_diag_icd
+      - name: hospital_account_group
+      - name: hospital_account_visit
+      - name: hospital_procedure_order
+      - name: infection_surveillance
+      - name: infection_surveillance_class
+      - name: infection_surveillance_micro
+      - name: infection_surveillance_surgery
+      - name: infection_surveillance_visit
+      - name: invoice
+      - name: kaps_event_location
+      - name: kaps_event_person_affected
+      - name: kaps_incident_1
+      - name: lda_info
+      - name: liability_bucket
+      - name: location
+      - name: master_bed
+      - name: master_date
+      - name: master_detail_type
+      - name: master_diagnosis
+      - name: master_event_type
+      - name: master_frequency
+      - name: master_geography
+      - name: master_modifier
+      - name: master_reason_for_visit
+      - name: master_redcap_element_answr
+      - name: master_redcap_project
+      - name: master_redcap_question
+      - name: master_redcap_survey_response
+      - name: master_remittance
+      - name: master_room
+      - name: master_service_type
+      - name: master_service_icd9
+      - name: master_statistic
+      - name: master_time
+      - name: master_visit_type
+      - name: medication
+      - name: medication_administration
+      - name: medication_order
+      - name: metrics_nursing_unit
+      - name: note_info
+      - name: or_case
+      - name: or_case_all_procedures
+      - name: or_case_all_surgeons
+      - name: or_log
+      - name: or_log_all_procedures
+      - name: or_log_anes_staff
+      - name: or_log_case_times
+      - name: or_log_surgeons
+      - name: or_post_op_prep_info
+      - name: or_procedure
+      - name: or_procedure_cpt
+      - name: order_acknowledgment
+      - name: order_status_hist
+      - name: organ
+      - name: organ_vessel_xref
+      - name: pat_acct_cvg
+      - name: patient
+      - name: patient_address_hist
+      - name: patient_alias
+      - name: patient_coverage_filing_order
+      - name: patient_geographical_spatial_info
+      - name: patient_lda
+      - name: patient_match
+      - name: patient_mismatch
+      - name: patient_mychart_info
+      - name: patient_primary_care_provider
+      - name: patient_problem_list
+      - name: patient_race_ethnicity
+      - name: payor
+      - name: payor_group
+      - name: pb_transaction
+      - name: pb_transaction_history
+      - name: period_end_hi_hc
+      - name: place_of_service
+      - name: procedure
+      - name: procedure_order
+      - name: procedure_order_result
+      - name: program
+      - name: provider
+      - name: provider_addr
+      - name: provider_specialty
+      - name: redcap_detail
+      - name: referral
+      - name: referral_source
+      - name: research_study
+      - name: result_component
+      - name: revenue_code
+      - name: safetynet_claim_1
+      - name: safetynet_claim_2
+      - name: service
+      - name: service_area
+      - name: smart_data_element_info
+      - name: smart_data_element_value
+      - name: snomed_concept
+      - name: tmp_tdl_1_3_5_6
+      - name: tmp_tdl_10_12
+      - name: tmp_tdl_first_ins_pmt
+      - name: tmp_tdl_last_payor
+      - name: transplant_info
+      - name: transplant_organs
+      - name: vessel_document
+      - name: visit
+      - name: visit_addl_info
+      - name: visit_diagnosis
+      - name: visit_ed_event
+      - name: visit_ed_extended
+      - name: visit_event
+      - name: visit_pending_action
+      - name: visit_pending_action_hist
+      - name: visit_provider_hist
+      - name: visit_reason
+      - name: visit_stay_info
+      - name: visit_stay_info_rows
+      - name: visit_treatment
+      - name: vw_essa_hospital_account_drg
+      - name: vw_clarity_tdl_tran
+      - name: vw_essa_encounter_team
+      - name: vw_yes__no_ind
+      - name: workday_ledger_account
+  - name: cdw_analytics
+    database: "{{ env_var('CDW_DB', 'CDWUAT')}}"
+    schema: CDW_ANALYTICS
+    tables:
+      - name: fact_ip_lda_foley
+      - name: fact_transaction
+      - name: metrics_hai
+      - name: fact_financial_statistic
+      - name: fact_visit
+      - name: fact_visit_inpatient
+      - name: master_event_action
+      - name: master_financial_statistic_op_spec_visit_proc
+      - name: master_hospital_service
+      - name: master_op_spec_visit_category
+      - name: master_other_occupancy_dept_pat_class_rollup
+      - name: master_in_use_licensed_bed
+  - name: clarity_ods
+    database: |
+      {%- if  target.type == "netezza" -%} {{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}
+      {%- elif target.type == "snowflake"  -%} {{ env_var('ENVIRONMENT', 'UAT')}}
+      {%- endif -%}
+    schema: |
+      {%- if  target.type == "netezza" -%} CLARITY
+      {%- elif target.type == "snowflake"  -%} LAKE_CLARITY
+      {%- endif -%}
+    tables:
+      - name: atnd_spec
+      - name: arpb_tx_stmclaimhx
+      - name: assocd_dep
+      - name: assocd_lab
+      - name: assocd_lda
+      - name: cl_qanswer
+      - name: cl_qanswer_qa
+      - name: cl_qquest_ovtm
+      - name: clarity_adt
+      - name: clarity_bed
+      - name: clarity_concept
+      - name: clarity_dep
+      - name: clarity_dep_4
+      - name: clarity_eap
+      - name: clarity_organism
+      - name: clarity_rom
+      - name: clarity_ser
+      - name: clarity_ser_spec
+      - name: coverage
+      - name: coverage_2
+      - name: ed_iev_event_info
+      - name: ed_iev_pat_info
+      - name: enc_dx_edit_trail
+      - name: flowsheet_lda_types
+      - name: hsp_account
+      - name: hsp_acct_admit_dx
+      - name: hsp_acct_atnd_prov
+      - name: hsp_acct_dx_list
+      - name: hsp_acct_extinj_cd
+      - name: hsp_admit_diag
+      - name: hsp_infection
+      - name: hsp_infection_pl
+      - name: hsp_acct_pat_csn
+      - name: hsp_trtmt_team
+      - name: infection_abstns
+      - name: ip_flo_lda_types
+      - name: ip_lda_noaddsingle
+      - name: llo_nhsn_mapping
+      - name: ncdr_icd_lab
+      - name: nhsn_definition
+      - name: nhsn_proc_abstns
+      - name: nhsn_ps_form
+      - name: or_log
+      - name: or_log_all_proc
+      - name: order_impression
+      - name: order_narrative
+      - name: order_parent_info
+      - name: order_proc
+      - name: order_results
+      - name: ord_spec_quest
+      - name: pat_enc
+      - name: pat_enc_2
+      - name: pat_enc_4
+      - name: pat_enc_5
+      - name: pat_enc_es_aud_act
+      - name: pat_enc_dx
+      - name: pat_enc_hpf
+      - name: pat_enc_hsp
+      - name: pat_enc_qnrs_ans
+      - name: patient
+      - name: patient_3
+      - name: patient_type
+      - name: rdi_pat_csn
+      - name: ris_vst_bproc_ans
+      - name: ris_vst_eproc_ans
+      - name: smrtdta_elem_data
+      - name: smrtdta_elem_value
+      - name: td_custom_infect_vw
+      - name: td_custom_infection_classes
+      - name: unos_stage_history
+      - name: v_edg_cccgroup
+      - name: v_edg_cccgroup_icd10
+      - name: visit_cancel_date
+      - name: x_cl_etr_tx_id
+      - name: zc_appt_block
+      - name: zc_appt_conf_stat
+      - name: zc_appt_status
+      - name: zc_center
+      - name: zc_copay_pmt_expl
+      - name: zc_copay_type
+      - name: zc_dep_rpt_grp_31
+      - name: zc_dep_rpt_grp_32
+      - name: zc_dep_rpt_grp_33
+      - name: zc_disp_enc_type
+      - name: zc_dx_poa
+      - name: zc_es_order_status
+      - name: zc_financial_class
+      - name: zc_hosp_admsn_type
+      - name: zc_inf_class
+      - name: zc_level_of_care_grouper
+      - name: zc_lines_group
+      - name: zc_lmp_other
+      - name: zc_order_status
+      - name: zc_pat_class
+      - name: zc_pat_service
+      - name: zc_payment_source
+      - name: zc_primary_inf
+      - name: zc_service_grouper
+      - name: zc_specialty
+      - name: zc_specimen_source
+      - name: zc_specimen_type
+      - name: zc_ssi_event_type
+      - name: zc_unos_stage
+      - name: zc_uti_catheter_status
+      - name: zc_orp_rpt_grp_s2
+  - name: fastrack_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: FASTRACK
+    tables:
+      - name: pat_disc
+      - name: patientm
+  - name: manual_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: IDX_MANUAL
+    tables:
+      - name: idxrad_visit
+      - name: idx_visit
+      - name: xwalk_visit_key_cdw_to_dbt
+  - name: kaps_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: KAPS
+    tables:
+      - name: kaps_tbl_inc_cases
+      - name: kaps_tbl_rsk_event_when_where
+      - name: kaps_tbl_rsk_event_person_affected
+  - name: oncore_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: ONCORE
+    tables:
+      - name: sv_urm_urm_diagnosisv1
+      - name: rv_urm_form_detail
+      - name: sv_subject
+      - name: sv_urm_urm_brain_tumorsv1
+      - name: sv_urm_urm_neuroblastomav3
+      - name: sv_urm_urm_surgeryv1
+  - name: readyset_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: READYSET
+    tables:
+      - name: chop_self_rept_incident_survey
+  - name: chop_analytics
+    database: CHOP_ANALYTICS
+    schema: BLOCKS_CLINICAL
+    tables:
+      - name: capacity_licensed_bed_department
+      - name: transport_encounter_all
+      - name: adt_department
+      - name: dim_date
+      - name: capacity_ip_hourly_census
+      - name: stg_surgery_nhsn_procedure_codes_history
+  - name: workday_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: workday
+    tables:
+      - name: get_account_sets
+      - name: get_awards_data
+      - name: get_bank_accounts
+      - name: get_customer_categories
+      - name: get_customer_groups
+      - name: get_customers
+      - name: get_expense_items
+      - name: get_expense_item_groups
+      - name: get_fund_hierarchies
+      - name: get_fund_types
+      - name: get_funds
+      - name: get_grant_hierarchies
+      - name: get_grants
+      - name: get_inventory_balances
+      - name: get_job_families
+      - name: get_job_family_groups
+      - name: get_job_profiles_data
+      - name: get_journal_sources
+      - name: get_ledger_account_summaries
+      - name: get_locations
+      - name: get_manufacturers
+      - name: get_organizations
+      - name: get_payment_terms
+      - name: get_payment_types
+      - name: get_payroll_deduction_recipients
+      - name: get_payroll_involuntary_withholding_orders
+      - name: get_payroll_support_orders
+      - name: get_period_schedules
+      - name: get_program_hierarchies
+      - name: get_programs_data
+      - name: get_projects
+      - name: get_project_hierarchies
+      - name: get_project_hierarchy_levels
+      - name: get_positions
+      - name: get_purchase_items
+      - name: get_resource_categories
+      - name: get_revenue_category_hierarchies
+      - name: get_revenue_categories
+      - name: get_spend_category_hierarchies
+      - name: get_sponsors
+      - name: get_supplier_categories
+      - name: get_supplier_classification
+      - name: get_supplier_groups
+      - name: get_suppliers
+      - name: get_workers_compensation_data
+      - name: get_workers_employment_data
+      - name: get_workers_job_data
+      - name: get_workers_organization_data
+      - name: get_workers_personal_data
+      - name: provider
+      - name: workday_deduction_codes
+      - name: workday_earning_codes
+      - name: workday_fiscal_schedule
+      - name: workday_inventory_stock_request
+      - name: workday_inventory_stock_request_lines
+      - name: workday_inventory_transactions
+      - name: workday_journal_line_eliminations
+      - name: workday_journal_line_undistributed_earnings
+      - name: workday_ledger_period_close_status
+      - name: workday_picking_list
+      - name: workday_supplier
+      - name: workday_supplier_address
+      - name: workday_supplier_contract
+      - name: workday_supplier_items
+  - name: muse_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: muse
+    tables:
+      - name: muse_cfglocations
+      - name: muse_cfgpersons
+      - name: muse_cfgstatements
+      - name: muse_cfgtesttypequalifiers
+      - name: muse_hisorders
+      - name: muse_hisvisits
+      - name: muse_logtestchangedetails
+      - name: muse_logtestchangediagnosis
+      - name: muse_logtestchanges
+      - name: muse_quenormaldiscard
+      - name: muse_tstdiagnosisdetails
+      - name: muse_tstdiagnosisdetailsoriginal
+      - name: muse_tstecgmeasmatrix
+      - name: muse_tstecgmeasmatrixdetails
+      - name: muse_tstoriginalrestingecgmeasurements
+      - name: muse_tstpatientdemographics
+      - name: muse_tstrestingecgmeasurement
+      - name: muse_tsttestdemographics
+      - name: muse_tsttests
+  - name: syngo_echo_ods
+    database: "{{ env_var('DATA_LAKE_DB', 'CDW_ODS_UAT')}}"
+    schema: syngo_echo
+    tables:
+      - name: syngo_echo_cardiofields
+      - name: syngo_echo_dosr_study
+      - name: syngo_echo_fetalobservationfieldmap
+      - name: syngo_echo_mappedfields
+      - name: syngo_echo_measurementtype
+      - name: syngo_echo_measurementvalue
+      - name: syngo_echo_obs_meas_mapping
+      - name: syngo_echo_observationfieldmap
+      - name: syngo_echo_observationname
+      - name: syngo_echo_observationvalue
+      - name: syngo_echo_parse_dicom_names
+      - name: syngo_echo_report
+      - name: syngo_echo_study
+      - name: syngo_echo_study_owner
+      - name: syngo_echo_users
+  - name: lake_netezza
+    database: "{{ env_var('ENVIRONMENT', 'UAT')}}"
+    schema: lake_netezza  
+    tables:
+      - name: encounter_all
+  - name: lake_comprehend_medical
+    database: "{{ env_var('ENVIRONMENT', 'UAT')}}"
+    schema: lake_comprehend_medical
+    tables:
+      - name: nlp_procedure_notes_results

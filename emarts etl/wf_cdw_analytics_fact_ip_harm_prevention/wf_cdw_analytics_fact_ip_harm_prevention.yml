@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: fact_ip_cauti
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [hai_event_id]
+    columns:
+      - name: reportable_ind
+        tests:
+          - not_null
+  - name: fact_ip_clabsi
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [hai_event_id]
+  - name: fact_ip_fall
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [dept_key, fall_dt, pat_key]
+  - name: fact_ip_hapi
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [anatomical_location, discovered_dept_key, discovered_dt, pat_key, pat_lda_key]
+  - name: fact_ip_havi
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [hai_event_id]
+  - name: fact_ip_pivie
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [record_id]
+  - name: fact_ip_ssi
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [hai_event_id]
+  - name: fact_ip_vap
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [hai_event_id]
+  - name: fact_ip_vte
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [record_id]
+  - name: fact_ip_ue
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [record_id]
+  - name: fact_ip_harm_event_all
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          severity: warn
+          column_names: [harm_event_dt, harm_id, harm_type, visit_key]
+  - name: fact_ip_harm_monthly
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [harm_event_dt_month, harm_type]
+  - name: fact_ip_harm_monthly_dept_grp
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          severity: warn
+          column_names: [division, harm_event_dt_month, harm_type, mstr_dept_grp_key]
+  - name: fact_ip_harm_real_stratification
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [pat_key, dept_key, harm_type, harm_event_dt]

@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: fact_edqi
+    tests:
+      - dbt_chop_utils.is_primary_key:
+          column_names: [visit_key]
+    columns:
+      - name: pat_key
+        tests:
+          - not_null
+      - name: hsp_acct_key
+        tests:
+          - not_null
+      - name: dict_acuity_key
+        tests:
+          - not_null
+      - name: dict_dspn_key
+        tests:
+          - not_null
+      - name: admit_dept_key
+        tests:
+          - not_null
+      - name: initial_ed_dept_key
+        tests:
+          - not_null
+      - name: initial_ed_department_center_id
+        tests:
+          - not_null
+      - name: initial_ed_department_center_abbr
+        tests:
+          - not_null
+      - name: final_ed_dept_key
+        tests:
+          - not_null
+      - name: final_ed_department_center_id
+        tests:
+          - not_null
+      - name: final_ed_department_center_abbr
+        tests:
+          - not_null
+      - name: enc_id
+        tests:
+          - not_null
+          - unique
+      - name: ed_resuscitation_rm_use_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: ed_patients_seen_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: ed_patients_presenting_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: edecu_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: hr_72_revisit_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: hr_72_revisit_first_visit_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: hr_72_revisit_first_visit_admit_ind
+        tests:
+          - dbt_chop_utils.is_indicator
+      - name: patient_counter
+        tests:
+          - not_null
+      - name: pediatric_age_days_group
+        tests:
+          - not_null
