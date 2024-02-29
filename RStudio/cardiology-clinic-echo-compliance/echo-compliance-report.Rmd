@@ -1,0 +1,175 @@
+---
+title: "Cardiology Clinic Echo Compliance"
+#runtime: shiny
+output:
+    html_document:
+        anchor_sections: TRUE
+        df_print: kable
+
+---
+
+
+<style type="text/css">
+.main-container {
+  max-width: 90% !important;
+  margin: auto;
+}
+</style>
+
+
+
+
+
+
+
+```{=html}
+<style type="text/css">
+@import url("https://github.research.chop.edu/pages/CQI/chop-bootstrap/bootstrap-3/bootstrap.min.css");
+</style>
+```
+
+
+
+
+```{r workspace, include=FALSE}
+# Prevent code chunks from printing text
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+library(rocqi)
+library(tidyverse)
+library(lubridate)
+library(htmltools)
+library(reactable)
+library(fontawesome)
+library(pins)
+library(downloadthis)
+
+```
+
+```{r get-data}
+#board_register_rsconnect(
+#  name = "rsconnect",
+#  server = "https://rstudio-connect.chop.edu",
+#  key = Sys.getenv("rybad")
+#  )
+
+
+#raw_data <- pin_get("rybad/echo_compliance_df")
+
+pins::board_register("rsconnect", server = "https://rstudio-connect.chop.edu")
+raw_data <- pins::pin_get(name = "rybad/echo_compliance_df",
+                                   board = "rsconnect")
+names(raw_data) <- tolower(names(raw_data))
+details<-raw_data
+rollup<-raw_data
+```
+
+
+### Visit Details
+
+```{r visit-detail-table}
+
+
+# tags$style(
+#   type = "text/css",
+#   ".shiny-output-error { visibility: hidden; }",
+#   ".shiny-output-error:before { visibility: hidden; }"
+# )
+
+
+sticky_style <- list(
+  position = "sticky", left = 0, background = "#fff", zIndex = 1,
+  borderRight = "1px solid #eee"
+)
+
+
+details |>
+  rename_all(nice_display_names) |>
+  reactable(
+    height = 500,
+    searchable = TRUE,
+    filterable = TRUE,
+    pagination = TRUE,
+    showPagination = TRUE,
+    defaultPageSize = nrow(details),
+    highlight = TRUE,
+    elementId = "details-table",
+    wrap = FALSE,
+    striped = TRUE,
+    defaultColDef = colDef(minWidth = 200),
+    columns = list(
+      MRN = colDef(
+        style = sticky_style,
+        headerStyle = sticky_style,
+        minWidth = 100)
+    )
+  ) 
+
+details_download <- details |>
+  rename_all(nice_display_names)
+
+details_download|>
+  download_this(
+    output_name = "details",
+    output_extension = ".csv",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+  
+  
+
+
+```
+
+### Summary By Provider
+
+```{r summary-by-provider-table}
+
+
+rollup |> 
+  group_by(clinic_provider) |> 
+  summarise(total_new_patient_visits = sum(cardiac_clinic_encounter_ind),
+            clinic_echo_percent = round(((sum(echo_30_day_ind)/sum(cardiac_clinic_encounter_ind))*100),2),
+            clinic_echo_prov_match_percent = round(((sum(provider_order_echo_30_day_ind)/sum(cardiac_clinic_encounter_ind))*100),2),
+            clinic_holter_ttm_percent = round(((sum(holter_ttm_30_day_ind)/sum(cardiac_clinic_encounter_ind))*100),2),
+            clinic_holter_ttm_prov_match_percent = round(((sum(provider_order_holter_ttm_30_day_ind)/sum(cardiac_clinic_encounter_ind))*100),2)         
+            ) |> 
+  rename_all(nice_display_names) |> 
+  reactable(
+    height = 500,
+    searchable = TRUE,
+    filterable = TRUE,
+    pagination = TRUE,
+    showPagination = TRUE,
+    defaultPageSize = nrow(rollup),
+    highlight = TRUE,
+    elementId = "rollup-table",
+    wrap = FALSE,
+    striped = TRUE
+    )
+
+rollup_download <- rollup |> 
+  group_by(clinic_provider) |> 
+  summarise(total_new_patient_visits = sum(cardiac_clinic_encounter_ind),
+            clinic_echo_percent = round(((sum(echo_30_day_ind)/sum(cardiac_clinic_encounter_ind))*100),2),
+            clinic_echo_prov_match_percent = round(((sum(provider_order_echo_30_day_ind)/sum(cardiac_clinic_encounter_ind))*100),2),
+            clinic_holter_ttm_percent = round(((sum(holter_ttm_30_day_ind)/sum(cardiac_clinic_encounter_ind))*100),2),
+            clinic_holter_ttm_prov_match_percent = round(((sum(provider_order_holter_ttm_30_day_ind)/sum(cardiac_clinic_encounter_ind))*100),2)         
+            ) |> 
+  rename_all(nice_display_names) 
+
+rollup_download |>
+  download_this(
+    output_name = "rollup",
+    output_extension = ".csv",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+
+```
+
+

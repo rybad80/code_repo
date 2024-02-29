@@ -1,0 +1,626 @@
+---
+title: "Pulmonary Vein Stenosis"
+runtime: shiny_prerendered
+output: 
+ flexdashboard::flex_dashboard: 
+    navbar:
+    orientation: rows 
+#    vertical_layout: fill 
+ #   source_code: embed
+    # Adds a logo for app 
+    logo: https://github.research.chop.edu/pages/CQI/flexdashboard-theme/images/logo/chop-icon-header.png
+    # This is sets the CHOP logo as the little picture that appears on your browser tab 
+    favicon: https://www.chop.edu/sites/all/themes/chop/favicon.ico
+    # CSS stands for Cascading Style Sheets. It describes how HTML elements are to be displayed in
+    # the web browser. This points to the location of the CSS files that define the style of our apps.
+
+
+---
+```{r input_demo, eval=interactive(), include = FALSE}
+# this chunk doesn't run when knit but allows you to troubleshoot
+
+```
+
+
+```{=html}
+<style type="text/css">
+@import url("https://github.research.chop.edu/pages/CQI/chop-bootstrap/bootstrap-3/bootstrap.min.css");
+</style>
+```
+
+```{r setup, include=FALSE, context = "setup"}
+library(flexdashboard)
+library(DT)
+library(highcharter)
+library(lubridate)
+library(dplyr)
+library(rocqi)
+library(odbc)
+library(tidyr)
+library(shiny)
+library(stringr)
+library(REDCapR)
+library(ggplot2)
+library(plotly)
+library(tidyverse)
+library(pins)
+#library(hrbrthemes)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+
+```{r pull-data}
+
+timeline_df <- pin_get("rybad/pulmonary_vein_stenosis_df", board = "rsconnect")
+
+names(timeline_df) <- tolower(names(timeline_df))
+
+pvs_caths_df <- pin_get("rybad/pvs_caths_df", board = "rsconnect")
+
+names(pvs_caths_df) <- tolower(names(pvs_caths_df))
+
+
+pvs_labs_df <- pin_get("rybad/pvs_labs_df", board = "rsconnect")
+
+names(pvs_labs_df) <- tolower(names(pvs_labs_df))
+
+
+```
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+
+### Patient Care Timeline
+
+
+```{r mrn filter setup, context = "server"}
+
+mrn_list <- sort(unique(paste(timeline_df$patient_name,"-",timeline_df$mrn)))
+
+output$mrn_filter <- renderUI(
+  selectizeInput(
+    inputId = "mrn",
+    label = "Select Patient MRN", 
+    choices = c("click to select",label = NULL, mrn_list)
+)
+)
+
+
+```
+
+
+```{r main plot, context = "server"}
+
+
+
+#mrn <- c("00000000")
+#selected_patient_df <-data.frame(mrn)
+
+#setting up full data set for highchart
+selected_patient_df_funct <- reactive({
+  timeline_df %>%
+  filter(paste(timeline_df$patient_name,"-",timeline_df$mrn) == input$mrn) |> 
+  mutate(timeline_date=as.Date(timeline_date, format = "%m-%d-%Y")) |> 
+  arrange(desc(as.Date(timeline_date)))
+    
+         })
+
+#subsetting df to use with meds table
+selected_patient_meds_funct <- reactive({
+  timeline_df %>%
+  filter(paste(timeline_df$patient_name,"-",timeline_df$mrn) == input$mrn) %>% 
+  filter(timeline_category=='Medications') %>%     
+  mutate(timeline_date=as.Date(timeline_date, format = "%m-%d-%Y"))  %>%   
+  #mutate(aspirin_dose_new = case_when(is.na(aspirin_dose) ~ 999, TRUE ~ aspirin_dose) ) %>%    
+  select(mrn,timeline_date,sirolimus_dose,imatinib_dose,gleevec_dose,sildenafil_dose,tadalafil_dose,
+         bosentan_dose,remodulin_dose,epoprostenol_dose,iloprost_dose,losartan_dose,aspirin_dose,
+         lovenox_dose,plavix_dose,clopidogrel_dose,apixaban_dose,coumadin_dose) %>% 
+  arrange(desc(as.Date(timeline_date)))
+         })
+
+#subsetting df to use with cath table
+selected_patient_cath_funct <- reactive({
+  timeline_df %>%
+  filter(paste(timeline_df$patient_name,"-",timeline_df$mrn) == input$mrn) %>% 
+  filter(timeline_category=='Cath Procedures') %>%  
+  mutate(timeline_date=as.Date(timeline_date, format = "%m-%d-%Y"))  %>%       
+  select(mrn,timeline_date,cath_procedure_name)  %>% 
+  arrange(desc(as.Date(timeline_date)))
+         })
+
+#subsetting df to use with surg table
+selected_patient_surg_funct <- reactive({
+  timeline_df %>%
+  filter(paste(timeline_df$patient_name,"-",timeline_df$mrn) == input$mrn)  %>% 
+  filter(timeline_category=='Surgeries') %>%            
+  mutate(timeline_date=as.Date(timeline_date, format = "%m-%d-%Y"))  %>%       
+  select(mrn,timeline_date,surgical_procedure_name)  %>% 
+  arrange(desc(as.Date(timeline_date)))
+         })
+
+#subsetting df to use with cath vars table
+selected_patient_cath_vars_funct <- reactive({
+  pvs_caths_df %>%
+  filter(paste(pvs_caths_df$patient_name,"-",pvs_caths_df$mrn) == input$mrn)  %>% 
+  mutate(timeline_date=as.Date(timeline_date, format = "%m-%d-%Y"))  %>%       
+  select(mrn,timeline_date,systolic, diastolic, mean, pvri, rv_ao)  %>% 
+  arrange(desc(as.Date(timeline_date)))
+         })
+   
+#subsetting df to use with pvs labs table
+selected_patient_labs_funct <- reactive({
+  pvs_labs_df %>%
+  filter(paste(pvs_labs_df$patient_name,"-",pvs_labs_df$mrn) == input$mrn)  %>% 
+  mutate(timeline_date=as.Date(result_date, format = "%m-%d-%Y"))  %>%       
+  select(mrn,timeline_date, cholesterol_value, triglycerides_value, hgb_value, bnp_value, sirolimus_value)  %>% 
+  arrange(desc(as.Date(timeline_date)))
+         })
+   
+
+
+output$hc <- 
+  
+  renderHighchart({
+    
+   #validate(need(isTruthy(input$mrn), message = "Please select an MRN"))
+    
+   selected_patient_df <- selected_patient_df_funct()
+   
+   
+   #prep for vLine  - create df with only cath procedures dates 
+   caths_only <- selected_patient_df %>% filter(!is.na(cath_procedure_date)) %>% select(cath_procedure_date)
+   cath_dates <- (caths_only$cath_procedure_date) 
+   
+   
+   lines <- list()
+# make lines given list of cath dates 
+   for (i in 1:length(cath_dates)) {
+     cath_line <- list(
+      label = list(text="Cath", verticalAlign= 'top'),
+      color = "#ff0000",
+      width = 2,
+      value = datetime_to_timestamp(cath_dates[i]),
+      dashStyle = 'ShortDash'
+    )
+    
+    lines <- append(lines, list(cath_line))
+   }
+   
+   # prep for vLine - create df with only surg dates
+   surg_only <- selected_patient_df %>% filter(!is.na(surgical_procedure_date)) %>% select(surgical_procedure_date)
+   surg_dates <- (surg_only$surgical_procedure_date) 
+   
+  
+# make lines given list of surgery dates 
+   for (i in 1:length(surg_dates)) {
+     surg_line <- list(
+     label = list(text="Surgery", verticalAlign= 'middle'),
+      color = "#0000FF",
+      width = 2,
+      value = datetime_to_timestamp(surg_dates[i]),
+      dashStyle = 'ShortDash'
+    )
+   
+    lines <- append(lines, list(surg_line))
+   }   
+   
+   
+   # prep for vLine - create df with only PVS Dx date
+   dx_only <- selected_patient_df %>% filter(!is.na(diagnosis_date)) %>% select(diagnosis_date)
+   dx_dates <- (dx_only$diagnosis_date)    
+   
+# make lines given list of diagnosis dates 
+   for (i in 1:length(dx_dates)) {
+     dx_line <- list(
+     label = list(text="Diagnosis", verticalAlign= 'middle'),
+      color = "#000000",
+      width = 2,
+      value = datetime_to_timestamp(dx_dates[i]),
+      dashStyle = 'ShortDash'
+    )
+   
+    lines <- append(lines, list(dx_line))
+   }  
+   
+
+    
+  highchart() %>%
+  hc_xAxis(type = "datetime", plotLines = lines) %>% 
+  hc_yAxis(title = "total dose admin") %>% 
+  #hc_tooltip(crosshairs = TRUE, pointFormat = "x: {point.x:%m/%d/%y} <br> y: {point.y}") %>%     
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "sirolimus",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = sirolimus_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "imatinib",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = imatinib_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "gleevec",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = gleevec_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "sildenafil",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = sildenafil_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "tadalafil",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = tadalafil_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "bosentan",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = bosentan_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "remodulin",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = remodulin_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "epoprostenol",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = epoprostenol_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "iloprost",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = iloprost_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "losartan",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = losartan_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "aspirin",
+    connectNulls = TRUE,    
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = aspirin_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "lovenox",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = lovenox_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "plavix",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = plavix_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "clopidogrel",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = clopidogrel_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "apixaban",
+    connectNulls = TRUE,      
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = apixaban_dose)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_df,
+    type = "line",
+    name = "coumadin",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = coumadin_dose)
+    ) %>%
+  hc_legend(
+    align = "right",
+    verticalAlign = "top",
+    layout = "vertical"
+  )
+  })
+
+
+```
+
+```{r main plot display, context = "render"}
+
+tags$style(type="text/css",
+        ".shiny-output-error { visibility: hidden; }",
+        ".shiny-output-error:before { visibility: hidden; }"
+)
+
+fluidRow(
+ column(
+  width = 12,
+  fluidRow(
+    column(width = 12,  uiOutput("mrn_filter")),
+    column(width = 12,  highchartOutput("hc"), style = 'height:340px')
+   )
+  )
+)
+
+```
+
+
+### Cath Timeline View
+```{r cath details setup, context = "server"}
+
+output$caths <-
+  
+
+  renderHighchart({
+
+   #validate(need(isTruthy(input$mrn), message = "Please select an MRN"))
+                                   
+  selected_patient_cath_vars_df <- selected_patient_cath_vars_funct()
+
+  highchart() %>%
+  hc_xAxis(type = "datetime") %>%
+  hc_yAxis(title = "Cath Lab Timeline") %>%
+  #hc_tooltip(crosshairs = TRUE, pointFormat = "x: {point.x:%m/%d/%y} <br> y: {point.y}") %>%
+  hc_add_series(
+    data = selected_patient_cath_vars_df,
+    type = "line",
+    name = "Max Mean PA Pressure",
+    hcaes(x = timeline_date, y = mean)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_cath_vars_df,
+    type = "line",
+    name = "PVRi",
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = pvri)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_cath_vars_df,
+    type = "line",
+    name = "RV/Ao",
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = rv_ao)
+    ) 
+  
+  })
+```
+
+```{r cath details render, context = "render"}
+
+highchartOutput("caths")
+
+```
+
+
+### Lab Timeline View
+```{r lab details setup, context = "server"}
+
+
+output$labs <-
+
+  renderHighchart({
+
+   #validate(need(isTruthy(input$mrn), message = "Please select an MRN"))
+
+  selected_patient_labs <- selected_patient_labs_funct()
+  highchart() %>%
+  hc_xAxis(type = "datetime") %>%
+  hc_yAxis(title = "Labs Timeline") %>%
+  #hc_tooltip(crosshairs = TRUE, pointFormat = "x: {point.x:%m/%d/%y} <br> y: {point.y}") %>%
+  hc_add_series(
+    data = selected_patient_labs,
+    type = "line",
+    name = "cholesterol",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = cholesterol_value)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_labs,
+    type = "line",
+    name = "triglycerides",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = triglycerides_value)
+    ) %>%
+  hc_add_series(
+    data = selected_patient_labs,
+    type = "line",
+    name = "hgb",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = hgb_value)
+    )%>%
+  hc_add_series(
+    data = selected_patient_labs,
+    type = "line",
+    name = "bnp",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = bnp_value)
+    )%>%
+  hc_add_series(
+    data = selected_patient_labs,
+    type = "line",
+    name = "sirolimus",
+    connectNulls = TRUE,
+    #tooltip = list(valueSuffix = "%"),
+    hcaes(x = timeline_date, y = sirolimus_value)
+    )
+  
+  
+  })
+  
+```
+
+```{r lab details render, context = "render"}
+
+highchartOutput("labs")
+
+```
+
+
+
+
+
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+
+### Medications
+
+```{r meds chart setup, context = "server"}
+
+output$medstbl <- renderDataTable(
+DT::datatable(
+  data = selected_patient_meds_funct() %>% rocqi::format_data_frame(),
+  rownames = FALSE,
+  fillContainer = TRUE,
+  extension = 'Scroller',
+  class = "display",
+  options = list(
+    deferRender = TRUE,
+    autoWidth = TRUE,
+    dom = "t",
+    ordering = TRUE,
+    searching = TRUE,
+    scroller = TRUE,
+    scrollY = 600,
+    pageLength = 25
+  )
+)%>%
+DT::formatStyle(
+    "MRN",
+    target = 'row',
+    backgroundColor = DT::styleEqual(c("Yes", "No"), c("#C0C0C0",'white'))
+     )
+
+)
+```
+
+``` {r meds chart display, context = "render"}
+
+dataTableOutput("medstbl")
+
+```
+
+
+### Caths
+
+```{r cath chart setup, context = "server"}
+
+
+
+output$cathtbl <- renderDataTable(
+DT::datatable(
+  data = selected_patient_cath_funct() %>% rocqi::format_data_frame(),
+  rownames = FALSE,
+  fillContainer = TRUE,
+  extension = 'Scroller',
+  class = "display",
+  options = list(
+    deferRender = TRUE,
+    autoWidth = TRUE,
+    dom = "t",
+    ordering = TRUE,
+    searching = TRUE,
+    scroller = TRUE,
+    scrollY = 600,
+    pageLength = 25
+  )
+)%>%
+DT::formatStyle(
+    "MRN",
+    target = 'row',
+    backgroundColor = DT::styleEqual(c("Yes", "No"), c("#C0C0C0",'white'))
+     )
+
+)
+```
+
+``` {r cath chart display, context = "render"}
+
+dataTableOutput("cathtbl")
+
+```
+
+
+
+### Surgeries
+
+```{r surg chart setup, context = "server"}
+
+
+output$surgtbl <- renderDataTable(
+DT::datatable(
+  data = selected_patient_surg_funct() %>% rocqi::format_data_frame(),
+  rownames = FALSE,
+  fillContainer = TRUE,
+  extension = 'Scroller',
+  class = "display",
+  options = list(
+    deferRender = TRUE,
+    autoWidth = TRUE,
+    dom = "t",
+    ordering = TRUE,
+    searching = TRUE,
+    scroller = TRUE,
+    scrollY = 600,
+    pageLength = 25
+  )
+)%>%
+DT::formatStyle(
+    "MRN",
+    target = 'row',
+    backgroundColor = DT::styleEqual(c("Yes", "No"), c("#C0C0C0",'white'))
+     )
+
+)
+```
+
+``` {r surg chart display, context = "render"}
+
+dataTableOutput("surgtbl")
+
+```

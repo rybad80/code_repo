@@ -1,0 +1,55 @@
+---
+title: "Lipid Clinic Pin"
+output: html_document
+---
+
+
+```{r}
+
+library(rocqi)
+library(tidyr)
+
+
+options(knitr.table.format = "html", cache = T) 
+```
+
+```{r}
+pins::board_register_rsconnect(
+  server = "https://rstudio-connect.chop.edu",
+  account = "rybad",
+  key = Sys.getenv("CONNECT_API_KEY")
+  )
+```
+
+```{r}
+labs_df <- run_sql_file("sql.sql")
+demos_df <- run_sql_file("demos.sql")
+
+```
+
+
+```{r}
+
+pins::pin(
+  x = labs_df,
+  name = "lipid_labs_df",
+  description = "Lipid Clinic Patient Lab result values",
+  board = "rsconnect"
+)
+
+pins::pin(
+  x = demos_df,
+  name = "lipid_demos_df",
+  description = "Lipid Clinic Patient Demographic values",
+  board = "rsconnect"
+)
+
+```
+
+
+
+
+
+
+
+

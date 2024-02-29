@@ -1,0 +1,13 @@
+name: lipid_clinic_pins
+title: lipid_clinic_pins
+username: rybad
+account: rybad
+server: rstudio-connect.chop.edu
+hostUrl: https://rstudio-connect.chop.edu/__api__
+appId: 3610
+bundleId: 189703
+url: https://rstudio-connect.chop.edu/content/9c684230-d9a4-4e92-be2d-83a3d8bc4910/
+when: 1676050290.20006
+lastSyncTime: 1676050290.20006
+asMultiple: FALSE
+asStatic: FALSE

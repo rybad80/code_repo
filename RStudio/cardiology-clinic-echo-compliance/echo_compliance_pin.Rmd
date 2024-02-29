@@ -1,0 +1,49 @@
+---
+title: "Echo Compliance Pin"
+output: html_document
+---
+
+
+```{r}
+
+library(rocqi)
+library(tidyr)
+
+
+options(knitr.table.format = "html", cache = T) 
+```
+
+```{r}
+pins::board_register_rsconnect(
+  server = "https://rstudio-connect.chop.edu",
+  account = "rybad",
+  key = Sys.getenv("CONNECT_API_KEY")
+  )
+```
+
+```{r}
+data_df <- run_sql_file("echo_compliance.sql")
+
+```
+
+
+```{r}
+
+pins::pin(
+  x = data_df,
+  name = "echo_compliance_df",
+  description = "Echo Holter Compliance data",
+  board = "rsconnect"
+)
+
+
+
+```
+
+
+
+
+
+
+
+

@@ -1,0 +1,197 @@
+---
+title: "Lipid Clinic Lab Import Template"
+output:
+    html_document:
+        css: https://github.research.chop.edu/pages/CQI/chop-bootstrap/bootstrap-3/bootstrap.min.css
+runtime: shiny    
+---
+
+<style type="text/css">
+.main-container {
+  max-width: 90% !important;
+  margin: auto;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(dplyr)
+library(rocqi)
+library(DT)
+library(shiny)
+library(glue)
+library(downloadthis)
+library(lubridate)
+library(pins)
+
+```
+
+```{r pull-data}
+
+
+board_register_rsconnect(
+  name = "rsconnect",
+  server = "https://rstudio-connect.chop.edu",
+  key = Sys.getenv("rybad")
+  )
+
+
+demos_df <- pin_get("rybad/lipid_demos_df", board = "rsconnect")
+
+df <- pin_get("rybad/lipid_labs_df", board = "rsconnect")
+
+
+#df <-rocqi::run_sql_file(
+#  "sql.sql"
+#  )
+#
+#demos_df <-rocqi::run_sql_file(
+#  "demos.sql"
+#  )
+
+#need to standardize the name of the date field for function-ed version. 
+min_date <- min(df$ENCOUNTER_DATE)
+max_date <- max(df$ENCOUNTER_DATE)
+demos_min_date <- min(demos_df$ENCOUNTER_DATE)
+demos_max_date <- max(demos_df$ENCOUNTER_DATE)
+
+```
+
+
+```{r table-header}
+header <- reactive({glue("Lipid Clinic Labs for Visit between {input$choose_date[1]} and {input$choose_date[2]}")})
+
+body <- "To view data for another date range, choose your start and end dates"  
+
+```
+
+```{r date-filters}
+date_filter <- shiny::dateRangeInput(
+  inputId = "choose_date",
+  label = "Choose Date Range (Clinic Date)",
+  start = min_date, 
+  end = max_date,
+  min = min_date,
+  max = max_date
+)
+
+```
+
+### `r header`
+
+`r body`
+
+`r date_filter`
+
+
+Demographics {.tabset}
+-----------------------------------------------------------------------
+
+### Demographics
+```{r demos-output-table}
+demos_dynamic_df <-
+  reactive({
+    demos_df %>%
+      filter(ENCOUNTER_DATE >= input$choose_date[1] &
+        ENCOUNTER_DATE <= input$choose_date[2]) %>%
+      select(-ENCOUNTER_DATE)
+  })
+
+renderDataTable(
+DT::datatable(
+  data = demos_dynamic_df(),
+  rownames = FALSE,
+  fillContainer = FALSE,
+  extension = 'Scroller',
+  class = "display",
+  options = list(
+    deferRender = TRUE,
+    autoWidth = TRUE,
+    dom = "t",
+    ordering = TRUE,
+    searching = TRUE,
+    scroller = TRUE,
+    scrollY = 600,
+    pageLength = nrow(demos_dynamic_df())
+  )
+)%>%
+DT::formatStyle(
+    "mrn",
+    target = 'row',
+    backgroundColor = DT::styleEqual(c("Yes", "No"), c("#C0C0C0",'white'))
+)
+)
+```
+
+
+```{r save-demos-data}
+renderUI(
+demos_dynamic_df() %>%
+  download_this(
+    output_name = "lipid_clinic_demographics",
+    output_extension = ".csv",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+)
+```
+
+Lipid Labs {.tabset}
+-----------------------------------------------------------------------
+
+### Lipid Labs
+
+```{r labs-output-table}
+dynamic_df <-
+  reactive({
+    df %>%
+      filter(ENCOUNTER_DATE >= input$choose_date[1] &
+        ENCOUNTER_DATE <= input$choose_date[2]) %>%
+      select(-ENCOUNTER_DATE)
+  })
+
+renderDataTable(
+DT::datatable(
+  data = dynamic_df(),
+  rownames = FALSE,
+  fillContainer = TRUE,
+  extension = 'Scroller',
+  class = "display",
+  options = list(
+    deferRender = TRUE,
+    autoWidth = TRUE,
+    dom = "t",
+    ordering = TRUE,
+    searching = TRUE,
+    scroller = TRUE,
+    scrollY = 600,
+    pageLength = nrow(dynamic_df())
+  )
+)%>%
+DT::formatStyle(
+    "mrn",
+    target = 'row',
+    backgroundColor = DT::styleEqual(c("Yes", "No"), c("#C0C0C0",'white'))
+)
+)
+```
+
+
+```{r save-labs-data}
+renderUI(
+dynamic_df() %>%
+  download_this(
+    output_name = "lipid_clinic_labs",
+    output_extension = ".csv",
+    button_label = "Download data",
+    button_type = "warning",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+)
+```
+
+

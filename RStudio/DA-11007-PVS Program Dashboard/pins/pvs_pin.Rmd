@@ -1,0 +1,66 @@
+---
+title: "PVS Program Pin"
+output: html_document
+---
+
+
+```{r}
+
+library(rocqi)
+library(tidyr)
+
+
+options(knitr.table.format = "html", cache = T) 
+```
+
+```{r}
+pins::board_register_rsconnect(
+  server = "https://rstudio-connect.chop.edu",
+  account = "rybad",
+  key = Sys.getenv("CONNECT_API_KEY")
+  )
+```
+
+```{r}
+pvs_df <- run_sql_file("sql.sql")
+
+pvs_labs_df <- run_sql_file("pvs_lab_vars.sql")
+
+pvs_caths_df <- run_sql_file("pvs_cath_vars.sql")
+
+```
+
+
+```{r}
+
+pins::pin(
+  x = pvs_df,
+  name = "pulmonary_vein_stenosis_df",
+  description = "Pulmonary Vein Stenosis Program data",
+  board = "rsconnect"
+)
+
+pins::pin(
+  x = pvs_labs_df,
+  name = "pvs_labs_df",
+  description = "Pulmonary Vein Stenosis Program Lab data",
+  board = "rsconnect"
+)
+
+pins::pin(
+  x = pvs_caths_df,
+  name = "pvs_caths_df",
+  description = "Pulmonary Vein Stenosis Program Cath data",
+  board = "rsconnect"
+)
+
+
+```
+
+
+
+
+
+
+
+
