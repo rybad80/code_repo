@@ -1,0 +1,87 @@
+---
+title: "Data Distribution Validator"
+output: html_document
+date: "2024-03-04"
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r database connection}
+library(DBI)
+library(RODBC)
+library(shiny)
+library(ggplot2)
+library(dplyr)
+
+conn <-odbcConnect("CDWPRD", uid="rybad", pwd="qpwoeiruty1029384756YYY")
+query_df <- sqlQuery(conn,"
+                       select *
+                       from chop_analytics..encounter_all 
+                       where age_years < 18.0
+                       limit 10000
+                       ", believeNRows=FALSE)
+```
+
+```{r interative plots}
+ui <- fluidPage(
+  titlePanel("Interactive Distribution Plot"),
+  sidebarLayout(
+    sidebarPanel(
+      # Dropdown for column selection
+      selectInput("column_select", "Select a Column:", choices = colnames(query_df), selected = 'AGE_YEARS'),
+      selectInput("bin_width", "Select a Bin Width:", choices = c(1, 5, 10, 25, 50, 100, 500, 1000, 10000, 100000, 1000000), selected = 1),
+    ),
+    mainPanel(
+      # Plot output
+      plotOutput("distribution_plot"),
+      verbatimTextOutput("summary_stats") 
+    )
+  )
+)
+
+server <- function(input, output) {
+  # Filter data based on user selection
+  filtered_data <- reactive({
+    req(input$column_select, input$bin_width)  # Ensure input values are available
+    query_df %>%
+      filter(!is.na(.data[[input$column_select]]))
+  })
+
+  # Create distribution plot
+  output$distribution_plot <- renderPlot({
+    req(filtered_data())  # Ensure filtered_data is available
+    ggplot(filtered_data(), aes(x = .data[[input$column_select]])) +
+      stat_count(width = as.numeric(input$bin_width), fill = "skyblue", color = "black") +
+      labs(x = input$column_select, y = "Frequency")
+  })
+
+  # Calculate summary statistics
+  summary_stats <- reactive({
+    req(filtered_data())
+    filtered_data() %>%
+      summarise(
+        min_val = min(.data[[input$column_select]]),
+        max_val = max(.data[[input$column_select]]),
+        median_val = median(.data[[input$column_select]]),
+        null_count = sum(is.na(.data[[input$column_select]]))
+      )
+  })
+
+  # Display summary statistics
+  output$summary_stats <- renderPrint({
+    req(summary_stats())
+    cat("Summary Statistics for", input$column_select, "column:\n")
+    cat("Minimum value:", summary_stats()$min_val, "\n")
+    cat("Maximum value:", summary_stats()$max_val, "\n")
+    cat("Median value:", summary_stats()$median_val, "\n")
+    cat("Count of nulls:", summary_stats()$null_count, "\n")
+  })
+}
+
+shinyApp(ui, server)
+
+```
+
